@@ -24,6 +24,10 @@
   --sky-fg: #215f9e;
   --sun-bg: #fff2cf;
   --sun-fg: #8a6300;
+  --stroop-red: #e04848;
+  --stroop-blue: #2f80e8;
+  --stroop-green: #2e9e5b;
+  --stroop-yellow: #e8a800;
   --display: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
   --body: 'Lexend', 'Segoe UI', system-ui, sans-serif;
   --nav-h: 64px;

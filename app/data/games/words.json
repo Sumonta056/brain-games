@@ -64,5 +64,8 @@
   ],
   "science": "In the standard spoken letter-fluency test (F, A, S), adults average around 14–15 words per letter per minute. Typing is slower than speaking, so typed scores run lower.",
   "tip": "Think in themes: s-foods, s-animals, s-verbs.",
-  "icon": "words"
+  "icon": "words",
+  "content": {
+    "letters": ["A", "B", "C", "D", "E", "F", "G", "H", "L", "M", "N", "P", "R", "S", "T", "W"]
+  }
 }

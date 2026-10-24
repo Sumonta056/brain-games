@@ -54,5 +54,25 @@
   ],
   "science": "In spoken “name animals in 60 seconds” tests, younger adults usually say about 20. Typing slows things, so 13+ typed is very good.",
   "tip": "Use sub-groups: farm animals, then sea animals, then birds.",
-  "icon": "category"
+  "icon": "category",
+  "content": {
+    "categories": [
+      "Fruits",
+      "Countries",
+      "Animals",
+      "Things in a kitchen",
+      "Jobs",
+      "Sports",
+      "Vegetables",
+      "Cities",
+      "Things that are round",
+      "Musical instruments",
+      "Things in an office",
+      "Foods you love",
+      "Things that fly",
+      "Colours",
+      "Flowers",
+      "Things at the beach"
+    ]
+  }
 }

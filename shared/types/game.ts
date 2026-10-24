@@ -29,6 +29,16 @@ export interface GameDef {
   science: string
   tip: string
   icon: string
+  content?: GameContent
+}
+
+export interface GameContent {
+  emojis?: string[]
+  letters?: string[]
+  categories?: string[]
+  pools?: string[][]
+  colours?: { name: string; token: string }[]
+  tasks?: string[]
 }
 
 export interface CategoryDef {

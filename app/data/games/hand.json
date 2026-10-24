@@ -52,5 +52,21 @@
   ],
   "science": "Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.",
   "tip": "Start with low-stakes tasks like scrolling your phone.",
-  "icon": "hand"
+  "icon": "hand",
+  "content": {
+    "tasks": [
+      "Brush your teeth",
+      "Write your name and today’s date on paper",
+      "Scroll your phone for 5 minutes",
+      "Eat one meal with a spoon",
+      "Comb your hair",
+      "Use the computer mouse for 10 minutes",
+      "Open every door you pass today",
+      "Pour a glass of water",
+      "Draw a house, a tree and a sun",
+      "Type a short message",
+      "Stir your tea or coffee",
+      "Carry your bag"
+    ]
+  }
 }

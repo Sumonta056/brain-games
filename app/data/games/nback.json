@@ -58,5 +58,8 @@
   ],
   "science": "N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.",
   "tip": "Whisper the last two letters to yourself on each step.",
-  "icon": "nback"
+  "icon": "nback",
+  "content": {
+    "letters": ["B", "C", "D", "F", "G", "H", "J", "K", "L"]
+  }
 }

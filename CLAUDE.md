@@ -75,10 +75,8 @@ test/nuxt/                Vitest specs (Nuxt env, happy-dom); fixtures.ts holds 
 
 ## Porting status
 
-Done: MentalMath, ReactionTime, BoxBreathing.
-To port from design.html (`RUN.<id>` → `app/components/games/<Component>.vue`):
-MemoryPairs (pairs), OddColour (odd), SerialSevens (serial7), WordSprint (words), CategoryChallenge (category), BackwardSpelling (backward), DigitSpan (digits), SequenceMemory (sequence), TwoBack (nback), StroopColours (stroop), SchulteTable (schulte), OtherHandDay (hand).
-Tip: WordSprint and CategoryChallenge share `listGame()`. Make a `useListGame` composable.
+All 15 games are ported from design.html (`RUN.<id>` → `app/components/games/<Component>.vue`) and registered.
+WordSprint and CategoryChallenge share `useListGame` and `ListGame.vue`. Game content lists live in the JSON `content` field; read them with `gameContent(game, key)`.
 
 ## Adding a new game
 

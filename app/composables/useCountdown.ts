@@ -32,10 +32,16 @@ export function useTimeouts() {
     }, ms)
     ids.add(id)
   }
+  const intervals = new Set<ReturnType<typeof setInterval>>()
+  const every = (fn: () => void, ms: number) => {
+    intervals.add(setInterval(fn, ms))
+  }
   const clearAll = () => {
     ids.forEach(clearTimeout)
     ids.clear()
+    intervals.forEach(clearInterval)
+    intervals.clear()
   }
   onBeforeUnmount(clearAll)
-  return { later, clearAll }
+  return { later, every, clearAll }
 }

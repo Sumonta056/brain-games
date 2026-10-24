@@ -75,6 +75,40 @@ describe('useTimeouts', () => {
     expect(fn).not.toHaveBeenCalled()
   })
 
+  it('every repeats the callback at the interval', async () => {
+    const fn = vi.fn()
+    const { result } = await withSetup(() => useTimeouts())
+    result.every(fn, 300)
+    vi.advanceTimersByTime(299)
+    expect(fn).not.toHaveBeenCalled()
+    vi.advanceTimersByTime(1)
+    expect(fn).toHaveBeenCalledTimes(1)
+    vi.advanceTimersByTime(600)
+    expect(fn).toHaveBeenCalledTimes(3)
+  })
+
+  it('clearAll stops repeating callbacks', async () => {
+    const fn = vi.fn()
+    const { result } = await withSetup(() => useTimeouts())
+    result.every(fn, 300)
+    vi.advanceTimersByTime(300)
+    result.clearAll()
+    vi.advanceTimersByTime(3000)
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('stops repeating callbacks on unmount', async () => {
+    const fn = vi.fn()
+    const { result, wrapper } = await withSetup(() => useTimeouts())
+    result.every(fn, 300)
+    result.later(fn, 500)
+    wrapper.unmount()
+    vi.advanceTimersByTime(3000)
+    expect(fn).not.toHaveBeenCalled()
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('cancels pending callbacks on unmount', async () => {
     const fn = vi.fn()
     const { result, wrapper } = await withSetup(() => useTimeouts())

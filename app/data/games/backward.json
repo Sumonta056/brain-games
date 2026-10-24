@@ -54,5 +54,14 @@
   ],
   "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
   "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
-  "icon": "backward"
+  "icon": "backward",
+  "content": {
+    "pools": [
+      ["cat", "sun", "book", "tree", "fish", "lamp"],
+      ["plant", "house", "river", "stone", "chair", "bread"],
+      ["garden", "pencil", "bridge", "silver", "market", "rocket"],
+      ["blanket", "kitchen", "captain", "library", "diamond", "machine"],
+      ["umbrella", "hospital", "elephant", "sunshine", "computer", "mountain"]
+    ]
+  }
 }

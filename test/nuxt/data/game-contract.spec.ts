@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import type { GameDef } from '~~/shared/types/game'
 import categories from '~/data/categories.json'
 import { gameComponents } from '~/components/games/registry'
@@ -11,7 +13,13 @@ const iconFiles = import.meta.glob<string>('~/assets/icons/games/*.svg', {
 })
 const iconFile = (name: string) =>
   Object.entries(iconFiles).find(([path]) => path.endsWith(`/icons/games/${name}.svg`))?.[1]
+const tokensCss = readFileSync(resolve(process.cwd(), 'app/assets/css/tokens.css'), 'utf8')
 const games = Object.entries(modules).map(([path, game]) => ({ file: path.split('/').pop()!, game }))
+
+type Content = Record<string, unknown>
+const contentOf = (id: string) => (games.find(g => g.game.id === id)?.game as GameDef & { content?: Content })?.content
+const isText = (v: unknown) => typeof v === 'string' && v.trim() !== ''
+const isTextList = (v: unknown, min = 1) => Array.isArray(v) && v.length >= min && v.every(isText)
 
 const LEVELS = ['Easy', 'Medium', 'Hard']
 const SIZES = ['normal', 'wide', 'tall', 'big']
@@ -114,5 +122,67 @@ describe('game JSON contract (functional-requirements §4)', () => {
       const loaded = await (comp as unknown as { __asyncLoader: () => Promise<{ __name?: string }> }).__asyncLoader()
       expect(loaded.__name, key).toBe(key)
     }
+  })
+})
+
+describe('game content (functional-requirements §4 content table)', () => {
+  it('pairs has 8 distinct emojis', () => {
+    const emojis = contentOf('pairs')?.emojis as string[]
+    expect(isTextList(emojis)).toBe(true)
+    expect(emojis).toHaveLength(8)
+    expect(new Set(emojis).size).toBe(8)
+  })
+
+  it('words has distinct single capital start letters', () => {
+    const letters = contentOf('words')?.letters as string[]
+    expect(isTextList(letters)).toBe(true)
+    letters.forEach(l => expect(l).toMatch(/^[A-Z]$/))
+    expect(new Set(letters).size).toBe(letters.length)
+  })
+
+  it('category has distinct non-empty categories', () => {
+    const categories = contentOf('category')?.categories as string[]
+    expect(isTextList(categories)).toBe(true)
+    expect(new Set(categories).size).toBe(categories.length)
+  })
+
+  it('backward has 5 pools of lowercase words, shortest words first', () => {
+    const pools = contentOf('backward')?.pools as string[][]
+    expect(Array.isArray(pools)).toBe(true)
+    expect(pools).toHaveLength(5)
+    pools.forEach(pool => {
+      expect(isTextList(pool)).toBe(true)
+      pool.forEach(w => expect(w).toMatch(/^[a-z]+$/))
+    })
+    for (let i = 1; i < pools.length; i++) {
+      const prevLongest = Math.max(...pools[i - 1]!.map(w => w.length))
+      const shortest = Math.min(...pools[i]!.map(w => w.length))
+      expect(shortest).toBeGreaterThanOrEqual(prevLongest)
+    }
+  })
+
+  it('nback has at least 2 distinct single capital letters', () => {
+    const letters = contentOf('nback')?.letters as string[]
+    expect(isTextList(letters, 2)).toBe(true)
+    letters.forEach(l => expect(l).toMatch(/^[A-Z]$/))
+    expect(new Set(letters).size).toBe(letters.length)
+  })
+
+  it('stroop has 4 named colours whose tokens exist in tokens.css', () => {
+    const colours = contentOf('stroop')?.colours as { name: string; token: string }[]
+    expect(Array.isArray(colours)).toBe(true)
+    expect(colours).toHaveLength(4)
+    expect(tokensCss).toMatch(/--accent\s*:/)
+    colours.forEach(c => {
+      expect(isText(c.name)).toBe(true)
+      expect(isText(c.token)).toBe(true)
+      expect(tokensCss, `--${c.token}`).toMatch(new RegExp(`--${c.token}\\s*:`))
+    })
+    expect(new Set(colours.map(c => c.name)).size).toBe(4)
+    expect(new Set(colours.map(c => c.token)).size).toBe(4)
+  })
+
+  it('hand has at least 4 tasks', () => {
+    expect(isTextList(contentOf('hand')?.tasks, 4)).toBe(true)
   })
 })

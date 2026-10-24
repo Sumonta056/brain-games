@@ -96,6 +96,17 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 | bands                     | {at, range, label, message}[]      | Lowest → highest performance                                                                                   |
 | science, tip              | string                             | Sidebar                                                                                                        |
 | icon                      | string                             | File name in `app/assets/icons/games/<icon>.svg`: a 48×48 SVG (`viewBox="0 0 48 48"`) that uses `currentColor` |
+| content                   | object (optional)                  | Game-specific lists the game reads at play time. Components never hard-code them. See the table below.         |
+
+| Game     | `content` shape                                                                                                  |
+| -------- | ---------------------------------------------------------------------------------------------------------------- |
+| pairs    | `{ emojis: string[8] }`                                                                                          |
+| words    | `{ letters: string[] }` (the start letters)                                                                      |
+| category | `{ categories: string[] }`                                                                                       |
+| backward | `{ pools: string[][5] }` (word pools, shortest words first)                                                      |
+| nback    | `{ letters: string[] }`                                                                                          |
+| stroop   | `{ colours: { name: string, token: string }[4] }` (`token` is a colour token in `tokens.css`, e.g. `stroop-red`) |
+| hand     | `{ tasks: string[] }` (at least 4)                                                                               |
 
 Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars` and `praise`. Components never hard-code it.
 
@@ -124,6 +135,7 @@ Shared copy that is not about one game lives in `app/data/copy.json`: `greetings
 - **Light, "pink matter":** bg `#FFF6F7`, surface `#FFFFFF`, ink `#2B1D2F`, accent `#D9466E`, accent-2 `#7552E0`.
 - **Dark, "neural night":** bg `#110E1F`, surface `#1B1730`, ink `#F2EDFB`, accent `#FF7FA3`, accent-2 `#A08BFF`.
 - **Category tints** (bg/fg pairs, same lightness per theme): Calm = mint, Speed = peach, Words = rose, Memory = lilac, Focus = sky, Body = sun.
+- **Stroop inks:** `--stroop-red` `#E04848`, `--stroop-blue` `#2F80E8`, `--stroop-green` `#2E9E5B`, `--stroop-yellow` `#E8A800` (the same in both themes, with white button text). Only the Stroop game uses them.
 - **Fonts:** Baloo 2 (display, numbers, buttons), Lexend (body).
 - **Shape:** radius 22px (cards), 18px (buttons), 14px (icons). Primary button: accent fill with a 5px darker bottom shadow ("pressable").
 - All tokens are in `app/assets/css/tokens.css` (`:root`, `[data-theme]`). `app/assets/css/main.css` maps them into Tailwind `@theme`, so utilities use only these tokens (no default Tailwind palette).
