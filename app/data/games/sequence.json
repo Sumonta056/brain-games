@@ -1,0 +1,65 @@
+{
+  "id": "sequence",
+  "order": 11,
+  "component": "SequenceMemory",
+  "name": "Sequence memory",
+  "category": "Memory",
+  "level": "Easy",
+  "size": "normal",
+  "blurb": "Repeat the pattern of lit squares.",
+  "trains": "Visual-spatial memory",
+  "durationSec": null,
+  "unit": "levels",
+  "lowerIsBetter": false,
+  "steps": [
+    "Watch squares light up one by one.",
+    "Tap them in the same order.",
+    "The pattern grows by one each level."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">⬜🟪<br>⬜⬜</div>",
+      "caption": "Watch it light up"
+    },
+    {
+      "scene": "<div class=\"mk\">⬜⬜<br>🟪⬜</div>",
+      "caption": "Remember the order"
+    },
+    {
+      "scene": "<div class=\"mk\">👆👆<small>tap the same order</small></div>",
+      "caption": "Repeat it"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–4",
+      "label": "Warming up",
+      "message": "Spatial memory warms up quickly."
+    },
+    {
+      "at": 5,
+      "range": "5–7",
+      "label": "Typical",
+      "message": "Visual spans usually sit 1–2 below number spans."
+    },
+    {
+      "at": 8,
+      "range": "8–10",
+      "label": "Strong",
+      "message": "Very good spatial memory."
+    },
+    {
+      "at": 11,
+      "range": "11+",
+      "label": "Exceptional",
+      "message": "Outstanding."
+    }
+  ],
+  "science": "Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.",
+  "tip": "Trace the path as a shape: “L-shape, then corner.”",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<g fill=\"currentColor\" opacity=\".3\"><rect x=\"5\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"26\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"5\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/></g><rect x=\"26\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\" fill=\"currentColor\"/>"
+  }
+}

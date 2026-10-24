@@ -1,0 +1,65 @@
+{
+  "id": "odd",
+  "order": 3,
+  "component": "OddColour",
+  "name": "Odd colour out",
+  "category": "Calm",
+  "level": "Easy",
+  "size": "normal",
+  "blurb": "Spot the one tile with a slightly different shade.",
+  "trains": "Visual perception and calm focus",
+  "durationSec": 60,
+  "unit": "levels",
+  "lowerIsBetter": false,
+  "steps": [
+    "A grid of same-coloured tiles appears.",
+    "One tile is a tiny bit lighter or darker. Tap it.",
+    "Grids get bigger and shades get closer. 60 seconds."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">🟦🟦<br>🟦🟦<small>Look closely</small></div>",
+      "caption": "Which one is different?"
+    },
+    {
+      "scene": "<div class=\"mk\">🟦🟦<br>🟦<span style=\"opacity:.6\">🟦</span><small>That one!</small></div>",
+      "caption": "Tap the odd tile"
+    },
+    {
+      "scene": "<div class=\"mk\">➕<small>Bigger grid, closer shades</small></div>",
+      "caption": "It gets trickier"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–7",
+      "label": "Warming up",
+      "message": "Your eyes are tuning in. Relax your gaze instead of hunting tile by tile."
+    },
+    {
+      "at": 8,
+      "range": "8–14",
+      "label": "Good eye",
+      "message": "Nice colour sense."
+    },
+    {
+      "at": 15,
+      "range": "15–21",
+      "label": "Sharp eye",
+      "message": "You’re spotting very small differences."
+    },
+    {
+      "at": 22,
+      "range": "22+",
+      "label": "Eagle eye",
+      "message": "That’s exceptional colour perception."
+    }
+  ],
+  "science": "Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.",
+  "tip": "Let your eyes soften and look at the whole grid. The odd tile often “pops”.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<g fill=\"currentColor\" opacity=\".35\"><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"24\" cy=\"12\" r=\"6\"/><circle cx=\"36\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"24\" r=\"6\"/><circle cx=\"36\" cy=\"24\" r=\"6\"/><circle cx=\"12\" cy=\"36\" r=\"6\"/><circle cx=\"24\" cy=\"36\" r=\"6\"/><circle cx=\"36\" cy=\"36\" r=\"6\"/></g><circle cx=\"24\" cy=\"24\" r=\"6.5\" fill=\"currentColor\"/>"
+  }
+}

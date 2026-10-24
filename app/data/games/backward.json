@@ -1,0 +1,61 @@
+{
+  "id": "backward",
+  "order": 9,
+  "component": "BackwardSpelling",
+  "name": "Backward spelling",
+  "category": "Words",
+  "level": "Medium",
+  "size": "normal",
+  "blurb": "See a word, then spell it in reverse.",
+  "trains": "Working memory and mental imagery",
+  "durationSec": null,
+  "unit": "out of 8",
+  "lowerIsBetter": false,
+  "steps": ["A word shows for a few seconds.", "It disappears.", "Type it backwards and press Enter. 8 rounds."],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">PLANT</div>",
+      "caption": "Memorise the word"
+    },
+    {
+      "scene": "<div class=\"mk\">• • •</div>",
+      "caption": "It hides"
+    },
+    {
+      "scene": "<div class=\"mk ok\">tnalp ✓</div>",
+      "caption": "Type it backwards"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–3",
+      "label": "Warming up",
+      "message": "Long words are tough. Picture the word written in front of you."
+    },
+    {
+      "at": 4,
+      "range": "4–5",
+      "label": "Steady",
+      "message": "Solid working memory."
+    },
+    {
+      "at": 6,
+      "range": "6–7",
+      "label": "Sharp",
+      "message": "Strong mental imagery."
+    },
+    {
+      "at": 8,
+      "range": "8",
+      "label": "Perfect",
+      "message": "Flawless."
+    }
+  ],
+  "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
+  "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<rect x=\"4\" y=\"8\" width=\"40\" height=\"32\" rx=\"10\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M34 30H16a6 6 0 0 1 0-12h18\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"m21 25 -5 5 5 5\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+  }
+}

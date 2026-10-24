@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brain Garden — relax and sharpen your mind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Light = "pink matter": soft brain-tissue rose with synapse violet. Dark = "neural night": deep indigo with glowing neurons. */
+:root{
+  --bg:#FFF6F7; --surface:#FFFFFF; --raise:#FFF0F3; --ink:#2B1D2F; --muted:#6D5C70; --line:#F2DDE3;
+  --accent:#D9466E; --accent-2:#7552E0; --on-accent:#FFFFFF; --glow:rgba(217,70,110,.18);
+  --good:#23885A; --bad:#C93A4A; --sun:#F6C445;
+  --mint-bg:#DFF4EA; --mint-fg:#1E7A50; --peach-bg:#FFE9D9; --peach-fg:#B4561A; --rose-bg:#FDE3EA; --rose-fg:#B83260;
+  --lilac-bg:#ECE6FD; --lilac-fg:#5B3EC6; --sky-bg:#E1EEFB; --sky-fg:#215F9E; --sun-bg:#FFF2CF; --sun-fg:#8A6300;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif; --body:"Lexend","Segoe UI",system-ui,sans-serif;
+  --nav-h:64px; --c:var(--accent);
+  box-sizing:border-box; color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#110E1F; --surface:#1B1730; --raise:#231E3D; --ink:#F2EDFB; --muted:#ADA4C6; --line:#2E2849;
+    --accent:#FF7FA3; --accent-2:#A08BFF; --on-accent:#1A0F1F; --glow:rgba(160,139,255,.25);
+    --good:#5ED6A0; --bad:#FF8A95;
+    --mint-bg:#173229; --mint-fg:#7FE0B4; --peach-bg:#352418; --peach-fg:#FFB88A; --rose-bg:#3A1A2C; --rose-fg:#FF9DBA;
+    --lilac-bg:#2A2252; --lilac-fg:#C2B3FF; --sky-bg:#172B44; --sky-fg:#8EC3FF; --sun-bg:#33290F; --sun-fg:#F8D37A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#110E1F; --surface:#1B1730; --raise:#231E3D; --ink:#F2EDFB; --muted:#ADA4C6; --line:#2E2849;
+  --accent:#FF7FA3; --accent-2:#A08BFF; --on-accent:#1A0F1F; --glow:rgba(160,139,255,.25);
+  --good:#5ED6A0; --bad:#FF8A95;
+  --mint-bg:#173229; --mint-fg:#7FE0B4; --peach-bg:#352418; --peach-fg:#FFB88A; --rose-bg:#3A1A2C; --rose-fg:#FF9DBA;
+  --lilac-bg:#2A2252; --lilac-fg:#C2B3FF; --sky-bg:#172B44; --sky-fg:#8EC3FF; --sun-bg:#33290F; --sun-fg:#F8D37A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+html{scroll-padding-top:calc(var(--nav-h) + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(600px 400px at 90% -10%,var(--glow),transparent 70%),radial-gradient(500px 360px at -10% 110%,var(--glow),transparent 70%)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px}
+.app{min-height:100%;display:flex;flex-direction:column}
+
+/* ---------- navbar: identical on every page ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;height:var(--nav-h);background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1320px;height:100%;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px}
+.logo{display:flex;align-items:center;gap:8px;font:800 22px/1 var(--display);background:none;border:none;cursor:pointer;padding:0;color:var(--ink)}
+.logo svg{width:34px;height:34px}
+.tabs{display:flex;gap:4px;margin-left:16px}
+.tab{display:flex;align-items:center;gap:7px;border:none;background:none;border-radius:999px;padding:8px 14px;cursor:pointer;color:var(--muted);font-weight:500;font-size:15px}
+.tab svg{width:18px;height:18px}
+.tab[aria-current="page"]{background:var(--rose-bg);color:var(--rose-fg)}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.iconbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.iconbtn svg{width:20px;height:20px}
+.streak{display:flex;align-items:center;gap:4px;font:700 16px var(--display);color:var(--peach-fg);background:var(--peach-bg);border-radius:999px;padding:4px 12px}
+.me{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 14px 4px 4px;cursor:pointer;font-weight:500;font-size:15px}
+.me .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--lilac-bg);font-size:18px}
+main{flex:1;width:100%}
+.page{max-width:1320px;margin:0 auto;padding:20px 20px 32px}
+
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:18px}
+.hcard{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px 22px;position:relative;overflow:hidden}
+.hcard h1{font:800 clamp(28px,4vw,40px)/1.05 var(--display);margin:0}
+.hcard .aff{margin:6px 0 14px;color:var(--muted)}
+.neurons{position:absolute;right:-10px;top:-10px;width:230px;opacity:.55;pointer-events:none}
+.daily{display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:relative}
+.daily .lbl{font:700 15px var(--display)}
+.dpick{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--raise);border-radius:999px;padding:4px 12px 4px 4px;cursor:pointer;font-size:14px}
+.dpick svg{width:24px;height:24px}
+.dpick.done{opacity:.55}
+.dpick.done span{text-decoration:line-through}
+.mood h2{font:700 19px var(--display);margin:0 0 10px}
+.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.moods button{border:1px solid var(--line);background:var(--raise);border-radius:14px;padding:8px 2px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+.moods button b{font-size:22px;line-height:1.2}
+.moods button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink);background:var(--rose-bg)}
+.mood p{margin:10px 0 0;font-size:14px;color:var(--muted)}
+.mood p a{color:var(--accent);font-weight:600;margin-right:10px}
+
+.gh{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 12px}
+.gh h2{font:800 26px/1 var(--display);margin:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* bento grid — mixed tile sizes like a photo gallery */
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:150px;grid-auto-flow:dense;gap:12px}
+.tile{position:relative;overflow:hidden;text-align:left;border:none;border-radius:22px;padding:16px 18px;cursor:pointer;display:flex;flex-direction:column;gap:4px;background:var(--tbg);color:var(--ink);transition:transform .15s ease,box-shadow .15s ease}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px var(--tfg)}
+.tile.big{grid-column:span 2;grid-row:span 2;padding:24px}
+.tile.wide{grid-column:span 2}
+.tile.tall{grid-row:span 2}
+.tile .ic{width:44px;height:44px;border-radius:14px;background:var(--surface);display:grid;place-items:center;flex:none}
+.tile .ic svg{width:30px;height:30px}
+.tile.big .ic{width:60px;height:60px;border-radius:18px}.tile.big .ic svg{width:42px;height:42px}
+.tile .ghost-ic{position:absolute;right:-24px;bottom:-24px;width:150px;height:150px;opacity:.14;pointer-events:none}
+.tile.big .ghost-ic{width:260px;height:260px;right:-40px;bottom:-40px}
+.tile .nm{font:700 20px/1.1 var(--display);margin-top:auto}
+.tile.big .nm{font-size:34px}
+.tile .bl{font-size:13.5px;color:var(--muted);line-height:1.4;display:none}
+.tile.big .bl,.tile.tall .bl,.tile.wide .bl{display:block}
+.tile.big .bl{font-size:16px;max-width:30ch}
+.tile .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.lv{font-size:12px;font-weight:600;background:var(--surface);color:var(--tfg);border-radius:999px;padding:2px 10px}
+.tile .bst{font-size:12.5px;color:var(--tfg);font-weight:600}
+.tile.big .play{margin-top:12px;align-self:flex-start;background:var(--tfg);color:var(--surface);border-radius:999px;padding:8px 18px;font:700 16px var(--display)}
+
+/* ---------- game page: full height, play left, guide right ---------- */
+.gpage{max-width:1320px;margin:0 auto;padding:16px 20px;height:calc(100dvh - var(--nav-h) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:560px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+.play{background:var(--surface);border:1px solid var(--line);border-radius:26px;display:flex;flex-direction:column;min-height:0;position:relative;overflow:hidden}
+.phead{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.phead .gi{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--tbg)}
+.phead .gi svg{width:32px;height:32px}
+.phead h1{font:800 26px/1 var(--display);margin:0}
+.phead small{color:var(--muted)}
+.phead .pb{margin-left:auto;text-align:right;font-size:13px;color:var(--muted)}
+.phead .pb b{display:block;font:700 20px/1 var(--display);color:var(--ink)}
+.pstage{flex:1;overflow:auto;padding:22px clamp(16px,3vw,36px);display:flex;flex-direction:column;justify-content:center;position:relative}
+.pstage>div{width:100%;max-width:760px;margin:0 auto}
+.side{display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0}
+.sbox{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 18px}
+.sbox h2{font:700 18px var(--display);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.sbox h2 i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.steps{list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:10px;margin-bottom:8px;font-size:14.5px;align-items:flex-start}
+.steps li::before{content:counter(s);flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:700 14px var(--display);background:var(--tbg);color:var(--tfg)}
+.bands{display:flex;flex-direction:column;gap:3px}
+.bands div{display:flex;justify-content:space-between;gap:10px;padding:7px 12px;border-radius:10px;font-size:14px;color:var(--muted)}
+.bands div.here{background:var(--rose-bg);color:var(--rose-fg);font-weight:600}
+.bands div.here::after{content:"you";font:700 11px var(--display);background:var(--accent);color:var(--on-accent);border-radius:999px;padding:1px 8px;margin-left:6px}
+.bands div span:last-child{margin-left:auto}
+.sci{font-size:13.5px;color:var(--muted);margin:0}
+.sci b{color:var(--ink);font-weight:600}
+
+/* intro inside play area */
+.ready{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+.demo{border-radius:22px;padding:16px;background:var(--tbg);min-height:250px;display:flex;flex-direction:column}
+.demo .lab{font:700 13px var(--display);color:var(--tfg);display:flex;justify-content:space-between}
+.demo .scene{flex:1;display:grid;place-items:center;text-align:center;min-height:170px}
+.demo .cap{text-align:center;font-weight:500;min-height:1.5em}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.dots i{width:8px;height:8px;border-radius:50%;background:color-mix(in srgb,var(--tfg) 30%,transparent)}
+.dots i.on{background:var(--tfg)}
+.mk{font:800 40px/1.15 var(--display)}
+.mk small{display:block;font:400 14px var(--body);color:var(--muted)}
+.ok{color:var(--good)} .no{color:var(--bad)}
+.ready h2{font:800 clamp(34px,5vw,52px)/1 var(--display);margin:0 0 8px}
+.ready p{color:var(--muted);margin:0 0 20px}
+.kbd{font-size:13px;color:var(--muted);margin-top:12px}
+.kbd kbd{font:600 12px var(--body);border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:1px 6px;background:var(--raise)}
+
+/* shared game bits */
+.go{background:var(--accent);color:var(--on-accent);border:none;border-radius:18px;padding:14px 32px;font:800 22px var(--display);cursor:pointer;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 65%,#000)}
+.go:active{transform:translateY(3px);box-shadow:0 2px 0 color-mix(in srgb,var(--accent) 65%,#000)}
+.ghost{background:transparent;border:2px solid var(--line);border-radius:16px;padding:11px 22px;font:700 17px var(--display);cursor:pointer}
+.bar{height:12px;border-radius:999px;background:var(--raise);overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .1s linear}
+.hud{display:flex;justify-content:space-between;color:var(--muted);font:600 17px var(--display);margin-bottom:4px}
+.big{font:800 clamp(56px,10vw,110px)/1.02 var(--display);text-align:center;margin:12px 0 18px;min-height:1em;word-break:break-word;letter-spacing:-.01em}
+.mid{font:800 clamp(30px,5vw,46px)/1.1 var(--display);text-align:center;margin:10px 0 16px}
+.field{display:block;width:100%;max-width:420px;margin:0 auto;font:700 32px var(--display);text-align:center;padding:10px 14px;border:3px solid var(--line);border-radius:18px;background:var(--raise);color:var(--ink)}
+.field:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 5px var(--glow)}
+.center{text-align:center}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px auto 0;max-width:640px}
+.list span{background:var(--lilac-bg);color:var(--lilac-fg);border-radius:10px;padding:3px 12px;font-size:14px}
+.note{color:var(--muted);font-size:15px;text-align:center;margin-top:12px;min-height:1.5em}
+.cheer{position:absolute;left:50%;top:24px;transform:translateX(-50%);font:800 26px var(--display);color:var(--accent);pointer-events:none;animation:pop 1.1s ease-out forwards;z-index:3}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}20%{opacity:1;transform:translate(-50%,0) scale(1.08)}100%{opacity:0;transform:translate(-50%,-26px)}}
+.grid{display:grid;gap:10px;margin:8px auto;max-width:420px}
+.cell{aspect-ratio:1;border-radius:16px;border:none;background:var(--raise);font:800 clamp(18px,4vw,28px) var(--display);cursor:pointer;transition:background .15s,transform .1s;color:var(--ink)}
+.cell:active{transform:scale(.94)}
+.cell.on{background:var(--accent-2);color:#fff;box-shadow:0 0 22px var(--glow)}
+.cell.done{opacity:.2}
+.cell.miss{background:var(--bad);color:#fff}
+.react{height:min(300px,40vh);border-radius:24px;display:flex;align-items:center;justify-content:center;font:800 30px var(--display);cursor:pointer;user-select:none;background:var(--raise);text-align:center;padding:16px;transition:background .1s}
+.react.go2{background:var(--good);color:#fff}
+.colorbtns{display:grid;grid-template-columns:repeat(2,minmax(120px,190px));gap:12px;justify-content:center;margin-top:16px}
+.colorbtns button{border:none;border-radius:18px;padding:16px;font:800 22px var(--display);color:#fff;cursor:pointer}
+.tasks{list-style:none;padding:0;margin:0 auto 16px;max-width:560px}
+.tasks label{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;cursor:pointer;margin-bottom:6px;background:var(--raise)}
+.tasks input{width:22px;height:22px;accent-color:var(--accent)}
+canvas.pad{display:block;width:100%;max-width:560px;height:200px;margin:0 auto;background:var(--raise);border:3px dashed var(--line);border-radius:20px;touch-action:none}
+.breath{width:min(300px,60vw);aspect-ratio:1;margin:6px auto;position:relative;display:grid;place-items:center}
+.breath i{position:absolute;inset:0;border-radius:50%;background:var(--lilac-bg);transform:scale(.45);transition:transform 4s ease-in-out}
+.breath i.b2{inset:18%;background:color-mix(in srgb,var(--accent-2) 45%,var(--surface))}
+.breath span{position:relative;font:800 28px var(--display);text-align:center}
+.card{aspect-ratio:3/4;border-radius:16px;border:none;cursor:pointer;font-size:clamp(26px,6vw,38px);background:linear-gradient(140deg,var(--accent-2),var(--accent));color:#fff;transition:transform .25s}
+.card.up{background:var(--raise);transform:rotateY(180deg)}
+.card.up span{display:inline-block;transform:rotateY(180deg)}
+.card.got{opacity:.45}
+
+/* result */
+.result{text-align:center}
+.result .emo{font-size:52px;line-height:1}
+.result .score{font:800 clamp(80px,14vw,130px)/1 var(--display);background:linear-gradient(90deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.result .unit{color:var(--muted);font-weight:500}
+.result h2{font:800 34px/1.1 var(--display);margin:10px 0 4px}
+.result p{max-width:52ch;margin:6px auto;color:var(--muted)}
+.pbtag{display:inline-block;background:var(--sun-bg);color:var(--sun-fg);border-radius:999px;padding:3px 14px;font-weight:600;margin-top:8px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:20}
+
+/* profile */
+.prof{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px}
+.panel h2{font:700 21px var(--display);margin:0 0 12px}
+.avatar{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;font-size:58px;margin:0 auto;background:var(--lilac-bg)}
+.avs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.avs button{border:1px solid var(--line);background:var(--raise);border-radius:12px;font-size:21px;width:42px;height:42px;cursor:pointer}
+.avs button[aria-pressed="true"]{border-color:var(--accent);background:var(--rose-bg)}
+.namein{width:100%;text-align:center;font:700 22px var(--display);border:2px solid var(--line);border-radius:14px;padding:6px;background:var(--raise)}
+.plant{text-align:center;margin-top:16px;padding:14px;border-radius:18px;background:var(--mint-bg);color:var(--mint-fg)}
+.plant .p{font-size:44px}
+.plant b{font:800 20px var(--display);display:block;color:var(--ink)}
+.xp{height:10px;border-radius:999px;background:var(--surface);overflow:hidden;margin-top:8px}
+.xp i{display:block;height:100%;background:var(--mint-fg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stat{border-radius:20px;padding:14px 16px}
+.stat b{font:800 34px/1 var(--display);display:block}
+.stat span{color:var(--muted);font-size:14px}
+.skill{display:grid;grid-template-columns:120px 1fr 60px;gap:12px;align-items:center;margin-bottom:10px}
+.skill .t{height:14px;border-radius:999px;background:var(--raise);overflow:hidden}
+.skill .t i{display:block;height:100%;border-radius:999px;background:var(--tfg)}
+.skill small{color:var(--muted);text-align:right}
+.week{display:flex;gap:8px}
+.week div{flex:1;text-align:center;font-size:13px;color:var(--muted)}
+.week i{display:block;height:34px;border-radius:12px;background:var(--raise);margin-bottom:4px}
+.week i.on{background:linear-gradient(140deg,var(--accent-2),var(--accent))}
+.hist{list-style:none;padding:0;margin:0}
+.hist li{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.hist li svg{width:30px;height:30px;flex:none}
+.hist .l{flex:1}
+.hist small{color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:16px}
+footer{max-width:1320px;margin:0 auto;padding:0 20px 24px;color:var(--muted);font-size:13px}
+
+@media (max-width:1000px){.bento{grid-template-columns:repeat(3,minmax(0,1fr))}.gpage{grid-template-columns:1fr;height:auto}.play{min-height:calc(100dvh - var(--nav-h) - 32px)}.side{overflow:visible}}
+@media (max-width:760px){.hero,.prof,.ready{grid-template-columns:1fr}.tabs .tl{display:none}.tabs{margin-left:4px}.me span.nmx{display:none}.streak{display:none}}
+@media (max-width:560px){.bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:130px}.tile.big{grid-column:span 2}.stats{grid-template-columns:1fr 1fr}.skill{grid-template-columns:90px 1fr 50px}}
+/* phones: bottom tab bar for thumbs, compact chrome, game fills the screen */
+@media (max-width:640px){
+  :root{--nav-h:56px}
+  .nav{backdrop-filter:none;background:var(--surface)}
+  .nav-in{padding:0 12px;gap:8px}
+  .logo{font-size:19px}.logo svg{width:30px;height:30px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:9;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around}
+  .tab{flex-direction:column;gap:2px;font-size:12px;padding:6px 18px;min-width:72px}
+  .tab svg{width:22px;height:22px}
+  .tabs .tl{display:inline}
+  .me{padding:3px}.me .av{width:34px;height:34px}
+  main{padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  .page{padding:12px 12px 20px}
+  .hero{gap:10px;margin-bottom:12px}
+  .hcard{padding:16px;border-radius:18px}
+  .neurons{width:140px;opacity:.35}
+  .daily{gap:8px}
+  .dpick{font-size:13px}
+  .gh h2{font-size:22px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:4px;scrollbar-width:none}
+  .chip{flex:none;padding:8px 14px}
+  .bento{gap:10px}
+  .tile{border-radius:18px;padding:14px}
+  .tile.big{padding:18px}.tile.big .nm{font-size:28px}
+  .tile .nm{font-size:18px}
+  .gpage{padding:10px 12px;gap:12px}
+  .play{min-height:calc(100dvh - var(--nav-h) - 92px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));border-radius:20px}
+  .phead{padding:10px 12px;gap:10px}.phead h1{font-size:21px}.phead small{display:none}
+  .phead .gi{width:40px;height:40px}.phead .gi svg{width:28px;height:28px}
+  .pstage{padding:14px 12px;justify-content:flex-start}
+  .ready{gap:14px}.ready h2{font-size:34px}.ready p{margin-bottom:14px}
+  .demo{min-height:190px;order:-1}.demo .scene{min-height:120px}.mk{font-size:32px}
+  .kbd{display:none}
+  .go{width:100%;padding:14px 20px}
+  .row .ghost{width:100%}
+  .big{font-size:clamp(46px,15vw,76px);margin:8px 0 14px}
+  .mid{font-size:28px}
+  .field{font-size:28px}
+  .react{height:44vh}
+  .colorbtns{grid-template-columns:repeat(2,1fr)}
+  .colorbtns button{padding:18px 8px}
+  .grid{gap:8px}
+  .result h2{font-size:28px}
+  .sbox{border-radius:18px;padding:14px 16px}
+  .stats{gap:8px}.stat b{font-size:26px}
+  footer{padding:0 12px 16px}
+  .cheer{top:8px;font-size:22px}
+}
+@media (max-width:380px){.logo{font-size:0;gap:0}.tab{min-width:0;padding:6px 10px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="app">
+  <header class="nav"><div class="nav-in" id="nav"></div></header>
+  <main id="app"></main>
+</div>
+<script>
+/* ================= categories & layout ================= */
+const CATS={
+  Calm:{t:'mint',d:'Gentle games to slow down'},
+  Speed:{t:'peach',d:'Quick thinking'},
+  Words:{t:'rose',d:'Language and word finding'},
+  Memory:{t:'lilac',d:'Hold and update information'},
+  Focus:{t:'sky',d:'Attention and self-control'},
+  Body:{t:'sun',d:'Hand–brain connection'}
+};
+const fg=c=>`var(--${CATS[c].t}-fg)`, tbg=c=>`var(--${CATS[c].t}-bg)`;
+const SIZE={math:'big',breath:'wide',pairs:'tall',words:'wide',digits:'tall',nback:'wide',schulte:'tall',hand:'wide'};
+const AV=['🦉','🐼','🦊','🐢','🐬','🌻','🐝','🌙','⭐','🍀'];
+const AFFIRM=['Small reps, every day. That’s how a mind grows.','Mistakes are just your brain finding the edges.','You don’t have to be fast today. Just be here.','Curiosity is a superpower. Use it on something small.','Rest is part of training, not a break from it.','Every new thing you try leaves a little trail in your brain.','Progress you can’t see yet is still progress.'];
+const LEVELS=[['🌱','Seed'],['🌿','Sprout'],['🪴','Young plant'],['🌼','In bloom'],['🌳','Strong tree'],['🌲','Evergreen'],['🏞️','Whole garden']];
+const NI={
+ home:'<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>',
+ games:'<rect x="4" y="4" width="7" height="9" rx="2"/><rect x="13" y="4" width="7" height="5" rx="2"/><rect x="4" y="15" width="7" height="5" rx="2"/><rect x="13" y="11" width="7" height="9" rx="2"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+ auto:'<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>',
+ back:'<path d="M15 5l-7 7 7 7"/>',
+ flame:'<path d="M12 3c1 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3-1-5 1-8z"/>'
+};
+const ni=(k,c='currentColor')=>`<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${NI[k]}</svg>`;
+const BRAIN=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8c-3-4-10-3-11 2-5 0-7 5-5 8-3 3-2 8 2 9-1 5 4 8 8 7 1 4 6 5 6 1z" fill="var(--rose-bg)" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 8c3-4 10-3 11 2 5 0 7 5 5 8 3 3 2 8-2 9 1 5-4 8-8 7-1 4-6 5-6 1z" fill="var(--lilac-bg)" stroke="var(--accent-2)" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 8v27M16 18c2 1 4 0 5-2M31 18c-2 1-4 0-5-2M15 27c2-1 4 0 5 2M33 27c-2-1-4 0-5 2" stroke="var(--ink)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".55"/></svg>`;
+const NEURONS=`<svg class="neurons" viewBox="0 0 240 160" aria-hidden="true"><g stroke="var(--accent-2)" stroke-width="1.5" fill="none" opacity=".7"><path d="M30 40 90 70 150 30 210 80M90 70 120 130 190 120 210 80M150 30 190 120"/></g><g fill="var(--accent)"><circle cx="30" cy="40" r="6"/><circle cx="90" cy="70" r="8"/><circle cx="150" cy="30" r="5"/><circle cx="210" cy="80" r="7"/><circle cx="120" cy="130" r="5"/><circle cx="190" cy="120" r="6"/></g></svg>`;
+
+/* ================= storage ================= */
+function load(){try{return JSON.parse(localStorage.getItem('bgarden')||'{}');}catch(e){return {};}}
+function save(){try{localStorage.setItem('bgarden',JSON.stringify(S));}catch(e){}}
+const S=Object.assign({name:'',av:'🦉',best:{},hist:[],days:[],xp:0,theme:'auto'},load());
+const todayKey=(d=new Date())=>d.toISOString().slice(0,10);
+function streak(){const set=new Set(S.days);let n=0;const d=new Date();if(!set.has(todayKey(d)))d.setDate(d.getDate()-1);while(set.has(todayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function level(){const i=Math.min(LEVELS.length-1,Math.floor(S.xp/120));return {i,emo:LEVELS[i][0],name:LEVELS[i][1],pct:i===LEVELS.length-1?100:(S.xp%120)/120*100};}
+function bandIndex(g,score){let k=0;g.bands.forEach((b,i)=>{if(g.lower?score<=b.at:score>=b.at)k=i;});return k;}
+function applyTheme(){const r=document.documentElement;if(S.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);}
+
+/* ================= helpers ================= */
+const app=document.getElementById('app');
+const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function h(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+function hh(tag,cls,html){const e=h(tag,cls);e.innerHTML=html;return e;}
+let active=[];
+const later=(fn,ms)=>{const t=setTimeout(fn,ms);active.push(()=>clearTimeout(t));};
+const every=(fn,ms)=>{const t=setInterval(fn,ms);active.push(()=>clearInterval(t));};
+const onKey=fn=>{document.addEventListener('keydown',fn);active.push(()=>document.removeEventListener('keydown',fn));};
+function stopAll(){active.forEach(f=>f());active=[];}
+function seeded(seed){let s=seed;return()=>{s=(s*9301+49297)%233280;return s/233280;};}
+const dayNum=()=>Math.floor(Date.now()/864e5);
+function todaysFive(){const r=seeded(dayNum());const out=[];while(out.length<5){const g=GAMES[Math.floor(r()*GAMES.length)];if(!out.includes(g))out.push(g);}return out;}
+const playedToday=id=>S.hist.some(x=>x.id===id&&x.d===todayKey());
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let stageEl=null;
+function cheer(t){if(!stageEl)return;const c=h('div','cheer',t);stageEl.append(c);setTimeout(()=>c.remove(),1100);}
+const PRAISE=['Nice!','Great!','On a roll!','Lovely','Smooth','Keep going','Yes!','Brain on fire 🔥'];
+function countdown(sec,wrap,onEnd){const bar=h('div','bar');const fill=h('i');bar.append(fill);wrap.prepend(bar);const end=Date.now()+sec*1000;let done=false;
+  every(()=>{if(done)return;const left=Math.max(0,end-Date.now());fill.style.width=(left/(sec*1000)*100)+'%';if(left<=0){done=true;onEnd();}},100);}
+function hud(stage,left){const d=h('div','hud');const l=h('span',null,left||'');const r=h('span',null,'Score 0');d.append(l,r);stage.append(d);return {l,r,set:n=>r.textContent='Score '+n};}
+function tint(el,cat){el.style.setProperty('--tbg',tbg(cat));el.style.setProperty('--tfg',fg(cat));}
+
+/* ================= navbar (same everywhere) ================= */
+function renderNav(cur){
+  const nav=document.getElementById('nav');nav.innerHTML='';
+  const logo=hh('button','logo',BRAIN+'Brain Garden');logo.setAttribute('aria-label','Brain Garden home');logo.onclick=()=>go('');
+  const tabs=h('nav','tabs');tabs.setAttribute('aria-label','Main');
+  [['home','Home',''],['games','Games','games'],['user','Profile','profile']].forEach(([k,l,hash])=>{const b=hh('button','tab',ni(k)+`<span class="tl">${l}</span>`);b.setAttribute('aria-label',l);if(cur===hash)b.setAttribute('aria-current','page');b.onclick=()=>go(hash);tabs.append(b);});
+  const r=h('div','nav-r');
+  r.append(hh('span','streak',`${ni('flame')}`.replace('<svg','<svg width="18" height="18"')+streak()));
+  const th=hh('button','iconbtn',ni(S.theme==='dark'?'moon':S.theme==='light'?'sun':'auto'));
+  th.setAttribute('aria-label','Theme: '+S.theme+'. Click to change');th.title='Theme: '+S.theme;
+  th.onclick=()=>{S.theme=S.theme==='auto'?'light':S.theme==='light'?'dark':'auto';save();applyTheme();renderNav(cur);};
+  const lv=level();const me=hh('button','me',`<span class="av">${S.av}</span><span class="nmx">${S.name||'Profile'} · ${lv.emo}</span>`);me.setAttribute('aria-label','Open your profile');me.onclick=()=>go('profile');
+  r.append(th,me);nav.append(logo,tabs,r);
+}
+function go(hash){if(location.hash.slice(1)===hash)route();else location.hash=hash;}
+
+/* ================= routing ================= */
+function route(){stopAll();stageEl=null;const id=location.hash.slice(1);const g=GAMES.find(x=>x.id===id);
+  if(g){renderNav('games');renderGame(g);}else if(id==='profile'){renderNav('profile');renderProfile();}else{renderNav(id==='games'?'games':'');renderHome(id==='games');}window.scrollTo(0,0);}
+window.addEventListener('hashchange',route);
+
+/* ================= home ================= */
+function renderHome(scrollToGames){
+  document.title='Brain Garden — relax and sharpen your mind';app.innerHTML='';const page=h('div','page');
+  const hr=new Date().getHours();const part=hr<5?'Still awake':hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  const hero=h('section','hero');
+  const hc=h('div','hcard');hc.insertAdjacentHTML('beforeend',NEURONS);
+  hc.append(h('h1',null,`${part}${S.name?', '+S.name:''}`),h('p','aff',AFFIRM[dayNum()%AFFIRM.length]));
+  const five=todaysFive();const doneN=five.filter(g=>playedToday(g.id)).length;
+  const daily=h('div','daily');daily.append(h('span','lbl',doneN===5?'Today’s five: all done 🌸':`Today’s five · ${doneN}/5`));
+  five.forEach(g=>{const b=hh('button','dpick'+(playedToday(g.id)?' done':''),icon(g.id,fg(g.cat))+`<span>${g.name}</span>`);b.onclick=()=>go(g.id);daily.append(b);});
+  hc.append(daily);
+  const mood=h('div','hcard mood');mood.append(h('h2',null,'How’s your brain feeling?'));
+  const ms=h('div','moods');const out=h('p',null,'Pick one and we’ll suggest games.');
+  [['😌','Calm',['breath','pairs','odd'],'Keep the peace:'],['😴','Tired',['breath','sequence','category'],'Go easy:'],['😤','Stressed',['breath','odd','hand'],'Breathe first:'],['⚡','Energised',['reaction','math','stroop'],'Use that spark:']].forEach(([e,l,ids,msg])=>{
+    const b=hh('button',null,`<b>${e}</b>${l}`);b.setAttribute('aria-pressed','false');
+    b.onclick=()=>{ms.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');out.innerHTML='';out.append(msg+' ');
+      ids.forEach(id=>{const g=GAMES.find(x=>x.id===id);const a=h('a',null,g.name);a.href='#'+id;out.append(a);});};ms.append(b);});
+  mood.append(ms,out);hero.append(hc,mood);page.append(hero);
+
+  const gh=h('div','gh');gh.id='games';gh.append(h('h2',null,'Pick a game'));
+  const chips=h('div','chips');const bento=h('div','bento');
+  const draw=f=>{bento.innerHTML='';GAMES.filter(g=>f==='All'||g.cat===f).forEach(g=>bento.append(tileFor(g,f==='All'?SIZE[g.id]:(g.id==='math'?'wide':''))));};
+  ['All',...Object.keys(CATS)].forEach(c=>{const b=h('button','chip',c);b.setAttribute('aria-pressed',String(c==='All'));b.onclick=()=>{chips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));draw(c);};chips.append(b);});
+  gh.append(chips);page.append(gh,bento);draw('All');
+  app.append(page);
+  app.append(h('footer',null,'Scores live only in this browser. Brain games are great for focus and fun; sleep, movement and learning new skills do the heavy lifting for long-term brain health.'));
+  if(scrollToGames)later(()=>gh.scrollIntoView({behavior:reduced?'auto':'smooth'}),50);
+}
+function tileFor(g,size){
+  const b=h('button','tile'+(size?' '+size:''));tint(b,g.cat);b.setAttribute('aria-label',`${g.name}: ${g.blurb}`);
+  const best=S.best[g.id];
+  b.insertAdjacentHTML('beforeend',`<svg class="ghost-ic" viewBox="0 0 48 48" style="color:${fg(g.cat)}" aria-hidden="true">${I[g.id]}</svg>`);
+  const r1=h('div','row1');r1.append(hh('span','ic',icon(g.id,fg(g.cat))),h('span','lv',g.lvl));b.append(r1);
+  b.append(h('span','nm',g.name),h('span','bl',g.blurb),h('span','bst',best!=null?`Best ${best} ${g.unit} · ${g.bands[bandIndex(g,best)].l}`:`${g.cat} · not played yet`));
+  if(size==='big')b.append(h('span','play','Play now'));
+  b.onclick=()=>go(g.id);return b;
+}
+
+/* ================= game page ================= */
+let side=null;
+function renderGame(g){
+  document.title=g.name+' — Brain Garden';app.innerHTML='';
+  const wrap=h('div','gpage');tint(wrap,g.cat);
+  const play=h('section','play');stageEl=play;
+  const head=h('div','phead');const back=hh('button','iconbtn',ni('back'));back.setAttribute('aria-label','Back to games');back.onclick=()=>go('games');
+  const best=S.best[g.id];
+  head.append(back,hh('span','gi',icon(g.id,fg(g.cat))),hh('div',null,`<h1>${g.name}</h1><small>${g.cat} · ${g.lvl} · trains ${g.trains.toLowerCase()}</small>`),hh('div','pb',`<b id="pbv">${best!=null?best:'—'}</b>your best`));
+  const stage=h('div','pstage');play.append(head,stage);
+  side=h('aside','side');
+  wrap.append(play,side);app.append(wrap);
+  renderSide(g,best!=null?bandIndex(g,best):-1);
+  showReady(g,stage);
+}
+function renderSide(g,here){
+  side.innerHTML='';
+  const a=h('div','sbox');a.append(hh('h2',null,'<i></i>How to play'));const ol=h('ol','steps');g.steps.forEach(s=>ol.append(h('li',null,s)));a.append(ol);
+  const b=h('div','sbox');b.append(hh('h2',null,'<i></i>What your score means'));const bd=h('div','bands');
+  g.bands.forEach((x,i)=>bd.append(hh('div',i===here?'here':'',`<span>${x.l}</span><span>${x.r}</span>`)));b.append(bd);
+  b.append(h('p','sci',here>=0?(g.lower?'Lower is better. ':'')+'Highlighted: where your best score sits.':(g.lower?'Lower is better.':'Play once to see where you land.')));b.querySelector('.sci').style.marginTop='8px';
+  const c=h('div','sbox');c.append(hh('h2',null,'<i></i>The science'),hh('p','sci',`${g.science}<br><br><b>Tip:</b> ${g.tip}`));
+  side.append(a,b,c);
+}
+function showReady(g,stage){
+  stopAll();stage.innerHTML='';const d=h('div');const rd=h('div','ready');
+  const L=h('div');L.append(h('h2',null,'Ready?'),h('p',null,g.blurb+'. Watch the demo, then jump in.'));
+  const btn=h('button','go','Start ▸');btn.onclick=()=>startGame(g,stage);L.append(btn,hh('div','kbd','or press <kbd>Enter</kbd>'));
+  const R=h('div','demo');R.append(hh('div','lab','<span>Quick demo</span><span>auto-plays</span>'));const scene=h('div','scene');const cap=h('div','cap');const dots=h('div','dots');
+  g.demo.forEach(()=>dots.append(h('i')));R.append(scene,cap,dots);
+  rd.append(L,R);d.append(rd);stage.append(d);
+  let f=0;const show=()=>{scene.innerHTML=g.demo[f][0];cap.textContent=g.demo[f][1];[...dots.children].forEach((x,i)=>x.classList.toggle('on',i===f));f=(f+1)%g.demo.length;};
+  show();every(show,2200);onKey(e=>{if(e.key==='Enter'){e.preventDefault();startGame(g,stage);}});btn.focus();
+}
+function startGame(g,stage){stopAll();stage.innerHTML='';const st=h('div');stage.append(st);RUN[g.id](st,s=>finish(g,stage,s));}
+function finish(g,stage,score){
+  stopAll();
+  const prev=S.best[g.id];const isPB=prev==null||(g.lower?score<prev:score>prev);if(isPB)S.best[g.id]=score;
+  S.hist.unshift({id:g.id,s:score,d:todayKey(),t:Date.now()});S.hist=S.hist.slice(0,60);
+  if(!S.days.includes(todayKey()))S.days.push(todayKey());S.days=S.days.slice(-120);
+  S.xp+=10+(isPB&&prev!=null?5:0);save();renderNav('games');
+  const pbv=document.getElementById('pbv');if(pbv)pbv.textContent=S.best[g.id];
+  const k=bandIndex(g,score);const b=g.bands[k];renderSide(g,k);
+  stage.innerHTML='';const wrap=h('div');const r=h('div','result');
+  const emos=['🌱','🌿','🌼','🌟','🏆'];r.append(h('div','emo',emos[Math.min(4,Math.round(k/(g.bands.length-1||1)*4))]));
+  r.append(h('div','score',String(score)),h('div','unit',g.unit),h('h2',null,b.l),h('p',null,b.m));
+  if(isPB&&prev!=null){r.append(h('div','pbtag','New personal best! Up from '+prev));confetti();}
+  else if(prev==null)r.append(h('div','pbtag','First score planted 🌱'));
+  else r.append(h('p',null,`Your best is ${prev}. ${Math.abs(score-prev)<=(g.lower?2:1)?'So close!':'Every round still counts.'}`));
+  const row=h('div','row');const again=h('button','go','Play again');again.onclick=()=>startGame(g,stage);
+  const home=h('button','ghost','More games');home.onclick=()=>go('games');row.append(again,home);r.append(row);
+  wrap.append(r);stage.append(wrap);again.focus();
+  onKey(e=>{if(e.key==='Enter'&&document.activeElement===again){e.preventDefault();startGame(g,stage);}});
+}
+function confetti(){if(reduced)return;const cv=document.getElementById('confetti');const ctx=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;
+  const cs=getComputedStyle(document.documentElement);const cols=[cs.getPropertyValue('--accent'),cs.getPropertyValue('--accent-2'),'#F6C445','#5ED6A0','#8EC3FF'];
+  const P=[...Array(120)].map(()=>({x:innerWidth/3,y:innerHeight/3,vx:(Math.random()-.3)*14,vy:Math.random()*-12-2,c:pick(cols),s:ri(5,10),r:Math.random()*6}));
+  let n=0;(function f(){ctx.clearRect(0,0,cv.width,cv.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.r+=.1;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});if(++n<120)requestAnimationFrame(f);else ctx.clearRect(0,0,cv.width,cv.height);})();}
+
+/* ================= profile ================= */
+function renderProfile(){
+  document.title='Your profile — Brain Garden';app.innerHTML='';const page=h('div','page');
+  const p=h('section','prof');const L=h('div','panel');
+  const avatar=h('div','avatar',S.av);L.append(avatar);
+  const avs=h('div','avs');AV.forEach(a=>{const b=h('button',null,a);b.setAttribute('aria-pressed',String(a===S.av));b.setAttribute('aria-label','Choose '+a);b.onclick=()=>{S.av=a;save();avatar.textContent=a;avs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderNav('profile');};avs.append(b);});
+  const nm=h('input','namein');nm.placeholder='Your name';nm.value=S.name;nm.setAttribute('aria-label','Your name');nm.onchange=()=>{S.name=nm.value.trim().slice(0,24);save();renderNav('profile');};
+  L.append(avs,nm);
+  const lv=level();L.append(hh('div','plant',`<div class="p">${lv.emo}</div><b>${lv.name}</b><small>${S.xp} growth points · +10 every game</small><div class="xp"><i style="width:${lv.pct}%"></i></div>`));
+  const R=h('div');const stats=h('div','stats');
+  [['🔥 '+streak(),'day streak','peach'],[S.hist.length,'games played','lilac'],[Object.keys(S.best).length+' / '+GAMES.length,'games tried','mint']].forEach(([v,l,t])=>{const d=hh('div','stat',`<b>${v}</b><span>${l}</span>`);d.style.background=`var(--${t}-bg)`;stats.append(d);});
+  R.append(stats);
+  const wk=h('div','panel');wk.append(h('h2',null,'This week'));const w=h('div','week');
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const on=S.days.includes(todayKey(d));w.append(hh('div',null,`<i class="${on?'on':''}"></i>${d.toLocaleDateString(undefined,{weekday:'short'})}`));}
+  wk.append(w);R.append(wk);
+  const sk=h('div','panel');sk.style.marginTop='14px';sk.append(h('h2',null,'Your brain skills'));
+  Object.keys(CATS).forEach(cat=>{const gs=GAMES.filter(g=>g.cat===cat&&S.best[g.id]!=null);
+    const pct=gs.length?Math.round(gs.reduce((a,g)=>a+(bandIndex(g,S.best[g.id])+1)/g.bands.length,0)/gs.length*100):0;
+    const row=hh('div','skill',`<b>${cat}</b><div class="t"><i style="width:${pct}%"></i></div><small>${gs.length?pct+'%':'not yet'}</small>`);tint(row,cat);sk.append(row);});
+  R.append(sk);
+  const hi=h('div','panel');hi.style.marginTop='14px';hi.append(h('h2',null,'Recent games'));
+  if(!S.hist.length)hi.append(h('p','empty','No games yet. Your first one plants the seed 🌱'));
+  else{const ul=h('ul','hist');S.hist.slice(0,10).forEach(x=>{const g=GAMES.find(y=>y.id===x.id);if(!g)return;const b=g.bands[bandIndex(g,x.s)];
+    ul.append(hh('li',null,`${icon(g.id,fg(g.cat))}<span class="l"><b>${g.name}</b><br><small>${b.l}</small></span><span><b>${x.s}</b> <small>${g.unit}</small></span>`));});hi.append(ul);}
+  const reset=h('button','ghost','Reset all progress');reset.style.marginTop='14px';reset.onclick=()=>{if(confirm('Clear your profile and all scores in this browser?')){Object.assign(S,{name:'',av:'🦉',best:{},hist:[],days:[],xp:0});save();route();}};
+  hi.append(reset);R.append(hi);p.append(L,R);page.append(p);app.append(page);
+}
+const I={ // icons, 48x48, currentColor
+ breath:'<circle cx="24" cy="24" r="19" fill="currentColor" opacity=".18"/><circle cx="24" cy="24" r="12" fill="currentColor" opacity=".4"/><circle cx="24" cy="24" r="5" fill="currentColor"/>',
+ pairs:'<rect x="5" y="9" width="17" height="25" rx="4" fill="currentColor" opacity=".35" transform="rotate(-8 13 21)"/><rect x="24" y="12" width="17" height="25" rx="4" fill="currentColor"/><path d="M32.5 29c-4-2.6-5.5-4.4-5.5-6.3a2.8 2.8 0 0 1 5.5-.8 2.8 2.8 0 0 1 5.5.8c0 1.9-1.5 3.7-5.5 6.3z" fill="#fff"/>',
+ odd:'<g fill="currentColor" opacity=".35"><circle cx="12" cy="12" r="6"/><circle cx="24" cy="12" r="6"/><circle cx="36" cy="12" r="6"/><circle cx="12" cy="24" r="6"/><circle cx="36" cy="24" r="6"/><circle cx="12" cy="36" r="6"/><circle cx="24" cy="36" r="6"/><circle cx="36" cy="36" r="6"/></g><circle cx="24" cy="24" r="6.5" fill="currentColor"/>',
+ math:'<rect x="4" y="4" width="40" height="40" rx="12" fill="currentColor" opacity=".18"/><path d="M15 11v12M9 17h12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M28 28l9 9M37 28l-9 9" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="33" cy="15" r="3" fill="currentColor"/><circle cx="15" cy="33" r="3" fill="currentColor"/>',
+ serial7:'<circle cx="24" cy="24" r="20" fill="currentColor" opacity=".18"/><path d="M13 13h14l-9 22" stroke="currentColor" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 14v18m-5-5 5 5 5-5" stroke="currentColor" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+ reaction:'<circle cx="24" cy="24" r="20" fill="currentColor" opacity=".18"/><path d="M27 6 13 27h10l-3 15 15-22H25z" fill="currentColor"/>',
+ words:'<path d="M6 10a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H20l-9 9v-9h1a6 6 0 0 1-6-6z" fill="currentColor"/><text x="24" y="25" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="15" fill="#fff">Aa</text>',
+ category:'<rect x="6" y="6" width="36" height="10" rx="5" fill="currentColor"/><rect x="6" y="19" width="28" height="10" rx="5" fill="currentColor" opacity=".6"/><rect x="6" y="32" width="20" height="10" rx="5" fill="currentColor" opacity=".35"/>',
+ backward:'<rect x="4" y="8" width="40" height="32" rx="10" fill="currentColor" opacity=".18"/><path d="M34 30H16a6 6 0 0 1 0-12h18" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/><path d="m21 25 -5 5 5 5" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+ digits:'<rect x="3" y="10" width="42" height="28" rx="10" fill="currentColor"/><text x="24" y="30" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="16" fill="#fff">392</text>',
+ sequence:'<g fill="currentColor" opacity=".3"><rect x="5" y="5" width="17" height="17" rx="5"/><rect x="26" y="26" width="17" height="17" rx="5"/><rect x="5" y="26" width="17" height="17" rx="5"/></g><rect x="26" y="5" width="17" height="17" rx="5" fill="currentColor"/>',
+ nback:'<rect x="4" y="12" width="16" height="22" rx="4" fill="currentColor"/><rect x="16" y="12" width="16" height="22" rx="4" fill="currentColor" opacity=".35"/><rect x="28" y="12" width="16" height="22" rx="4" fill="currentColor"/><path d="M12 40c0 4 24 4 24 0" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>',
+ stroop:'<path d="M24 4c8 10 14 17 14 24a14 14 0 0 1-28 0c0-7 6-14 14-24z" fill="currentColor"/><path d="M17 28a7 7 0 0 0 7 7" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>',
+ schulte:'<rect x="4" y="4" width="40" height="40" rx="10" fill="currentColor" opacity=".18"/><circle cx="24" cy="24" r="9" stroke="currentColor" stroke-width="4" fill="none"/><circle cx="24" cy="24" r="3" fill="currentColor"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+ hand:'<path d="M14 26V12a3 3 0 0 1 6 0v10V8a3 3 0 0 1 6 0v14V10a3 3 0 0 1 6 0v14-8a3 3 0 0 1 6 0v14c0 8-6 14-13 14s-10-3-13-8l-5-8a3 3 0 0 1 5-3z" fill="currentColor"/>'
+};
+const icon=(k,c)=>`<svg viewBox="0 0 48 48" style="color:${c}" aria-hidden="true">${I[k]}</svg>`;
+
+/* Each game: bands from lowest to highest performance. "at" = minimum score (or maximum when lower is better). */
+const GAMES=[
+ {id:'breath',cat:'Calm',lvl:'Easy',name:'Box breathing',blurb:'Breathe with a growing circle for one minute.',trains:'Calm, focus and a slower heart rate',
+  steps:['Breathe in while the circle grows (4 seconds).','Hold gently (4 seconds).','Breathe out as it shrinks, then hold again.'],unit:'calm cycles',
+  demo:[['<div class="mk">🫁<small>Inhale… 1 2 3 4</small></div>','Breathe in as it grows'],['<div class="mk">⏸<small>Hold… 1 2 3 4</small></div>','Hold softly'],['<div class="mk">🌬️<small>Exhale… 1 2 3 4</small></div>','Let it all go']],
+  bands:[{at:0,r:'0–1',l:'A start',m:'Even one slow breath tells your nervous system it can relax.'},{at:2,r:'2–3',l:'Settling',m:'Nice. Your breathing is slowing down.'},{at:4,r:'4',l:'Fully calm',m:'A full minute of steady breathing. Lovely work.'}],
+  science:'Slow, paced breathing at about 4–6 breaths a minute is widely used to calm the stress response. Box breathing is a simple version of it.',tip:'Try this before a hard task or a meeting.'},
+ {id:'pairs',cat:'Calm',lvl:'Easy',name:'Memory pairs',blurb:'Flip cards and find matching pairs.',trains:'Visual memory, relaxed attention',lower:true,
+  steps:['Tap a card to flip it.','Tap another card. If they match, they stay open.','Find all 8 pairs in as few moves as you can.'],unit:'moves',
+  demo:[['<div class="mk">🟩 🟩<small>Tap a card</small></div>','Flip one card'],['<div class="mk">🌻 🟩<small>Remember where it is</small></div>','Remember what you saw'],['<div class="mk">🌻 🌻<small>Match!</small></div>','Find its twin']],
+  bands:[{at:Infinity,r:'27+',l:'Exploring',m:'You found them all. Next time, try to remember each card you flip.'},{at:26,r:'19–26',l:'Steady',m:'A relaxed, solid game.'},{at:18,r:'13–18',l:'Good memory',m:'You’re remembering positions well.'},{at:12,r:'9–12',l:'Excellent',m:'Very few wasted moves. Great spatial memory.'},{at:8,r:'8',l:'Perfect',m:'Not a single wasted move.'}],
+  science:'8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Garden guide, not a clinical norm.',tip:'Say what you see out loud in your head, “sun, top left”. Naming helps memory.'},
+ {id:'odd',cat:'Calm',lvl:'Easy',name:'Odd colour out',blurb:'Spot the one tile with a slightly different shade.',trains:'Visual perception and calm focus',
+  steps:['A grid of same-coloured tiles appears.','One tile is a tiny bit lighter or darker. Tap it.','Grids get bigger and shades get closer. 60 seconds.'],unit:'levels',
+  demo:[['<div class="mk">🟦🟦<br>🟦🟦<small>Look closely</small></div>','Which one is different?'],['<div class="mk">🟦🟦<br>🟦<span style="opacity:.6">🟦</span><small>That one!</small></div>','Tap the odd tile'],['<div class="mk">➕<small>Bigger grid, closer shades</small></div>','It gets trickier']],
+  bands:[{at:0,r:'0–7',l:'Warming up',m:'Your eyes are tuning in. Relax your gaze instead of hunting tile by tile.'},{at:8,r:'8–14',l:'Good eye',m:'Nice colour sense.'},{at:15,r:'15–21',l:'Sharp eye',m:'You’re spotting very small differences.'},{at:22,r:'22+',l:'Eagle eye',m:'That’s exceptional colour perception.'}],
+  science:'Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.',tip:'Let your eyes soften and look at the whole grid. The odd tile often “pops”.'},
+ {id:'math',cat:'Speed',lvl:'Medium',name:'Mental math',blurb:'Sums that get harder the faster you go.',trains:'Processing speed and working memory',
+  steps:['A sum appears, like 23 + 18.','Type the answer. It moves on the moment you’re right.','Every 5 correct answers, sums get harder. 60 seconds.'],unit:'solved',
+  demo:[['<div class="mk">23 + 18</div>','A sum appears'],['<div class="mk">23 + 18<small>you type: 41</small></div>','Type the answer'],['<div class="mk ok">✓ 41<small>next one comes instantly</small></div>','Next sum, straight away']],
+  bands:[{at:0,r:'0–5',l:'Warming up',m:'Your brain is switching gears. Scores usually jump after 2–3 tries.'},{at:6,r:'6–10',l:'Steady',m:'About one answer every 6–10 seconds, including some harder sums. That’s a normal, healthy pace for someone not doing arithmetic daily.'},{at:11,r:'11–16',l:'Sharp',m:'Quicker than most casual players. Your arithmetic is well practised.'},{at:17,r:'17–24',l:'Quick',m:'Under 4 seconds per answer while sums get harder. Impressive.'},{at:25,r:'25+',l:'Lightning',m:'Calculator-level speed.'}],
+  science:'There’s no standard clinical norm for this exact game, so these bands are a Brain Garden guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.',tip:'Break sums apart: 47 + 38 is 47 + 40 − 2.'},
+ {id:'serial7',cat:'Speed',lvl:'Medium',name:'Serial sevens',blurb:'Count down by 7 from a random number.',trains:'Working memory and concentration',
+  steps:['You get a start number, like 143.','Type the number 7 less (136) and press Enter.','Keep going from your answer. 60 seconds.'],unit:'steps',
+  demo:[['<div class="mk">143</div>','A start number'],['<div class="mk">143 → 136<small>press Enter</small></div>','Subtract 7'],['<div class="mk">136 → 129</div>','Keep going']],
+  bands:[{at:0,r:'0–5',l:'Warming up',m:'Holding a number while subtracting is genuinely hard. It gets easier fast.'},{at:6,r:'6–10',l:'Steady',m:'A calm, accurate pace.'},{at:11,r:'11–16',l:'Sharp',m:'Strong concentration.'},{at:17,r:'17+',l:'Excellent',m:'Very fast and fluent.'}],
+  science:'Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.',tip:'Subtract 10, then add 3. Many people find it easier.'},
+ {id:'reaction',cat:'Speed',lvl:'Easy',name:'Reaction time',blurb:'Tap the moment the box turns green.',trains:'Alertness and reflexes',lower:true,
+  steps:['Wait while the box is calm.','Tap as soon as it turns green.','5 rounds. Tapping too early restarts the round.'],unit:'ms average',
+  demo:[['<div class="mk">⏳<small>wait…</small></div>','Wait patiently'],['<div class="mk" style="color:#2E9E5B">🟢<small>GO!</small></div>','It turns green'],['<div class="mk">👆 248 ms</div>','Tap fast!']],
+  bands:[{at:Infinity,r:'400+',l:'Sleepy day',m:'Usually tiredness or a slow device, not you.'},{at:400,r:'300–400',l:'Relaxed',m:'Common when tired or winding down.'},{at:300,r:'250–300',l:'Average',m:'Right where most people land.'},{at:250,r:'200–250',l:'Fast',m:'Quicker than most people.'},{at:200,r:'under 200',l:'Very fast',m:'Gamer and athlete territory.'}],
+  science:'Online tests put the median human visual reaction at roughly 250–280 ms. Your screen and mouse add a little delay, so compare on the same device.',tip:'Sleep and a short walk improve reaction time more than practice does.'},
+ {id:'words',cat:'Words',lvl:'Medium',name:'Word sprint',blurb:'As many words as you can from one letter.',trains:'Verbal fluency and word retrieval',
+  steps:['You get a letter, like S.','Type a word starting with it and press Enter.','3+ letters, no repeats. 60 seconds.'],unit:'words',
+  demo:[['<div class="mk">Letter: S</div>','You get a letter'],['<div class="mk">sun ⏎<small>sand ⏎ smile ⏎</small></div>','Type and press Enter'],['<div class="mk ok">3 words!</div>','Each word is a point']],
+  bands:[{at:0,r:'0–5',l:'Warming up',m:'Tricky letters slow everyone down.'},{at:6,r:'6–9',l:'Steady',m:'A good typed score.'},{at:10,r:'10–13',l:'Fluent',m:'Strong word retrieval.'},{at:14,r:'14–18',l:'Very fluent',m:'You’re matching what people say out loud in clinical tests, while typing.'},{at:19,r:'19+',l:'Wordsmith',m:'Outstanding.'}],
+  science:'In the standard spoken letter-fluency test (F, A, S), adults average around 14–15 words per letter per minute. Typing is slower than speaking, so typed scores run lower.',tip:'Think in themes: s-foods, s-animals, s-verbs.'},
+ {id:'category',cat:'Words',lvl:'Easy',name:'Category challenge',blurb:'Name things in a category before time runs out.',trains:'Memory search and verbal fluency',
+  steps:['You get a category, like Fruits.','Type an item and press Enter.','No repeats. 60 seconds.'],unit:'items',
+  demo:[['<div class="mk">Fruits</div>','You get a category'],['<div class="mk">mango ⏎<small>apple ⏎ lychee ⏎</small></div>','Type items'],['<div class="mk ok">+1 +1 +1</div>','Each item scores']],
+  bands:[{at:0,r:'0–7',l:'Warming up',m:'Some categories are much harder than others.'},{at:8,r:'8–12',l:'Steady',m:'A good typed score.'},{at:13,r:'13–17',l:'Fluent',m:'Strong memory search.'},{at:18,r:'18+',l:'Encyclopaedia',m:'Excellent.'}],
+  science:'In spoken “name animals in 60 seconds” tests, younger adults usually say about 20. Typing slows things, so 13+ typed is very good.',tip:'Use sub-groups: farm animals, then sea animals, then birds.'},
+ {id:'backward',cat:'Words',lvl:'Medium',name:'Backward spelling',blurb:'See a word, then spell it in reverse.',trains:'Working memory and mental imagery',
+  steps:['A word shows for a few seconds.','It disappears.','Type it backwards and press Enter. 8 rounds.'],unit:'out of 8',
+  demo:[['<div class="mk">PLANT</div>','Memorise the word'],['<div class="mk">• • •</div>','It hides'],['<div class="mk ok">tnalp ✓</div>','Type it backwards']],
+  bands:[{at:0,r:'0–3',l:'Warming up',m:'Long words are tough. Picture the word written in front of you.'},{at:4,r:'4–5',l:'Steady',m:'Solid working memory.'},{at:6,r:'6–7',l:'Sharp',m:'Strong mental imagery.'},{at:8,r:'8',l:'Perfect',m:'Flawless.'}],
+  science:'Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.',tip:'Split long words: “ele-phant” → reverse each half, then swap.'},
+ {id:'digits',cat:'Memory',lvl:'Medium',name:'Digit span',blurb:'Remember a growing string of numbers.',trains:'Short-term memory and attention',
+  steps:['Digits flash one at a time.','Type the whole string and press Enter.','Each success adds a digit. 2 misses ends.'],unit:'digits',
+  demo:[['<div class="mk">7 … 2 … 9</div>','Watch the digits'],['<div class="mk">729 ⏎</div>','Type them in order'],['<div class="mk ok">✓ now 4 digits</div>','It grows by one']],
+  bands:[{at:0,r:'1–4',l:'Warming up',m:'Distractions hit this test hard. Try a quiet moment.'},{at:5,r:'5–6',l:'Typical',m:'Right around the adult average.'},{at:7,r:'7–8',l:'Strong',m:'Above average short-term memory.'},{at:9,r:'9+',l:'Exceptional',m:'You’re probably chunking. Great strategy.'}],
+  science:'The classic figure is 7 ± 2 digits. A large community sample averaged about 6.5 digits forward. With chunking practice, people have reached spans of 20+.',tip:'Chunk like a phone number: 729-48 is easier than 7-2-9-4-8.'},
+ {id:'sequence',cat:'Memory',lvl:'Easy',name:'Sequence memory',blurb:'Repeat the pattern of lit squares.',trains:'Visual-spatial memory',
+  steps:['Watch squares light up one by one.','Tap them in the same order.','The pattern grows by one each level.'],unit:'levels',
+  demo:[['<div class="mk">⬜🟪<br>⬜⬜</div>','Watch it light up'],['<div class="mk">⬜⬜<br>🟪⬜</div>','Remember the order'],['<div class="mk">👆👆<small>tap the same order</small></div>','Repeat it']],
+  bands:[{at:0,r:'0–4',l:'Warming up',m:'Spatial memory warms up quickly.'},{at:5,r:'5–7',l:'Typical',m:'Visual spans usually sit 1–2 below number spans.'},{at:8,r:'8–10',l:'Strong',m:'Very good spatial memory.'},{at:11,r:'11+',l:'Exceptional',m:'Outstanding.'}],
+  science:'Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.',tip:'Trace the path as a shape: “L-shape, then corner.”'},
+ {id:'nback',cat:'Memory',lvl:'Hard',name:'2-back',blurb:'Spot a letter that matches the one two steps ago.',trains:'Working memory updating',
+  steps:['Letters appear one by one.','If a letter matches the one 2 steps back, tap Match.','Otherwise do nothing. 24 letters.'],unit:'% accuracy',
+  demo:[['<div class="mk">K</div>','Letter 1'],['<div class="mk">K → B</div>','Letter 2'],['<div class="mk ok">K → B → K<small>Match!</small></div>','Same as 2 back → tap']],
+  bands:[{at:0,r:'under 60',l:'Learning',m:'2-back is honestly hard. Everyone starts here.'},{at:60,r:'60–74',l:'Getting it',m:'You’re keeping track.'},{at:75,r:'75–89',l:'Strong',m:'Solid working memory.'},{at:90,r:'90+',l:'Excellent',m:'Very sharp.'}],
+  science:'N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.',tip:'Whisper the last two letters to yourself on each step.'},
+ {id:'stroop',cat:'Focus',lvl:'Medium',name:'Stroop colours',blurb:'Pick the ink colour, not the word.',trains:'Self-control and focus',
+  steps:['A colour word appears in a different ink.','Tap the INK colour, not the word.','Wrong taps cost a point. 45 seconds.'],unit:'points',
+  demo:[['<div class="mk" style="color:#2F80E8">RED</div>','The word says red…'],['<div class="mk" style="color:#2F80E8">RED<small>…but the ink is blue</small></div>','Look at the ink'],['<div class="mk ok">Blue ✓</div>','Tap Blue']],
+  bands:[{at:0,r:'0–15',l:'Warming up',m:'Your reading brain is strong. It’s hard to ignore words.'},{at:16,r:'16–25',l:'Steady',m:'Good control.'},{at:26,r:'26–35',l:'Focused',m:'Strong attention control.'},{at:36,r:'36+',l:'Laser',m:'Excellent.'}],
+  science:'The Stroop effect: reading is so automatic that naming ink colour is slower when the word conflicts. It’s a classic test of attention control.',tip:'Blur your eyes slightly so the word is harder to read.'},
+ {id:'schulte',cat:'Focus',lvl:'Easy',name:'Schulte table',blurb:'Find 1 to 25 in a scrambled grid.',trains:'Visual search and peripheral vision',lower:true,
+  steps:['A 5×5 grid of numbers appears.','Tap 1, then 2, then 3… up to 25.','Keep your eyes near the centre.'],unit:'seconds',
+  demo:[['<div class="mk">7 1 18<br>4 12 9</div>','Numbers are mixed'],['<div class="mk">👆 1 → 2 → 3</div>','Tap them in order'],['<div class="mk ok">25 ✓ 28.4 s</div>','Beat your time']],
+  bands:[{at:Infinity,r:'45+ s',l:'Warming up',m:'Take your time. Speed comes naturally.'},{at:45,r:'30–45 s',l:'Steady',m:'A relaxed, normal pace.'},{at:30,r:'20–30 s',l:'Good',m:'Around a moderate adult score.'},{at:20,r:'12–20 s',l:'Sharp',m:'Fast visual search.'},{at:12,r:'under 12 s',l:'Excellent',m:'Elite-level scanning.'}],
+  science:'Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.',tip:'Look at the centre and let numbers find you in your side vision.'},
+ {id:'hand',cat:'Body',lvl:'Easy',name:'Other hand day',blurb:'Today’s tasks to do with your other hand.',trains:'New motor pathways and patience',
+  steps:['Read today’s 4 tasks.','Do them with your non-dominant hand during the day.','Tick them off, and try writing your name on the pad.'],unit:'out of 4',
+  demo:[['<div class="mk">🪥<small>brush with the other hand</small></div>','A daily task'],['<div class="mk">✍️<small>write on the pad</small></div>','Try the pad'],['<div class="mk ok">☑ ☑ ☑ ☐</div>','Tick when done']],
+  bands:[{at:0,r:'0–1',l:'Started',m:'Even trying is training. It feels clumsy because it’s new.'},{at:2,r:'2–3',l:'Good effort',m:'Your brain is building new pathways.'},{at:4,r:'4',l:'All done',m:'A full day of novelty. Brilliant.'}],
+  science:'Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.',tip:'Start with low-stakes tasks like scrolling your phone.'}
+];
+/* ================= games ================= */
+const RUN={};
+
+RUN.breath=(st,end)=>{
+  const b=h('div','breath');const o=h('i');const i2=h('i','b2');const t=h('span','','Get ready');b.append(o,i2,t);
+  const info=h('p','note','4 rounds · about 1 minute');st.append(b,info);
+  const phases=[['Breathe in',1],['Hold',1],['Breathe out',.45],['Hold',.45]];let cycles=0,step=0;
+  function run(){if(step===16){end(4);return;}const [label,scale]=phases[step%4];o.style.transform=`scale(${scale})`;i2.style.transform=`scale(${scale})`;
+    let n=4;t.innerHTML=`${label}<br>${n}`;for(let k=1;k<4;k++)later(()=>{t.innerHTML=`${label}<br>${4-k}`;},k*1000);
+    later(()=>{step++;if(step%4===0){cycles++;info.textContent=`${cycles} of 4 rounds · ${cycles<4?'beautiful':'done'}`;}run();},4000);}
+  const stop=h('button','ghost','Finish early');stop.onclick=()=>end(cycles);const row=h('div','row');row.append(stop);st.append(row);
+  later(run,1200);
+};
+
+RUN.pairs=(st,end)=>{
+  const E=shuffle(['🌻','🐝','🍀','🌙','🐢','🍓','🦋','⭐']).slice(0,8);const deck=shuffle([...E,...E]);
+  const H=hud(st,'Find all 8 pairs');H.r.textContent='Moves 0';const grid=h('div','grid');grid.style.gridTemplateColumns='repeat(4,1fr)';grid.style.maxWidth='440px';
+  let open=[],moves=0,found=0,lock=false;
+  deck.forEach((e,i)=>{const c=h('button','card');c.setAttribute('aria-label','Card');c.onclick=()=>{if(lock||c.classList.contains('up'))return;
+    c.classList.add('up');c.innerHTML=`<span>${e}</span>`;open.push([c,e]);
+    if(open.length===2){moves++;H.r.textContent='Moves '+moves;const [[a,x],[b,y]]=open;open=[];
+      if(x===y){a.classList.add('got');b.classList.add('got');found++;cheer(pick(PRAISE));if(found===8)later(()=>end(moves),700);}
+      else{lock=true;later(()=>{a.classList.remove('up');b.classList.remove('up');a.innerHTML='';b.innerHTML='';lock=false;},800);}}};grid.append(c);});
+  st.append(grid);
+};
+
+RUN.odd=(st,end)=>{
+  const H=hud(st,'Tap the different tile');let lvl=0;const grid=h('div','grid');grid.style.maxWidth='420px';st.append(grid);
+  function next(){const n=Math.min(7,2+Math.floor(lvl/3));const hue=ri(0,359),sat=ri(45,70),li=ri(45,62);const d=Math.max(3,22-lvl*.8)*(Math.random()<.5?1:-1);
+    grid.innerHTML='';grid.style.gridTemplateColumns=`repeat(${n},1fr)`;const odd=ri(0,n*n-1);
+    for(let i=0;i<n*n;i++){const c=h('button','cell');c.setAttribute('aria-label','Tile');c.style.background=`hsl(${hue} ${sat}% ${i===odd?li+d:li}%)`;
+      c.onclick=()=>{if(i===odd){lvl++;H.set(lvl);if(lvl%4===0)cheer(pick(PRAISE));next();}else{c.style.outline='3px solid var(--bad)';}};grid.append(c);}}
+  next();countdown(60,st,()=>end(lvl));
+};
+
+RUN.math=(st,end)=>{
+  const H=hud(st,'Type the answer');let n=0,cur;const q=h('div','big');const inp=h('input','field');inp.inputMode='numeric';inp.autocomplete='off';inp.setAttribute('aria-label','Answer');
+  st.append(q,inp);
+  function next(){const lvl=Math.min(3,Math.floor(n/5));const op=pick(lvl?['+','−','×']:['+','−']);let a,b;
+    if(op==='×'){a=ri(2,9+lvl*3);b=ri(2,9+lvl);}else{a=ri(10*(lvl+1),60*(lvl+1));b=ri(4,40*(lvl+1));if(op==='−'&&b>a)[a,b]=[b,a];}
+    cur=op==='+'?a+b:op==='−'?a-b:a*b;q.textContent=`${a} ${op} ${b}`;inp.value='';}
+  inp.oninput=()=>{if(inp.value.trim()!==''&&+inp.value===cur){n++;H.set(n);if(n%5===0)cheer(n===5?'Level up!':pick(PRAISE));next();}};
+  next();inp.focus();countdown(60,st,()=>end(n));
+};
+
+RUN.serial7=(st,end)=>{
+  const H=hud(st,'Subtract 7 each time');let cur=ri(100,200),n=0;const q=h('div','big',String(cur));const inp=h('input','field');inp.inputMode='numeric';inp.autocomplete='off';inp.setAttribute('aria-label','Next number');
+  const fb=h('p','note','Press Enter after each number');st.append(q,inp,fb);
+  inp.onkeydown=e=>{if(e.key!=='Enter'||inp.value.trim()==='')return;const want=cur-7;
+    if(+inp.value===want){n++;H.set(n);fb.className='note ok';fb.textContent='Correct';if(n%4===0)cheer(pick(PRAISE));}
+    else{fb.className='note';fb.textContent=`It was ${want}. No worries, carry on from there.`;}
+    cur=want;if(cur<7){cur=ri(100,200);fb.textContent+=' Fresh start number!';}q.textContent=String(cur);inp.value='';};
+  inp.focus();countdown(60,st,()=>end(n));
+};
+
+RUN.reaction=(st,end)=>{
+  const times=[];const info=h('p','note','Round 1 of 5');const pad=h('div','react','Wait for green…');pad.tabIndex=0;st.append(pad,info);let goAt=0,waiting=true;
+  function arm(){waiting=true;pad.className='react';pad.textContent='Wait for green…';goAt=0;later(()=>{pad.className='react go2';pad.textContent='Tap!';goAt=performance.now();},ri(1200,3800));}
+  function hit(){if(!waiting)return;if(!goAt){stopAll();onKey(key);pad.textContent='A little early! Let’s try that round again.';waiting=false;later(arm,1100);return;}
+    const ms=Math.round(performance.now()-goAt);times.push(ms);waiting=false;pad.className='react';pad.textContent=ms+' ms '+(ms<250?'⚡':'👍');
+    if(times.length===5)later(()=>end(Math.round(times.reduce((a,b)=>a+b)/5)),900);else{info.textContent=`Round ${times.length+1} of 5`;later(arm,1000);}}
+  const key=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();hit();}};
+  pad.onpointerdown=hit;onKey(key);arm();
+};
+
+function listGame(st,end,title,check){
+  const H=hud(st,'Press Enter after each one');const seen=new Set();const q=h('div','mid',title);const inp=h('input','field');inp.autocomplete='off';inp.autocapitalize='off';inp.setAttribute('aria-label','Your answer');
+  const fb=h('p','note','');const list=h('div','list');st.append(q,inp,fb,list);
+  inp.onkeydown=e=>{if(e.key!=='Enter')return;const w=inp.value.trim().toLowerCase();inp.value='';if(!w)return;
+    const err=check(w)||(seen.has(w)?'You already have that one':null);if(err){fb.className='note';fb.textContent=err;return;}
+    seen.add(w);H.set(seen.size);fb.className='note ok';fb.textContent='Added';list.prepend(h('span',null,w));if(seen.size%5===0)cheer(pick(PRAISE));};
+  inp.focus();countdown(60,st,()=>end(seen.size));
+}
+RUN.words=(st,end)=>{const L=pick('ABCDEFGHLMNPRSTW'.split(''));listGame(st,end,'Words starting with '+L,w=>!/^[a-z'-]+$/.test(w)?'Letters only, please':w.length<3?'Try 3 letters or more':w[0]!==L.toLowerCase()?'That one needs to start with '+L:null);};
+RUN.category=(st,end)=>{const C=pick(['Fruits','Countries','Animals','Things in a kitchen','Jobs','Sports','Vegetables','Cities','Things that are round','Musical instruments','Things in an office','Foods you love','Things that fly','Colours','Flowers','Things at the beach']);listGame(st,end,C,w=>w.length<2?'A little longer, please':null);};
+
+RUN.backward=(st,end)=>{
+  const pools=[['cat','sun','book','tree','fish','lamp'],['plant','house','river','stone','chair','bread'],['garden','pencil','bridge','silver','market','rocket'],['blanket','kitchen','captain','library','diamond','machine'],['umbrella','hospital','elephant','sunshine','computer','mountain']];
+  let round=0,score=0,word;const H=hud(st,'Round 1 of 8');const q=h('div','big');const inp=h('input','field');inp.autocomplete='off';inp.autocapitalize='off';inp.setAttribute('aria-label','Word spelled backwards');
+  const fb=h('p','note','');st.append(q,inp,fb);
+  function next(){if(round===8){end(score);return;}H.l.textContent=`Round ${round+1} of 8`;word=pick(pools[Math.min(4,Math.floor(round*5/8))]);
+    q.textContent=word.toUpperCase();inp.value='';inp.disabled=true;fb.className='note';fb.textContent='Memorise it';
+    later(()=>{q.textContent='• • •';inp.disabled=false;inp.focus();fb.textContent='Now type it backwards';},1800+word.length*220);}
+  inp.onkeydown=e=>{if(e.key!=='Enter'||inp.disabled)return;const want=word.split('').reverse().join('');
+    if(inp.value.trim().toLowerCase()===want){score++;H.set(score);fb.className='note ok';fb.textContent='Correct: '+want;cheer(pick(PRAISE));}else{fb.className='note';fb.textContent='It was '+want+'. Next one!';}
+    inp.disabled=true;round++;later(next,1200);};
+  next();
+};
+
+RUN.digits=(st,end)=>{
+  let len=3,strikes=0,best=0,seq='';const H=hud(st,'Length 3');const q=h('div','big');const inp=h('input','field');inp.inputMode='numeric';inp.autocomplete='off';inp.setAttribute('aria-label','Digits');
+  const fb=h('p','note','');st.append(q,inp,fb);
+  function play(){H.l.textContent='Length '+len;seq='';for(let i=0;i<len;i++)seq+=ri(0,9);inp.value='';inp.disabled=true;fb.className='note';fb.textContent='Watch…';q.textContent='';
+    [...seq].forEach((d,i)=>{later(()=>q.textContent=d,i*900);later(()=>q.textContent='',i*900+650);});
+    later(()=>{q.textContent='?';inp.disabled=false;inp.focus();fb.textContent='Type all '+len+' digits';},len*900+200);}
+  inp.onkeydown=e=>{if(e.key!=='Enter'||inp.disabled)return;inp.disabled=true;
+    if(inp.value.replace(/\D/g,'')===seq){best=len;H.set(best);len++;strikes=0;fb.className='note ok';fb.textContent='Correct! One more digit.';cheer(pick(PRAISE));later(play,1000);}
+    else{strikes++;fb.className='note';fb.textContent='It was '+seq+(strikes<2?'. One more try at this length.':'');if(strikes>=2)later(()=>end(best),1500);else later(play,1700);}};
+  play();
+};
+
+RUN.sequence=(st,end)=>{
+  const H=hud(st,'Level 1');const grid=h('div','grid');grid.style.gridTemplateColumns='repeat(3,1fr)';const cells=[];
+  for(let i=0;i<9;i++){const c=h('button','cell');c.setAttribute('aria-label','Square '+(i+1));cells.push(c);grid.append(c);}
+  const fb=h('p','note','');st.append(grid,fb);const seq=[];let pos=0,input=false;
+  function level(){seq.push(ri(0,8));pos=0;input=false;H.l.textContent='Level '+seq.length;fb.textContent='Watch…';
+    seq.forEach((k,i)=>{later(()=>cells[k].classList.add('on'),i*650+500);later(()=>cells[k].classList.remove('on'),i*650+950);});
+    later(()=>{input=true;fb.textContent='Your turn';},seq.length*650+550);}
+  cells.forEach((c,i)=>c.onclick=()=>{if(!input)return;c.classList.add('on');setTimeout(()=>c.classList.remove('on'),180);
+    if(i===seq[pos]){pos++;if(pos===seq.length){input=false;H.set(seq.length);if(seq.length%3===0)cheer(pick(PRAISE));later(level,700);}}
+    else{input=false;c.classList.add('miss');fb.textContent='Nice run!';later(()=>end(seq.length-1),1000);}});
+  level();
+};
+
+RUN.nback=(st,end)=>{
+  const N=24,letters='BCDFGHJKL'.split('');const seq=[];
+  for(let i=0;i<N;i++){if(i>=2&&Math.random()<.3)seq.push(seq[i-2]);else{let l;do{l=pick(letters);}while(i>=2&&l===seq[i-2]);seq.push(l);}}
+  const H=hud(st,'Letter 1 of '+N);const q=h('div','big');const btn=h('button','go','Match');const row=h('div','row');row.append(btn);
+  const fb=h('p','note','Tap Match (or Space) when it’s the same as 2 letters ago');st.append(q,row,fb);
+  const pressed=new Array(N).fill(false);let i=-1,hits=0;
+  function press(){if(i<2||pressed[i])return;pressed[i]=true;if(seq[i]===seq[i-2]){fb.className='note ok';fb.textContent='Match!';hits++;H.set(hits);}else{fb.className='note';fb.textContent='Not this time';}}
+  btn.onclick=press;onKey(e=>{if(e.key===' '){e.preventDefault();press();}});
+  function step(){i++;if(i===N){let ok=0;for(let k=2;k<N;k++)if((seq[k]===seq[k-2])===pressed[k])ok++;end(Math.round(ok/(N-2)*100));return;}
+    H.l.textContent=`Letter ${i+1} of ${N}`;q.textContent='';later(()=>{q.textContent=seq[i];fb.className='note';fb.textContent='';},250);later(step,2400);}
+  step();
+};
+
+RUN.stroop=(st,end)=>{
+  const C=[{n:'Red',v:'#E04848'},{n:'Blue',v:'#2F80E8'},{n:'Green',v:'#2E9E5B'},{n:'Yellow',v:'#E8A800'}];
+  const H=hud(st,'Tap the ink colour');let s=0,streakN=0,ink;const q=h('div','big');const btns=h('div','colorbtns');
+  C.forEach(c=>{const b=h('button',null,c.n);b.style.background=c.v;b.onclick=()=>{if(c===ink){s++;streakN++;if(streakN%8===0)cheer(pick(PRAISE));}else{s--;streakN=0;}H.set(s);next();};btns.append(b);});
+  st.append(q,btns);
+  function next(){const w=pick(C);do{ink=pick(C);}while(ink===w);q.textContent=w.n.toUpperCase();q.style.color=ink.v;}
+  next();countdown(45,st,()=>end(Math.max(0,s)));
+};
+
+RUN.schulte=(st,end)=>{
+  const H=hud(st,'Find 1');const grid=h('div','grid');grid.style.gridTemplateColumns='repeat(5,1fr)';grid.style.maxWidth='460px';let want=1;const t0=performance.now();
+  shuffle([...Array(25)].map((_,i)=>i+1)).forEach(n=>{const c=h('button','cell',String(n));c.onclick=()=>{
+    if(n===want){c.classList.add('done');want++;if(want===13)cheer('Halfway!');H.l.textContent=want<=25?'Find '+want:'Done';
+      if(want>25)later(()=>end(+((performance.now()-t0)/1000).toFixed(1)),400);}else{c.classList.add('miss');setTimeout(()=>c.classList.remove('miss'),250);}};grid.append(c);});
+  st.append(grid);every(()=>{if(want<=25)H.r.textContent=((performance.now()-t0)/1000).toFixed(1)+' s';},100);
+};
+
+RUN.hand=(st,end)=>{
+  const all=['Brush your teeth','Write your name and today’s date on paper','Scroll your phone for 5 minutes','Eat one meal with a spoon','Comb your hair','Use the computer mouse for 10 minutes','Open every door you pass today','Pour a glass of water','Draw a house, a tree and a sun','Type a short message','Stir your tea or coffee','Carry your bag'];
+  const r=seeded(dayNum()*7+3);const tasks=all.slice().sort(()=>r()-.5).slice(0,4);
+  const list=h('ul','tasks');tasks.forEach(t=>{const li=h('li');const lab=h('label');const cb=h('input');cb.type='checkbox';cb.onchange=()=>{if(cb.checked)cheer(pick(PRAISE));};lab.append(cb,h('span',null,t));li.append(lab);list.append(li);});
+  const cv=h('canvas','pad');const note=h('p','note','Write your name here with your other hand');
+  const row=h('div','row');const clr=h('button','ghost','Clear pad');const done=h('button','go','Finish');row.append(clr,done);st.append(list,cv,note,row);
+  const ctx=cv.getContext('2d');function size(){const rc=cv.getBoundingClientRect();cv.width=rc.width*devicePixelRatio;cv.height=rc.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();}
+  size();let drawing=false;
+  cv.onpointerdown=e=>{drawing=true;cv.setPointerCapture(e.pointerId);ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);};
+  cv.onpointermove=e=>{if(!drawing)return;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();};
+  cv.onpointerup=()=>drawing=false;clr.onclick=size;
+  done.onclick=()=>end(list.querySelectorAll('input:checked').length);
+};
+
+applyTheme();
+route();
+</script>
+</body>
+</html>

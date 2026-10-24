@@ -1,0 +1,71 @@
+{
+  "id": "words",
+  "order": 7,
+  "component": "WordSprint",
+  "name": "Word sprint",
+  "category": "Words",
+  "level": "Medium",
+  "size": "wide",
+  "blurb": "As many words as you can from one letter.",
+  "trains": "Verbal fluency and word retrieval",
+  "durationSec": 60,
+  "unit": "words",
+  "lowerIsBetter": false,
+  "steps": [
+    "You get a letter, like S.",
+    "Type a word starting with it and press Enter.",
+    "3+ letters, no repeats. 60 seconds."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">Letter: S</div>",
+      "caption": "You get a letter"
+    },
+    {
+      "scene": "<div class=\"mk\">sun ⏎<small>sand ⏎ smile ⏎</small></div>",
+      "caption": "Type and press Enter"
+    },
+    {
+      "scene": "<div class=\"mk ok\">3 words!</div>",
+      "caption": "Each word is a point"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–5",
+      "label": "Warming up",
+      "message": "Tricky letters slow everyone down."
+    },
+    {
+      "at": 6,
+      "range": "6–9",
+      "label": "Steady",
+      "message": "A good typed score."
+    },
+    {
+      "at": 10,
+      "range": "10–13",
+      "label": "Fluent",
+      "message": "Strong word retrieval."
+    },
+    {
+      "at": 14,
+      "range": "14–18",
+      "label": "Very fluent",
+      "message": "You’re matching what people say out loud in clinical tests, while typing."
+    },
+    {
+      "at": 19,
+      "range": "19+",
+      "label": "Wordsmith",
+      "message": "Outstanding."
+    }
+  ],
+  "science": "In the standard spoken letter-fluency test (F, A, S), adults average around 14–15 words per letter per minute. Typing is slower than speaking, so typed scores run lower.",
+  "tip": "Think in themes: s-foods, s-animals, s-verbs.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<path d=\"M6 10a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H20l-9 9v-9h1a6 6 0 0 1-6-6z\" fill=\"currentColor\"/><text x=\"24\" y=\"25\" text-anchor=\"middle\" font-family=\"Fredoka,sans-serif\" font-weight=\"700\" font-size=\"15\" fill=\"#fff\">Aa</text>"
+  }
+}

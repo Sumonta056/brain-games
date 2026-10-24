@@ -1,0 +1,65 @@
+{
+  "id": "nback",
+  "order": 12,
+  "component": "TwoBack",
+  "name": "2-back",
+  "category": "Memory",
+  "level": "Hard",
+  "size": "wide",
+  "blurb": "Spot a letter that matches the one two steps ago.",
+  "trains": "Working memory updating",
+  "durationSec": null,
+  "unit": "% accuracy",
+  "lowerIsBetter": false,
+  "steps": [
+    "Letters appear one by one.",
+    "If a letter matches the one 2 steps back, tap Match.",
+    "Otherwise do nothing. 24 letters."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">K</div>",
+      "caption": "Letter 1"
+    },
+    {
+      "scene": "<div class=\"mk\">K → B</div>",
+      "caption": "Letter 2"
+    },
+    {
+      "scene": "<div class=\"mk ok\">K → B → K<small>Match!</small></div>",
+      "caption": "Same as 2 back → tap"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "under 60",
+      "label": "Learning",
+      "message": "2-back is honestly hard. Everyone starts here."
+    },
+    {
+      "at": 60,
+      "range": "60–74",
+      "label": "Getting it",
+      "message": "You’re keeping track."
+    },
+    {
+      "at": 75,
+      "range": "75–89",
+      "label": "Strong",
+      "message": "Solid working memory."
+    },
+    {
+      "at": 90,
+      "range": "90+",
+      "label": "Excellent",
+      "message": "Very sharp."
+    }
+  ],
+  "science": "N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.",
+  "tip": "Whisper the last two letters to yourself on each step.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<rect x=\"4\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\"/><rect x=\"16\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\" opacity=\".35\"/><rect x=\"28\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\"/><path d=\"M12 40c0 4 24 4 24 0\" stroke=\"currentColor\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+  }
+}

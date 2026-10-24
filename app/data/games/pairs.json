@@ -1,0 +1,71 @@
+{
+  "id": "pairs",
+  "order": 2,
+  "component": "MemoryPairs",
+  "name": "Memory pairs",
+  "category": "Calm",
+  "level": "Easy",
+  "size": "tall",
+  "blurb": "Flip cards and find matching pairs.",
+  "trains": "Visual memory, relaxed attention",
+  "durationSec": null,
+  "unit": "moves",
+  "lowerIsBetter": true,
+  "steps": [
+    "Tap a card to flip it.",
+    "Tap another card. If they match, they stay open.",
+    "Find all 8 pairs in as few moves as you can."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">🟩 🟩<small>Tap a card</small></div>",
+      "caption": "Flip one card"
+    },
+    {
+      "scene": "<div class=\"mk\">🌻 🟩<small>Remember where it is</small></div>",
+      "caption": "Remember what you saw"
+    },
+    {
+      "scene": "<div class=\"mk\">🌻 🌻<small>Match!</small></div>",
+      "caption": "Find its twin"
+    }
+  ],
+  "bands": [
+    {
+      "at": null,
+      "range": "27+",
+      "label": "Exploring",
+      "message": "You found them all. Next time, try to remember each card you flip."
+    },
+    {
+      "at": 26,
+      "range": "19–26",
+      "label": "Steady",
+      "message": "A relaxed, solid game."
+    },
+    {
+      "at": 18,
+      "range": "13–18",
+      "label": "Good memory",
+      "message": "You’re remembering positions well."
+    },
+    {
+      "at": 12,
+      "range": "9–12",
+      "label": "Excellent",
+      "message": "Very few wasted moves. Great spatial memory."
+    },
+    {
+      "at": 8,
+      "range": "8",
+      "label": "Perfect",
+      "message": "Not a single wasted move."
+    }
+  ],
+  "science": "8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Garden guide, not a clinical norm.",
+  "tip": "Say what you see out loud in your head, “sun, top left”. Naming helps memory.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<rect x=\"5\" y=\"9\" width=\"17\" height=\"25\" rx=\"4\" fill=\"currentColor\" opacity=\".35\" transform=\"rotate(-8 13 21)\"/><rect x=\"24\" y=\"12\" width=\"17\" height=\"25\" rx=\"4\" fill=\"currentColor\"/><path d=\"M32.5 29c-4-2.6-5.5-4.4-5.5-6.3a2.8 2.8 0 0 1 5.5-.8 2.8 2.8 0 0 1 5.5.8c0 1.9-1.5 3.7-5.5 6.3z\" fill=\"#fff\"/>"
+  }
+}

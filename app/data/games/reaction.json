@@ -1,0 +1,71 @@
+{
+  "id": "reaction",
+  "order": 6,
+  "component": "ReactionTime",
+  "name": "Reaction time",
+  "category": "Speed",
+  "level": "Easy",
+  "size": "normal",
+  "blurb": "Tap the moment the box turns green.",
+  "trains": "Alertness and reflexes",
+  "durationSec": null,
+  "unit": "ms average",
+  "lowerIsBetter": true,
+  "steps": [
+    "Wait while the box is calm.",
+    "Tap as soon as it turns green.",
+    "5 rounds. Tapping too early restarts the round."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">⏳<small>wait…</small></div>",
+      "caption": "Wait patiently"
+    },
+    {
+      "scene": "<div class=\"mk\" style=\"color:#2E9E5B\">🟢<small>GO!</small></div>",
+      "caption": "It turns green"
+    },
+    {
+      "scene": "<div class=\"mk\">👆 248 ms</div>",
+      "caption": "Tap fast!"
+    }
+  ],
+  "bands": [
+    {
+      "at": null,
+      "range": "400+",
+      "label": "Sleepy day",
+      "message": "Usually tiredness or a slow device, not you."
+    },
+    {
+      "at": 400,
+      "range": "300–400",
+      "label": "Relaxed",
+      "message": "Common when tired or winding down."
+    },
+    {
+      "at": 300,
+      "range": "250–300",
+      "label": "Average",
+      "message": "Right where most people land."
+    },
+    {
+      "at": 250,
+      "range": "200–250",
+      "label": "Fast",
+      "message": "Quicker than most people."
+    },
+    {
+      "at": 200,
+      "range": "under 200",
+      "label": "Very fast",
+      "message": "Gamer and athlete territory."
+    }
+  ],
+  "science": "Online tests put the median human visual reaction at roughly 250–280 ms. Your screen and mouse add a little delay, so compare on the same device.",
+  "tip": "Sleep and a short walk improve reaction time more than practice does.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M27 6 13 27h10l-3 15 15-22H25z\" fill=\"currentColor\"/>"
+  }
+}

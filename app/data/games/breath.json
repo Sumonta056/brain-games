@@ -1,0 +1,59 @@
+{
+  "id": "breath",
+  "order": 1,
+  "component": "BoxBreathing",
+  "name": "Box breathing",
+  "category": "Calm",
+  "level": "Easy",
+  "size": "wide",
+  "blurb": "Breathe with a growing circle for one minute.",
+  "trains": "Calm, focus and a slower heart rate",
+  "durationSec": null,
+  "unit": "calm cycles",
+  "lowerIsBetter": false,
+  "steps": [
+    "Breathe in while the circle grows (4 seconds).",
+    "Hold gently (4 seconds).",
+    "Breathe out as it shrinks, then hold again."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">🫁<small>Inhale… 1 2 3 4</small></div>",
+      "caption": "Breathe in as it grows"
+    },
+    {
+      "scene": "<div class=\"mk\">⏸<small>Hold… 1 2 3 4</small></div>",
+      "caption": "Hold softly"
+    },
+    {
+      "scene": "<div class=\"mk\">🌬️<small>Exhale… 1 2 3 4</small></div>",
+      "caption": "Let it all go"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–1",
+      "label": "A start",
+      "message": "Even one slow breath tells your nervous system it can relax."
+    },
+    {
+      "at": 2,
+      "range": "2–3",
+      "label": "Settling",
+      "message": "Nice. Your breathing is slowing down."
+    },
+    {
+      "at": 4,
+      "range": "4",
+      "label": "Fully calm",
+      "message": "A full minute of steady breathing. Lovely work."
+    }
+  ],
+  "science": "Slow, paced breathing at about 4–6 breaths a minute is widely used to calm the stress response. Box breathing is a simple version of it.",
+  "tip": "Try this before a hard task or a meeting.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"12\" fill=\"currentColor\" opacity=\".4\"/><circle cx=\"24\" cy=\"24\" r=\"5\" fill=\"currentColor\"/>"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "serial7",
+  "order": 5,
+  "component": "SerialSevens",
+  "name": "Serial sevens",
+  "category": "Speed",
+  "level": "Medium",
+  "size": "normal",
+  "blurb": "Count down by 7 from a random number.",
+  "trains": "Working memory and concentration",
+  "durationSec": 60,
+  "unit": "steps",
+  "lowerIsBetter": false,
+  "steps": [
+    "You get a start number, like 143.",
+    "Type the number 7 less (136) and press Enter.",
+    "Keep going from your answer. 60 seconds."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">143</div>",
+      "caption": "A start number"
+    },
+    {
+      "scene": "<div class=\"mk\">143 → 136<small>press Enter</small></div>",
+      "caption": "Subtract 7"
+    },
+    {
+      "scene": "<div class=\"mk\">136 → 129</div>",
+      "caption": "Keep going"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–5",
+      "label": "Warming up",
+      "message": "Holding a number while subtracting is genuinely hard. It gets easier fast."
+    },
+    {
+      "at": 6,
+      "range": "6–10",
+      "label": "Steady",
+      "message": "A calm, accurate pace."
+    },
+    {
+      "at": 11,
+      "range": "11–16",
+      "label": "Sharp",
+      "message": "Strong concentration."
+    },
+    {
+      "at": 17,
+      "range": "17+",
+      "label": "Excellent",
+      "message": "Very fast and fluent."
+    }
+  ],
+  "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.",
+  "tip": "Subtract 10, then add 3. Many people find it easier.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M13 13h14l-9 22\" stroke=\"currentColor\" stroke-width=\"4.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M35 14v18m-5-5 5 5 5-5\" stroke=\"currentColor\" stroke-width=\"3.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+  }
+}

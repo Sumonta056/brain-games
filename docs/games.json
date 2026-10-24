@@ -1,0 +1,983 @@
+[
+  {
+    "id": "breath",
+    "order": 1,
+    "component": "BoxBreathing",
+    "name": "Box breathing",
+    "category": "Calm",
+    "level": "Easy",
+    "size": "wide",
+    "blurb": "Breathe with a growing circle for one minute.",
+    "trains": "Calm, focus and a slower heart rate",
+    "durationSec": null,
+    "unit": "calm cycles",
+    "lowerIsBetter": false,
+    "steps": [
+      "Breathe in while the circle grows (4 seconds).",
+      "Hold gently (4 seconds).",
+      "Breathe out as it shrinks, then hold again."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">🫁<small>Inhale… 1 2 3 4</small></div>",
+        "caption": "Breathe in as it grows"
+      },
+      {
+        "scene": "<div class=\"mk\">⏸<small>Hold… 1 2 3 4</small></div>",
+        "caption": "Hold softly"
+      },
+      {
+        "scene": "<div class=\"mk\">🌬️<small>Exhale… 1 2 3 4</small></div>",
+        "caption": "Let it all go"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–1",
+        "label": "A start",
+        "message": "Even one slow breath tells your nervous system it can relax."
+      },
+      {
+        "at": 2,
+        "range": "2–3",
+        "label": "Settling",
+        "message": "Nice. Your breathing is slowing down."
+      },
+      {
+        "at": 4,
+        "range": "4",
+        "label": "Fully calm",
+        "message": "A full minute of steady breathing. Lovely work."
+      }
+    ],
+    "science": "Slow, paced breathing at about 4–6 breaths a minute is widely used to calm the stress response. Box breathing is a simple version of it.",
+    "tip": "Try this before a hard task or a meeting.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"12\" fill=\"currentColor\" opacity=\".4\"/><circle cx=\"24\" cy=\"24\" r=\"5\" fill=\"currentColor\"/>"
+    }
+  },
+  {
+    "id": "pairs",
+    "order": 2,
+    "component": "MemoryPairs",
+    "name": "Memory pairs",
+    "category": "Calm",
+    "level": "Easy",
+    "size": "tall",
+    "blurb": "Flip cards and find matching pairs.",
+    "trains": "Visual memory, relaxed attention",
+    "durationSec": null,
+    "unit": "moves",
+    "lowerIsBetter": true,
+    "steps": [
+      "Tap a card to flip it.",
+      "Tap another card. If they match, they stay open.",
+      "Find all 8 pairs in as few moves as you can."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">🟩 🟩<small>Tap a card</small></div>",
+        "caption": "Flip one card"
+      },
+      {
+        "scene": "<div class=\"mk\">🌻 🟩<small>Remember where it is</small></div>",
+        "caption": "Remember what you saw"
+      },
+      {
+        "scene": "<div class=\"mk\">🌻 🌻<small>Match!</small></div>",
+        "caption": "Find its twin"
+      }
+    ],
+    "bands": [
+      {
+        "at": null,
+        "range": "27+",
+        "label": "Exploring",
+        "message": "You found them all. Next time, try to remember each card you flip."
+      },
+      {
+        "at": 26,
+        "range": "19–26",
+        "label": "Steady",
+        "message": "A relaxed, solid game."
+      },
+      {
+        "at": 18,
+        "range": "13–18",
+        "label": "Good memory",
+        "message": "You’re remembering positions well."
+      },
+      {
+        "at": 12,
+        "range": "9–12",
+        "label": "Excellent",
+        "message": "Very few wasted moves. Great spatial memory."
+      },
+      {
+        "at": 8,
+        "range": "8",
+        "label": "Perfect",
+        "message": "Not a single wasted move."
+      }
+    ],
+    "science": "8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Garden guide, not a clinical norm.",
+    "tip": "Say what you see out loud in your head, “sun, top left”. Naming helps memory.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"5\" y=\"9\" width=\"17\" height=\"25\" rx=\"4\" fill=\"currentColor\" opacity=\".35\" transform=\"rotate(-8 13 21)\"/><rect x=\"24\" y=\"12\" width=\"17\" height=\"25\" rx=\"4\" fill=\"currentColor\"/><path d=\"M32.5 29c-4-2.6-5.5-4.4-5.5-6.3a2.8 2.8 0 0 1 5.5-.8 2.8 2.8 0 0 1 5.5.8c0 1.9-1.5 3.7-5.5 6.3z\" fill=\"#fff\"/>"
+    }
+  },
+  {
+    "id": "odd",
+    "order": 3,
+    "component": "OddColour",
+    "name": "Odd colour out",
+    "category": "Calm",
+    "level": "Easy",
+    "size": "normal",
+    "blurb": "Spot the one tile with a slightly different shade.",
+    "trains": "Visual perception and calm focus",
+    "durationSec": 60,
+    "unit": "levels",
+    "lowerIsBetter": false,
+    "steps": [
+      "A grid of same-coloured tiles appears.",
+      "One tile is a tiny bit lighter or darker. Tap it.",
+      "Grids get bigger and shades get closer. 60 seconds."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">🟦🟦<br>🟦🟦<small>Look closely</small></div>",
+        "caption": "Which one is different?"
+      },
+      {
+        "scene": "<div class=\"mk\">🟦🟦<br>🟦<span style=\"opacity:.6\">🟦</span><small>That one!</small></div>",
+        "caption": "Tap the odd tile"
+      },
+      {
+        "scene": "<div class=\"mk\">➕<small>Bigger grid, closer shades</small></div>",
+        "caption": "It gets trickier"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–7",
+        "label": "Warming up",
+        "message": "Your eyes are tuning in. Relax your gaze instead of hunting tile by tile."
+      },
+      {
+        "at": 8,
+        "range": "8–14",
+        "label": "Good eye",
+        "message": "Nice colour sense."
+      },
+      {
+        "at": 15,
+        "range": "15–21",
+        "label": "Sharp eye",
+        "message": "You’re spotting very small differences."
+      },
+      {
+        "at": 22,
+        "range": "22+",
+        "label": "Eagle eye",
+        "message": "That’s exceptional colour perception."
+      }
+    ],
+    "science": "Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.",
+    "tip": "Let your eyes soften and look at the whole grid. The odd tile often “pops”.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<g fill=\"currentColor\" opacity=\".35\"><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"24\" cy=\"12\" r=\"6\"/><circle cx=\"36\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"24\" r=\"6\"/><circle cx=\"36\" cy=\"24\" r=\"6\"/><circle cx=\"12\" cy=\"36\" r=\"6\"/><circle cx=\"24\" cy=\"36\" r=\"6\"/><circle cx=\"36\" cy=\"36\" r=\"6\"/></g><circle cx=\"24\" cy=\"24\" r=\"6.5\" fill=\"currentColor\"/>"
+    }
+  },
+  {
+    "id": "math",
+    "order": 4,
+    "component": "MentalMath",
+    "name": "Mental math",
+    "category": "Speed",
+    "level": "Medium",
+    "size": "big",
+    "blurb": "Sums that get harder the faster you go.",
+    "trains": "Processing speed and working memory",
+    "durationSec": 60,
+    "unit": "solved",
+    "lowerIsBetter": false,
+    "steps": [
+      "A sum appears, like 23 + 18.",
+      "Type the answer. It moves on the moment you’re right.",
+      "Every 5 correct answers, sums get harder. 60 seconds."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">23 + 18</div>",
+        "caption": "A sum appears"
+      },
+      {
+        "scene": "<div class=\"mk\">23 + 18<small>you type: 41</small></div>",
+        "caption": "Type the answer"
+      },
+      {
+        "scene": "<div class=\"mk ok\">✓ 41<small>next one comes instantly</small></div>",
+        "caption": "Next sum, straight away"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–5",
+        "label": "Warming up",
+        "message": "Your brain is switching gears. Scores usually jump after 2–3 tries."
+      },
+      {
+        "at": 6,
+        "range": "6–10",
+        "label": "Steady",
+        "message": "About one answer every 6–10 seconds, including some harder sums. That’s a normal, healthy pace for someone not doing arithmetic daily."
+      },
+      {
+        "at": 11,
+        "range": "11–16",
+        "label": "Sharp",
+        "message": "Quicker than most casual players. Your arithmetic is well practised."
+      },
+      {
+        "at": 17,
+        "range": "17–24",
+        "label": "Quick",
+        "message": "Under 4 seconds per answer while sums get harder. Impressive."
+      },
+      {
+        "at": 25,
+        "range": "25+",
+        "label": "Lightning",
+        "message": "Calculator-level speed."
+      }
+    ],
+    "science": "There’s no standard clinical norm for this exact game, so these bands are a Brain Garden guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.",
+    "tip": "Break sums apart: 47 + 38 is 47 + 40 − 2.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"12\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M15 11v12M9 17h12\" stroke=\"currentColor\" stroke-width=\"4\" stroke-linecap=\"round\"/><path d=\"M28 28l9 9M37 28l-9 9\" stroke=\"currentColor\" stroke-width=\"4\" stroke-linecap=\"round\"/><circle cx=\"33\" cy=\"15\" r=\"3\" fill=\"currentColor\"/><circle cx=\"15\" cy=\"33\" r=\"3\" fill=\"currentColor\"/>"
+    }
+  },
+  {
+    "id": "serial7",
+    "order": 5,
+    "component": "SerialSevens",
+    "name": "Serial sevens",
+    "category": "Speed",
+    "level": "Medium",
+    "size": "normal",
+    "blurb": "Count down by 7 from a random number.",
+    "trains": "Working memory and concentration",
+    "durationSec": 60,
+    "unit": "steps",
+    "lowerIsBetter": false,
+    "steps": [
+      "You get a start number, like 143.",
+      "Type the number 7 less (136) and press Enter.",
+      "Keep going from your answer. 60 seconds."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">143</div>",
+        "caption": "A start number"
+      },
+      {
+        "scene": "<div class=\"mk\">143 → 136<small>press Enter</small></div>",
+        "caption": "Subtract 7"
+      },
+      {
+        "scene": "<div class=\"mk\">136 → 129</div>",
+        "caption": "Keep going"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–5",
+        "label": "Warming up",
+        "message": "Holding a number while subtracting is genuinely hard. It gets easier fast."
+      },
+      {
+        "at": 6,
+        "range": "6–10",
+        "label": "Steady",
+        "message": "A calm, accurate pace."
+      },
+      {
+        "at": 11,
+        "range": "11–16",
+        "label": "Sharp",
+        "message": "Strong concentration."
+      },
+      {
+        "at": 17,
+        "range": "17+",
+        "label": "Excellent",
+        "message": "Very fast and fluent."
+      }
+    ],
+    "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.",
+    "tip": "Subtract 10, then add 3. Many people find it easier.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M13 13h14l-9 22\" stroke=\"currentColor\" stroke-width=\"4.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M35 14v18m-5-5 5 5 5-5\" stroke=\"currentColor\" stroke-width=\"3.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    }
+  },
+  {
+    "id": "reaction",
+    "order": 6,
+    "component": "ReactionTime",
+    "name": "Reaction time",
+    "category": "Speed",
+    "level": "Easy",
+    "size": "normal",
+    "blurb": "Tap the moment the box turns green.",
+    "trains": "Alertness and reflexes",
+    "durationSec": null,
+    "unit": "ms average",
+    "lowerIsBetter": true,
+    "steps": [
+      "Wait while the box is calm.",
+      "Tap as soon as it turns green.",
+      "5 rounds. Tapping too early restarts the round."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">⏳<small>wait…</small></div>",
+        "caption": "Wait patiently"
+      },
+      {
+        "scene": "<div class=\"mk\" style=\"color:#2E9E5B\">🟢<small>GO!</small></div>",
+        "caption": "It turns green"
+      },
+      {
+        "scene": "<div class=\"mk\">👆 248 ms</div>",
+        "caption": "Tap fast!"
+      }
+    ],
+    "bands": [
+      {
+        "at": null,
+        "range": "400+",
+        "label": "Sleepy day",
+        "message": "Usually tiredness or a slow device, not you."
+      },
+      {
+        "at": 400,
+        "range": "300–400",
+        "label": "Relaxed",
+        "message": "Common when tired or winding down."
+      },
+      {
+        "at": 300,
+        "range": "250–300",
+        "label": "Average",
+        "message": "Right where most people land."
+      },
+      {
+        "at": 250,
+        "range": "200–250",
+        "label": "Fast",
+        "message": "Quicker than most people."
+      },
+      {
+        "at": 200,
+        "range": "under 200",
+        "label": "Very fast",
+        "message": "Gamer and athlete territory."
+      }
+    ],
+    "science": "Online tests put the median human visual reaction at roughly 250–280 ms. Your screen and mouse add a little delay, so compare on the same device.",
+    "tip": "Sleep and a short walk improve reaction time more than practice does.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M27 6 13 27h10l-3 15 15-22H25z\" fill=\"currentColor\"/>"
+    }
+  },
+  {
+    "id": "words",
+    "order": 7,
+    "component": "WordSprint",
+    "name": "Word sprint",
+    "category": "Words",
+    "level": "Medium",
+    "size": "wide",
+    "blurb": "As many words as you can from one letter.",
+    "trains": "Verbal fluency and word retrieval",
+    "durationSec": 60,
+    "unit": "words",
+    "lowerIsBetter": false,
+    "steps": [
+      "You get a letter, like S.",
+      "Type a word starting with it and press Enter.",
+      "3+ letters, no repeats. 60 seconds."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">Letter: S</div>",
+        "caption": "You get a letter"
+      },
+      {
+        "scene": "<div class=\"mk\">sun ⏎<small>sand ⏎ smile ⏎</small></div>",
+        "caption": "Type and press Enter"
+      },
+      {
+        "scene": "<div class=\"mk ok\">3 words!</div>",
+        "caption": "Each word is a point"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–5",
+        "label": "Warming up",
+        "message": "Tricky letters slow everyone down."
+      },
+      {
+        "at": 6,
+        "range": "6–9",
+        "label": "Steady",
+        "message": "A good typed score."
+      },
+      {
+        "at": 10,
+        "range": "10–13",
+        "label": "Fluent",
+        "message": "Strong word retrieval."
+      },
+      {
+        "at": 14,
+        "range": "14–18",
+        "label": "Very fluent",
+        "message": "You’re matching what people say out loud in clinical tests, while typing."
+      },
+      {
+        "at": 19,
+        "range": "19+",
+        "label": "Wordsmith",
+        "message": "Outstanding."
+      }
+    ],
+    "science": "In the standard spoken letter-fluency test (F, A, S), adults average around 14–15 words per letter per minute. Typing is slower than speaking, so typed scores run lower.",
+    "tip": "Think in themes: s-foods, s-animals, s-verbs.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<path d=\"M6 10a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H20l-9 9v-9h1a6 6 0 0 1-6-6z\" fill=\"currentColor\"/><text x=\"24\" y=\"25\" text-anchor=\"middle\" font-family=\"Fredoka,sans-serif\" font-weight=\"700\" font-size=\"15\" fill=\"#fff\">Aa</text>"
+    }
+  },
+  {
+    "id": "category",
+    "order": 8,
+    "component": "CategoryChallenge",
+    "name": "Category challenge",
+    "category": "Words",
+    "level": "Easy",
+    "size": "normal",
+    "blurb": "Name things in a category before time runs out.",
+    "trains": "Memory search and verbal fluency",
+    "durationSec": 60,
+    "unit": "items",
+    "lowerIsBetter": false,
+    "steps": ["You get a category, like Fruits.", "Type an item and press Enter.", "No repeats. 60 seconds."],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">Fruits</div>",
+        "caption": "You get a category"
+      },
+      {
+        "scene": "<div class=\"mk\">mango ⏎<small>apple ⏎ lychee ⏎</small></div>",
+        "caption": "Type items"
+      },
+      {
+        "scene": "<div class=\"mk ok\">+1 +1 +1</div>",
+        "caption": "Each item scores"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–7",
+        "label": "Warming up",
+        "message": "Some categories are much harder than others."
+      },
+      {
+        "at": 8,
+        "range": "8–12",
+        "label": "Steady",
+        "message": "A good typed score."
+      },
+      {
+        "at": 13,
+        "range": "13–17",
+        "label": "Fluent",
+        "message": "Strong memory search."
+      },
+      {
+        "at": 18,
+        "range": "18+",
+        "label": "Encyclopaedia",
+        "message": "Excellent."
+      }
+    ],
+    "science": "In spoken “name animals in 60 seconds” tests, younger adults usually say about 20. Typing slows things, so 13+ typed is very good.",
+    "tip": "Use sub-groups: farm animals, then sea animals, then birds.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"6\" y=\"6\" width=\"36\" height=\"10\" rx=\"5\" fill=\"currentColor\"/><rect x=\"6\" y=\"19\" width=\"28\" height=\"10\" rx=\"5\" fill=\"currentColor\" opacity=\".6\"/><rect x=\"6\" y=\"32\" width=\"20\" height=\"10\" rx=\"5\" fill=\"currentColor\" opacity=\".35\"/>"
+    }
+  },
+  {
+    "id": "backward",
+    "order": 9,
+    "component": "BackwardSpelling",
+    "name": "Backward spelling",
+    "category": "Words",
+    "level": "Medium",
+    "size": "normal",
+    "blurb": "See a word, then spell it in reverse.",
+    "trains": "Working memory and mental imagery",
+    "durationSec": null,
+    "unit": "out of 8",
+    "lowerIsBetter": false,
+    "steps": ["A word shows for a few seconds.", "It disappears.", "Type it backwards and press Enter. 8 rounds."],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">PLANT</div>",
+        "caption": "Memorise the word"
+      },
+      {
+        "scene": "<div class=\"mk\">• • •</div>",
+        "caption": "It hides"
+      },
+      {
+        "scene": "<div class=\"mk ok\">tnalp ✓</div>",
+        "caption": "Type it backwards"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–3",
+        "label": "Warming up",
+        "message": "Long words are tough. Picture the word written in front of you."
+      },
+      {
+        "at": 4,
+        "range": "4–5",
+        "label": "Steady",
+        "message": "Solid working memory."
+      },
+      {
+        "at": 6,
+        "range": "6–7",
+        "label": "Sharp",
+        "message": "Strong mental imagery."
+      },
+      {
+        "at": 8,
+        "range": "8",
+        "label": "Perfect",
+        "message": "Flawless."
+      }
+    ],
+    "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
+    "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"4\" y=\"8\" width=\"40\" height=\"32\" rx=\"10\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M34 30H16a6 6 0 0 1 0-12h18\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"m21 25 -5 5 5 5\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    }
+  },
+  {
+    "id": "digits",
+    "order": 10,
+    "component": "DigitSpan",
+    "name": "Digit span",
+    "category": "Memory",
+    "level": "Medium",
+    "size": "tall",
+    "blurb": "Remember a growing string of numbers.",
+    "trains": "Short-term memory and attention",
+    "durationSec": null,
+    "unit": "digits",
+    "lowerIsBetter": false,
+    "steps": [
+      "Digits flash one at a time.",
+      "Type the whole string and press Enter.",
+      "Each success adds a digit. 2 misses ends."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">7 … 2 … 9</div>",
+        "caption": "Watch the digits"
+      },
+      {
+        "scene": "<div class=\"mk\">729 ⏎</div>",
+        "caption": "Type them in order"
+      },
+      {
+        "scene": "<div class=\"mk ok\">✓ now 4 digits</div>",
+        "caption": "It grows by one"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "1–4",
+        "label": "Warming up",
+        "message": "Distractions hit this test hard. Try a quiet moment."
+      },
+      {
+        "at": 5,
+        "range": "5–6",
+        "label": "Typical",
+        "message": "Right around the adult average."
+      },
+      {
+        "at": 7,
+        "range": "7–8",
+        "label": "Strong",
+        "message": "Above average short-term memory."
+      },
+      {
+        "at": 9,
+        "range": "9+",
+        "label": "Exceptional",
+        "message": "You’re probably chunking. Great strategy."
+      }
+    ],
+    "science": "The classic figure is 7 ± 2 digits. A large community sample averaged about 6.5 digits forward. With chunking practice, people have reached spans of 20+.",
+    "tip": "Chunk like a phone number: 729-48 is easier than 7-2-9-4-8.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"3\" y=\"10\" width=\"42\" height=\"28\" rx=\"10\" fill=\"currentColor\"/><text x=\"24\" y=\"30\" text-anchor=\"middle\" font-family=\"Fredoka,sans-serif\" font-weight=\"700\" font-size=\"16\" fill=\"#fff\">392</text>"
+    }
+  },
+  {
+    "id": "sequence",
+    "order": 11,
+    "component": "SequenceMemory",
+    "name": "Sequence memory",
+    "category": "Memory",
+    "level": "Easy",
+    "size": "normal",
+    "blurb": "Repeat the pattern of lit squares.",
+    "trains": "Visual-spatial memory",
+    "durationSec": null,
+    "unit": "levels",
+    "lowerIsBetter": false,
+    "steps": [
+      "Watch squares light up one by one.",
+      "Tap them in the same order.",
+      "The pattern grows by one each level."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">⬜🟪<br>⬜⬜</div>",
+        "caption": "Watch it light up"
+      },
+      {
+        "scene": "<div class=\"mk\">⬜⬜<br>🟪⬜</div>",
+        "caption": "Remember the order"
+      },
+      {
+        "scene": "<div class=\"mk\">👆👆<small>tap the same order</small></div>",
+        "caption": "Repeat it"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–4",
+        "label": "Warming up",
+        "message": "Spatial memory warms up quickly."
+      },
+      {
+        "at": 5,
+        "range": "5–7",
+        "label": "Typical",
+        "message": "Visual spans usually sit 1–2 below number spans."
+      },
+      {
+        "at": 8,
+        "range": "8–10",
+        "label": "Strong",
+        "message": "Very good spatial memory."
+      },
+      {
+        "at": 11,
+        "range": "11+",
+        "label": "Exceptional",
+        "message": "Outstanding."
+      }
+    ],
+    "science": "Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.",
+    "tip": "Trace the path as a shape: “L-shape, then corner.”",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<g fill=\"currentColor\" opacity=\".3\"><rect x=\"5\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"26\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"5\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/></g><rect x=\"26\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\" fill=\"currentColor\"/>"
+    }
+  },
+  {
+    "id": "nback",
+    "order": 12,
+    "component": "TwoBack",
+    "name": "2-back",
+    "category": "Memory",
+    "level": "Hard",
+    "size": "wide",
+    "blurb": "Spot a letter that matches the one two steps ago.",
+    "trains": "Working memory updating",
+    "durationSec": null,
+    "unit": "% accuracy",
+    "lowerIsBetter": false,
+    "steps": [
+      "Letters appear one by one.",
+      "If a letter matches the one 2 steps back, tap Match.",
+      "Otherwise do nothing. 24 letters."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">K</div>",
+        "caption": "Letter 1"
+      },
+      {
+        "scene": "<div class=\"mk\">K → B</div>",
+        "caption": "Letter 2"
+      },
+      {
+        "scene": "<div class=\"mk ok\">K → B → K<small>Match!</small></div>",
+        "caption": "Same as 2 back → tap"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "under 60",
+        "label": "Learning",
+        "message": "2-back is honestly hard. Everyone starts here."
+      },
+      {
+        "at": 60,
+        "range": "60–74",
+        "label": "Getting it",
+        "message": "You’re keeping track."
+      },
+      {
+        "at": 75,
+        "range": "75–89",
+        "label": "Strong",
+        "message": "Solid working memory."
+      },
+      {
+        "at": 90,
+        "range": "90+",
+        "label": "Excellent",
+        "message": "Very sharp."
+      }
+    ],
+    "science": "N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.",
+    "tip": "Whisper the last two letters to yourself on each step.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"4\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\"/><rect x=\"16\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\" opacity=\".35\"/><rect x=\"28\" y=\"12\" width=\"16\" height=\"22\" rx=\"4\" fill=\"currentColor\"/><path d=\"M12 40c0 4 24 4 24 0\" stroke=\"currentColor\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+    }
+  },
+  {
+    "id": "stroop",
+    "order": 13,
+    "component": "StroopColours",
+    "name": "Stroop colours",
+    "category": "Focus",
+    "level": "Medium",
+    "size": "normal",
+    "blurb": "Pick the ink colour, not the word.",
+    "trains": "Self-control and focus",
+    "durationSec": 45,
+    "unit": "points",
+    "lowerIsBetter": false,
+    "steps": [
+      "A colour word appears in a different ink.",
+      "Tap the INK colour, not the word.",
+      "Wrong taps cost a point. 45 seconds."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\" style=\"color:#2F80E8\">RED</div>",
+        "caption": "The word says red…"
+      },
+      {
+        "scene": "<div class=\"mk\" style=\"color:#2F80E8\">RED<small>…but the ink is blue</small></div>",
+        "caption": "Look at the ink"
+      },
+      {
+        "scene": "<div class=\"mk ok\">Blue ✓</div>",
+        "caption": "Tap Blue"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–15",
+        "label": "Warming up",
+        "message": "Your reading brain is strong. It’s hard to ignore words."
+      },
+      {
+        "at": 16,
+        "range": "16–25",
+        "label": "Steady",
+        "message": "Good control."
+      },
+      {
+        "at": 26,
+        "range": "26–35",
+        "label": "Focused",
+        "message": "Strong attention control."
+      },
+      {
+        "at": 36,
+        "range": "36+",
+        "label": "Laser",
+        "message": "Excellent."
+      }
+    ],
+    "science": "The Stroop effect: reading is so automatic that naming ink colour is slower when the word conflicts. It’s a classic test of attention control.",
+    "tip": "Blur your eyes slightly so the word is harder to read.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<path d=\"M24 4c8 10 14 17 14 24a14 14 0 0 1-28 0c0-7 6-14 14-24z\" fill=\"currentColor\"/><path d=\"M17 28a7 7 0 0 0 7 7\" stroke=\"#fff\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+    }
+  },
+  {
+    "id": "schulte",
+    "order": 14,
+    "component": "SchulteTable",
+    "name": "Schulte table",
+    "category": "Focus",
+    "level": "Easy",
+    "size": "tall",
+    "blurb": "Find 1 to 25 in a scrambled grid.",
+    "trains": "Visual search and peripheral vision",
+    "durationSec": null,
+    "unit": "seconds",
+    "lowerIsBetter": true,
+    "steps": ["A 5×5 grid of numbers appears.", "Tap 1, then 2, then 3… up to 25.", "Keep your eyes near the centre."],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">7 1 18<br>4 12 9</div>",
+        "caption": "Numbers are mixed"
+      },
+      {
+        "scene": "<div class=\"mk\">👆 1 → 2 → 3</div>",
+        "caption": "Tap them in order"
+      },
+      {
+        "scene": "<div class=\"mk ok\">25 ✓ 28.4 s</div>",
+        "caption": "Beat your time"
+      }
+    ],
+    "bands": [
+      {
+        "at": null,
+        "range": "45+ s",
+        "label": "Warming up",
+        "message": "Take your time. Speed comes naturally."
+      },
+      {
+        "at": 45,
+        "range": "30–45 s",
+        "label": "Steady",
+        "message": "A relaxed, normal pace."
+      },
+      {
+        "at": 30,
+        "range": "20–30 s",
+        "label": "Good",
+        "message": "Around a moderate adult score."
+      },
+      {
+        "at": 20,
+        "range": "12–20 s",
+        "label": "Sharp",
+        "message": "Fast visual search."
+      },
+      {
+        "at": 12,
+        "range": "under 12 s",
+        "label": "Excellent",
+        "message": "Elite-level scanning."
+      }
+    ],
+    "science": "Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.",
+    "tip": "Look at the centre and let numbers find you in your side vision.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"9\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"24\" cy=\"24\" r=\"3\" fill=\"currentColor\"/><path d=\"M24 4v8M24 36v8M4 24h8M36 24h8\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+    }
+  },
+  {
+    "id": "hand",
+    "order": 15,
+    "component": "OtherHandDay",
+    "name": "Other hand day",
+    "category": "Body",
+    "level": "Easy",
+    "size": "wide",
+    "blurb": "Today’s tasks to do with your other hand.",
+    "trains": "New motor pathways and patience",
+    "durationSec": null,
+    "unit": "out of 4",
+    "lowerIsBetter": false,
+    "steps": [
+      "Read today’s 4 tasks.",
+      "Do them with your non-dominant hand during the day.",
+      "Tick them off, and try writing your name on the pad."
+    ],
+    "demo": [
+      {
+        "scene": "<div class=\"mk\">🪥<small>brush with the other hand</small></div>",
+        "caption": "A daily task"
+      },
+      {
+        "scene": "<div class=\"mk\">✍️<small>write on the pad</small></div>",
+        "caption": "Try the pad"
+      },
+      {
+        "scene": "<div class=\"mk ok\">☑ ☑ ☑ ☐</div>",
+        "caption": "Tick when done"
+      }
+    ],
+    "bands": [
+      {
+        "at": 0,
+        "range": "0–1",
+        "label": "Started",
+        "message": "Even trying is training. It feels clumsy because it’s new."
+      },
+      {
+        "at": 2,
+        "range": "2–3",
+        "label": "Good effort",
+        "message": "Your brain is building new pathways."
+      },
+      {
+        "at": 4,
+        "range": "4",
+        "label": "All done",
+        "message": "A full day of novelty. Brilliant."
+      }
+    ],
+    "science": "Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.",
+    "tip": "Start with low-stakes tasks like scrolling your phone.",
+    "icon": {
+      "viewBox": "0 0 48 48",
+      "svg": "<path d=\"M14 26V12a3 3 0 0 1 6 0v10V8a3 3 0 0 1 6 0v14V10a3 3 0 0 1 6 0v14-8a3 3 0 0 1 6 0v14c0 8-6 14-13 14s-10-3-13-8l-5-8a3 3 0 0 1 5-3z\" fill=\"currentColor\"/>"
+    }
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "id": "hand",
+  "order": 15,
+  "component": "OtherHandDay",
+  "name": "Other hand day",
+  "category": "Body",
+  "level": "Easy",
+  "size": "wide",
+  "blurb": "Today’s tasks to do with your other hand.",
+  "trains": "New motor pathways and patience",
+  "durationSec": null,
+  "unit": "out of 4",
+  "lowerIsBetter": false,
+  "steps": [
+    "Read today’s 4 tasks.",
+    "Do them with your non-dominant hand during the day.",
+    "Tick them off, and try writing your name on the pad."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">🪥<small>brush with the other hand</small></div>",
+      "caption": "A daily task"
+    },
+    {
+      "scene": "<div class=\"mk\">✍️<small>write on the pad</small></div>",
+      "caption": "Try the pad"
+    },
+    {
+      "scene": "<div class=\"mk ok\">☑ ☑ ☑ ☐</div>",
+      "caption": "Tick when done"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–1",
+      "label": "Started",
+      "message": "Even trying is training. It feels clumsy because it’s new."
+    },
+    {
+      "at": 2,
+      "range": "2–3",
+      "label": "Good effort",
+      "message": "Your brain is building new pathways."
+    },
+    {
+      "at": 4,
+      "range": "4",
+      "label": "All done",
+      "message": "A full day of novelty. Brilliant."
+    }
+  ],
+  "science": "Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.",
+  "tip": "Start with low-stakes tasks like scrolling your phone.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<path d=\"M14 26V12a3 3 0 0 1 6 0v10V8a3 3 0 0 1 6 0v14V10a3 3 0 0 1 6 0v14-8a3 3 0 0 1 6 0v14c0 8-6 14-13 14s-10-3-13-8l-5-8a3 3 0 0 1 5-3z\" fill=\"currentColor\"/>"
+  }
+}

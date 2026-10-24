@@ -1,0 +1,65 @@
+{
+  "id": "stroop",
+  "order": 13,
+  "component": "StroopColours",
+  "name": "Stroop colours",
+  "category": "Focus",
+  "level": "Medium",
+  "size": "normal",
+  "blurb": "Pick the ink colour, not the word.",
+  "trains": "Self-control and focus",
+  "durationSec": 45,
+  "unit": "points",
+  "lowerIsBetter": false,
+  "steps": [
+    "A colour word appears in a different ink.",
+    "Tap the INK colour, not the word.",
+    "Wrong taps cost a point. 45 seconds."
+  ],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\" style=\"color:#2F80E8\">RED</div>",
+      "caption": "The word says red…"
+    },
+    {
+      "scene": "<div class=\"mk\" style=\"color:#2F80E8\">RED<small>…but the ink is blue</small></div>",
+      "caption": "Look at the ink"
+    },
+    {
+      "scene": "<div class=\"mk ok\">Blue ✓</div>",
+      "caption": "Tap Blue"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–15",
+      "label": "Warming up",
+      "message": "Your reading brain is strong. It’s hard to ignore words."
+    },
+    {
+      "at": 16,
+      "range": "16–25",
+      "label": "Steady",
+      "message": "Good control."
+    },
+    {
+      "at": 26,
+      "range": "26–35",
+      "label": "Focused",
+      "message": "Strong attention control."
+    },
+    {
+      "at": 36,
+      "range": "36+",
+      "label": "Laser",
+      "message": "Excellent."
+    }
+  ],
+  "science": "The Stroop effect: reading is so automatic that naming ink colour is slower when the word conflicts. It’s a classic test of attention control.",
+  "tip": "Blur your eyes slightly so the word is harder to read.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<path d=\"M24 4c8 10 14 17 14 24a14 14 0 0 1-28 0c0-7 6-14 14-24z\" fill=\"currentColor\"/><path d=\"M17 28a7 7 0 0 0 7 7\" stroke=\"#fff\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+  }
+}

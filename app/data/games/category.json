@@ -1,0 +1,61 @@
+{
+  "id": "category",
+  "order": 8,
+  "component": "CategoryChallenge",
+  "name": "Category challenge",
+  "category": "Words",
+  "level": "Easy",
+  "size": "normal",
+  "blurb": "Name things in a category before time runs out.",
+  "trains": "Memory search and verbal fluency",
+  "durationSec": 60,
+  "unit": "items",
+  "lowerIsBetter": false,
+  "steps": ["You get a category, like Fruits.", "Type an item and press Enter.", "No repeats. 60 seconds."],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">Fruits</div>",
+      "caption": "You get a category"
+    },
+    {
+      "scene": "<div class=\"mk\">mango ⏎<small>apple ⏎ lychee ⏎</small></div>",
+      "caption": "Type items"
+    },
+    {
+      "scene": "<div class=\"mk ok\">+1 +1 +1</div>",
+      "caption": "Each item scores"
+    }
+  ],
+  "bands": [
+    {
+      "at": 0,
+      "range": "0–7",
+      "label": "Warming up",
+      "message": "Some categories are much harder than others."
+    },
+    {
+      "at": 8,
+      "range": "8–12",
+      "label": "Steady",
+      "message": "A good typed score."
+    },
+    {
+      "at": 13,
+      "range": "13–17",
+      "label": "Fluent",
+      "message": "Strong memory search."
+    },
+    {
+      "at": 18,
+      "range": "18+",
+      "label": "Encyclopaedia",
+      "message": "Excellent."
+    }
+  ],
+  "science": "In spoken “name animals in 60 seconds” tests, younger adults usually say about 20. Typing slows things, so 13+ typed is very good.",
+  "tip": "Use sub-groups: farm animals, then sea animals, then birds.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<rect x=\"6\" y=\"6\" width=\"36\" height=\"10\" rx=\"5\" fill=\"currentColor\"/><rect x=\"6\" y=\"19\" width=\"28\" height=\"10\" rx=\"5\" fill=\"currentColor\" opacity=\".6\"/><rect x=\"6\" y=\"32\" width=\"20\" height=\"10\" rx=\"5\" fill=\"currentColor\" opacity=\".35\"/>"
+  }
+}

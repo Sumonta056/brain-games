@@ -1,0 +1,67 @@
+{
+  "id": "schulte",
+  "order": 14,
+  "component": "SchulteTable",
+  "name": "Schulte table",
+  "category": "Focus",
+  "level": "Easy",
+  "size": "tall",
+  "blurb": "Find 1 to 25 in a scrambled grid.",
+  "trains": "Visual search and peripheral vision",
+  "durationSec": null,
+  "unit": "seconds",
+  "lowerIsBetter": true,
+  "steps": ["A 5×5 grid of numbers appears.", "Tap 1, then 2, then 3… up to 25.", "Keep your eyes near the centre."],
+  "demo": [
+    {
+      "scene": "<div class=\"mk\">7 1 18<br>4 12 9</div>",
+      "caption": "Numbers are mixed"
+    },
+    {
+      "scene": "<div class=\"mk\">👆 1 → 2 → 3</div>",
+      "caption": "Tap them in order"
+    },
+    {
+      "scene": "<div class=\"mk ok\">25 ✓ 28.4 s</div>",
+      "caption": "Beat your time"
+    }
+  ],
+  "bands": [
+    {
+      "at": null,
+      "range": "45+ s",
+      "label": "Warming up",
+      "message": "Take your time. Speed comes naturally."
+    },
+    {
+      "at": 45,
+      "range": "30–45 s",
+      "label": "Steady",
+      "message": "A relaxed, normal pace."
+    },
+    {
+      "at": 30,
+      "range": "20–30 s",
+      "label": "Good",
+      "message": "Around a moderate adult score."
+    },
+    {
+      "at": 20,
+      "range": "12–20 s",
+      "label": "Sharp",
+      "message": "Fast visual search."
+    },
+    {
+      "at": 12,
+      "range": "under 12 s",
+      "label": "Excellent",
+      "message": "Elite-level scanning."
+    }
+  ],
+  "science": "Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.",
+  "tip": "Look at the centre and let numbers find you in your side vision.",
+  "icon": {
+    "viewBox": "0 0 48 48",
+    "svg": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"9\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"24\" cy=\"24\" r=\"3\" fill=\"currentColor\"/><path d=\"M24 4v8M24 36v8M4 24h8M36 24h8\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+  }
+}

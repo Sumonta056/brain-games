@@ -1,0 +1,26 @@
+{
+  "Calm": {
+    "tint": "mint",
+    "description": "Gentle games to slow down"
+  },
+  "Speed": {
+    "tint": "peach",
+    "description": "Quick thinking"
+  },
+  "Words": {
+    "tint": "rose",
+    "description": "Language and word finding"
+  },
+  "Memory": {
+    "tint": "lilac",
+    "description": "Hold and update information"
+  },
+  "Focus": {
+    "tint": "sky",
+    "description": "Attention and self-control"
+  },
+  "Body": {
+    "tint": "sun",
+    "description": "Hand–brain connection"
+  }
+}
