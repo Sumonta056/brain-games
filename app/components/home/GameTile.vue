@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     :to="`/games/${game.id}`"
-    class="group relative flex cursor-pointer flex-col gap-1 overflow-hidden rounded-card border-none bg-tint-bg px-[18px] py-4 text-left text-ink no-underline [transition:transform_0.15s_ease,box-shadow_0.15s_ease] data-[size=big]:[grid-column:span_2] data-[size=big]:[grid-row:span_2] data-[size=big]:mt-3 data-[size=big]:mb-[18px] data-[size=big]:min-h-[1em] data-[size=big]:p-6 data-[size=big]:text-center data-[size=big]:font-display data-[size=big]:text-[length:clamp(56px,10vw,110px)] data-[size=big]:leading-[1.02] data-[size=big]:font-extrabold data-[size=big]:tracking-[-0.01em] data-[size=big]:[word-break:break-word] data-[size=tall]:[grid-row:span_2] data-[size=wide]:[grid-column:span_2] max-md:rounded-btn max-md:p-3.5 max-md:data-[size=big]:mt-2 max-md:data-[size=big]:mb-3.5 max-md:data-[size=big]:p-[18px] max-md:data-[size=big]:text-[length:clamp(46px,15vw,76px)] [&:hover]:[transform:translateY(-3px)] [&:hover]:[box-shadow:0_10px_24px_-14px_var(--tfg)]"
+    class="group relative flex cursor-pointer flex-col gap-1 overflow-hidden rounded-card border-none bg-tint-bg px-[18px] py-4 text-left text-ink no-underline [transition:transform_0.15s_ease,box-shadow_0.15s_ease] data-[size=big]:[grid-column:span_2] data-[size=big]:[grid-row:span_2] data-[size=big]:p-6 data-[size=tall]:[grid-row:span_2] data-[size=wide]:[grid-column:span_2] max-md:rounded-btn max-md:p-3.5 max-md:data-[size=big]:p-[18px] [&:hover]:[transform:translateY(-3px)] [&:hover]:[box-shadow:0_10px_24px_-14px_var(--tfg)]"
     data-testid="tile"
     :data-size="size === 'normal' ? undefined : size"
     :style="tintVars(game.category)"
@@ -32,7 +32,7 @@
     <span class="text-[12.5px] font-semibold text-tint-fg">{{ bestText }}</span>
     <span
       v-if="size === 'big'"
-      class="relative mt-3 flex min-h-0 flex-col self-start overflow-hidden rounded-pill border border-line bg-tint-fg px-[18px] py-2 font-display text-[16px] leading-[normal] font-bold text-surface max-xl:min-h-[calc(100dvh_-_var(--nav-h)_-_32px)] max-md:min-h-[calc(100dvh_-_var(--nav-h)_-_92px_-_env(safe-area-inset-top,0px)_-_env(safe-area-inset-bottom,0px))]"
+      class="mt-3 self-start rounded-pill bg-tint-fg px-[18px] py-2 font-display text-[16px] leading-[normal] font-bold text-surface"
       >Play now</span
     >
   </NuxtLink>

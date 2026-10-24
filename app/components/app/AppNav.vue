@@ -44,7 +44,7 @@
         </button>
         <NuxtLink
           to="/profile"
-          class="flex cursor-pointer items-center gap-2 rounded-pill border border-line bg-surface py-1 pr-3.5 pl-1 text-[15px] font-medium no-underline max-md:p-[3px]"
+          class="flex cursor-pointer items-center gap-2 rounded-pill border border-line bg-surface py-1 pr-3.5 pl-1 text-[15px] font-medium text-ink no-underline max-md:p-[3px]"
           aria-label="Open your profile"
         >
           <span class="grid size-8 place-items-center rounded-[50%] bg-lilac-bg text-[18px] max-md:size-[34px]">{{
