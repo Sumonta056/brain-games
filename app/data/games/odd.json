@@ -58,8 +58,5 @@
   ],
   "science": "Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.",
   "tip": "Let your eyes soften and look at the whole grid. The odd tile often “pops”.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<g fill=\"currentColor\" opacity=\".35\"><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"24\" cy=\"12\" r=\"6\"/><circle cx=\"36\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"24\" r=\"6\"/><circle cx=\"36\" cy=\"24\" r=\"6\"/><circle cx=\"12\" cy=\"36\" r=\"6\"/><circle cx=\"24\" cy=\"36\" r=\"6\"/><circle cx=\"36\" cy=\"36\" r=\"6\"/></g><circle cx=\"24\" cy=\"24\" r=\"6.5\" fill=\"currentColor\"/>"
-  }
+  "icon": "odd"
 }

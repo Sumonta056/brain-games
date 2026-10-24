@@ -11,7 +11,7 @@ Input: `$ARGUMENTS` is the request. If it is empty or vague, ask the user with A
 
 ## 1. Read
 
-1. Read `CLAUDE.md` (rules 1 to 12 and the porting list).
+1. Read `CLAUDE.md` (rules 1 to 13 and the porting list).
 2. Read the sections of `docs/functional-requirements.md` that the request touches.
 3. Find the matching part of `docs/design.html`. For a game, read `RUN.<id>`. For a page, read its `render*` function and the CSS it uses.
 4. Read every file you plan to change, and its spec under `test/nuxt/`.
@@ -42,7 +42,7 @@ Ask for approval with AskUserQuestion. Offer "Approve", "Change the plan", and "
 ## 4. Green: implement
 
 1. Write the smallest code that makes the specs pass. Follow `CLAUDE.md`.
-2. Keep each component under about 150 lines (rule 12). Move logic into a composable before it grows.
+2. Keep each component under about 150 lines (rule 13). Move logic into a composable before it grows.
 3. No code comments unless the user asks.
 4. Run the specs you are working on with `npx vitest run <paths>` until they pass.
 

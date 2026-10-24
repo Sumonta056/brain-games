@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import ReadyScreen from '~/components/game/ReadyScreen.vue'
-import { breathGame, mathGame } from '../../fixtures'
+import { breathGame, buttonNamed, mathGame } from '../../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -26,30 +26,30 @@ describe('ReadyScreen', () => {
 
   it('starts on the first demo frame with one dot per frame', async () => {
     const wrapper = await mountReady()
-    expect(wrapper.get('.scene').html()).toContain(mathGame.demo[0]!.scene)
-    expect(wrapper.get('.cap').text()).toBe(mathGame.demo[0]!.caption)
-    expect(wrapper.findAll('.dots i')).toHaveLength(3)
-    expect(wrapper.findAll('.dots i')[0]!.classes()).toContain('on')
+    expect(wrapper.get('[data-testid="scene"]').html()).toContain(mathGame.demo[0]!.scene)
+    expect(wrapper.get('[data-testid="caption"]').text()).toBe(mathGame.demo[0]!.caption)
+    expect(wrapper.findAll('[data-testid="dots"] > *')).toHaveLength(3)
+    expect(wrapper.findAll('[data-testid="dots"] > *')[0]!.attributes('data-state')).toBe('on')
   })
 
   it('auto-plays the demo every 2.2 seconds and loops', async () => {
     const wrapper = await mountReady(breathGame)
     for (const i of [1, 2, 0]) {
       await vi.advanceTimersByTimeAsync(2200)
-      expect(wrapper.get('.cap').text()).toBe(breathGame.demo[i]!.caption)
-      expect(wrapper.findAll('.dots i')[i]!.classes()).toContain('on')
+      expect(wrapper.get('[data-testid="caption"]').text()).toBe(breathGame.demo[i]!.caption)
+      expect(wrapper.findAll('[data-testid="dots"] > *')[i]!.attributes('data-state')).toBe('on')
     }
   })
 
   it('emits start from the Start button', async () => {
     const wrapper = await mountReady()
-    await wrapper.get('button.go').trigger('click')
+    await buttonNamed(wrapper, 'Start ▸').trigger('click')
     expect(wrapper.emitted('start')).toHaveLength(1)
   })
 
   it('focuses Start and also starts on Enter', async () => {
     const wrapper = await mountReady()
-    expect(document.activeElement).toBe(wrapper.get('button.go').element)
+    expect(document.activeElement).toBe(buttonNamed(wrapper, 'Start ▸').element)
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
     expect(wrapper.emitted('start')).toHaveLength(1)

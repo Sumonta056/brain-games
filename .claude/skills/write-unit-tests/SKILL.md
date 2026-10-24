@@ -9,15 +9,15 @@ description: How to write Vitest specs for Brain Garden. Use when writing or cha
 
 Rule: `app/<path>/<Name>.<ext>` → `test/nuxt/<path>/<Name>.spec.ts`.
 
-| Source                             | Spec                                         |
-| ---------------------------------- | -------------------------------------------- |
-| `app/games/MemoryPairs.vue`        | `test/nuxt/games/MemoryPairs.spec.ts`        |
-| `app/components/home/GameTile.vue` | `test/nuxt/components/home/GameTile.spec.ts` |
-| `app/pages/games/[id].vue`         | `test/nuxt/pages/games/[id].spec.ts`         |
-| `app/composables/useProgress.ts`   | `test/nuxt/composables/useProgress.spec.ts`  |
-| `app/error.vue`                    | `test/nuxt/error.spec.ts`                    |
+| Source                                 | Spec                                             |
+| -------------------------------------- | ------------------------------------------------ |
+| `app/components/games/MemoryPairs.vue` | `test/nuxt/components/games/MemoryPairs.spec.ts` |
+| `app/components/home/GameTile.vue`     | `test/nuxt/components/home/GameTile.spec.ts`     |
+| `app/pages/games/[id].vue`             | `test/nuxt/pages/games/[id].spec.ts`             |
+| `app/composables/useProgress.ts`       | `test/nuxt/composables/useProgress.spec.ts`      |
+| `app/error.vue`                        | `test/nuxt/error.spec.ts`                        |
 
-No spec needed for: `app/app.vue`, `app/layouts/**`, `app/games/registry.ts`, `app/data/**` (covered by `test/nuxt/data/game-contract.spec.ts`), `app/assets/**`, `shared/types/**`, `*.d.ts`.
+No spec needed for: `app/app.vue`, `app/layouts/**`, `app/components/games/registry.ts`, `app/data/**` (covered by `test/nuxt/data/game-contract.spec.ts` and `copy.spec.ts`), `app/assets/**`, `shared/types/**`, `*.d.ts`.
 
 The Stop hook enforces this. Check paths without running the suite:
 
@@ -31,13 +31,13 @@ The Stop hook enforces this. Check paths without running the suite:
 - Imports: `~/` is `app/`, `~~/` is the repo root.
 - Shared data lives in `test/nuxt/fixtures.ts`: `mathGame`, `reactionGame`, `breathGame`, and `makeGame(bandsAt, lowerIsBetter)`. Add new fixtures there, not inline copies of game JSON.
 - `restoreMocks` is on. Reset `localStorage` and fake timers in `beforeEach`/`afterEach`.
-- Run one file: `npx vitest run test/nuxt/games/X.spec.ts`. Run all: `npm test`.
+- Run one file: `npx vitest run test/nuxt/components/games/X.spec.ts`. Run all: `npm test`.
 
 ## Patterns
 
-### Games (`app/games/*.vue`)
+### Games (`app/components/games/*.vue`)
 
-Test only the contract: props in, `finish(score)` out. Model: `test/nuxt/games/MentalMath.spec.ts`.
+Test only the contract: props in, `finish(score)` out. Model: `test/nuxt/components/games/MentalMath.spec.ts`.
 
 ```ts
 beforeEach(() => vi.useFakeTimers())

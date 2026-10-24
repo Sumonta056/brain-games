@@ -4,7 +4,7 @@
     <div class="hud">
       <span>Type the answer</span><span>Score {{ n }}</span>
     </div>
-    <div class="big">{{ question }}</div>
+    <div class="big" data-testid="question">{{ question }}</div>
     <input ref="inp" v-model="answer" class="field" inputmode="numeric" autocomplete="off" aria-label="Answer" />
   </div>
 </template>

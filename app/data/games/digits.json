@@ -58,8 +58,5 @@
   ],
   "science": "The classic figure is 7 ± 2 digits. A large community sample averaged about 6.5 digits forward. With chunking practice, people have reached spans of 20+.",
   "tip": "Chunk like a phone number: 729-48 is easier than 7-2-9-4-8.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<rect x=\"3\" y=\"10\" width=\"42\" height=\"28\" rx=\"10\" fill=\"currentColor\"/><text x=\"24\" y=\"30\" text-anchor=\"middle\" font-family=\"Fredoka,sans-serif\" font-weight=\"700\" font-size=\"16\" fill=\"#fff\">392</text>"
-  }
+  "icon": "digits"
 }

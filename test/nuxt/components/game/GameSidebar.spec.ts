@@ -6,26 +6,26 @@ import { mathGame, reactionGame } from '../../fixtures'
 describe('GameSidebar', () => {
   it('lists the numbered how-to-play steps', async () => {
     const wrapper = await mountSuspended(GameSidebar, { props: { game: mathGame, here: -1 } })
-    expect(wrapper.findAll('ol.steps li').map(li => li.text())).toEqual(mathGame.steps)
+    expect(wrapper.findAll('ol li').map(li => li.text())).toEqual(mathGame.steps)
   })
 
   it('shows every band with its range', async () => {
     const wrapper = await mountSuspended(GameSidebar, { props: { game: mathGame, here: -1 } })
-    const rows = wrapper.findAll('.bands > div')
+    const rows = wrapper.findAll('[data-testid="bands"] > *')
     expect(rows).toHaveLength(mathGame.bands.length)
     expect(rows[4]!.text()).toBe('Lightning25+')
   })
 
   it('prompts to play once when there is no score', async () => {
     const wrapper = await mountSuspended(GameSidebar, { props: { game: mathGame, here: -1 } })
-    expect(wrapper.find('.here').exists()).toBe(false)
+    expect(wrapper.find('[aria-current="true"]').exists()).toBe(false)
     expect(wrapper.text()).toContain('Play once to see where you land.')
   })
 
   it('highlights the current band', async () => {
     const wrapper = await mountSuspended(GameSidebar, { props: { game: mathGame, here: 3 } })
-    expect(wrapper.findAll('.here')).toHaveLength(1)
-    expect(wrapper.get('.here').text()).toContain('Quick')
+    expect(wrapper.findAll('[aria-current="true"]')).toHaveLength(1)
+    expect(wrapper.get('[aria-current="true"]').text()).toContain('Quick')
     expect(wrapper.text()).toContain('Highlighted: where your score sits.')
   })
 

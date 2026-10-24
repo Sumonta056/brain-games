@@ -2,7 +2,8 @@
   <div>
     <div
       class="react"
-      :class="{ go2: armed }"
+      role="button"
+      :data-state="armed ? 'go' : undefined"
       tabindex="0"
       @pointerdown="hit"
       @keydown.space.prevent="hit"

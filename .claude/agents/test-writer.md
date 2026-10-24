@@ -15,7 +15,7 @@ Then read `.claude/skills/write-unit-tests/SKILL.md` and follow it. It has the s
 
 Your brief gives you the approved plan, the requirement sections, and the spec paths. Also read:
 
-1. `CLAUDE.md` (rules 1 to 12).
+1. `CLAUDE.md` (rules 1 to 13).
 2. The sections of `docs/functional-requirements.md` the plan names.
 3. For a game: `app/data/games/<id>.json` and `RUN.<id>` in `docs/design.html`.
 4. Existing specs and `test/nuxt/fixtures.ts`, so you reuse helpers.

@@ -3,7 +3,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import type { TileSize } from '~~/shared/types/game'
 import GameTile from '~/components/home/GameTile.vue'
-import { mathGame, reactionGame } from '../../fixtures'
+import { iconNames, mathGame, reactionGame } from '../../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -38,6 +38,15 @@ describe('GameTile', () => {
     expect(w.text()).toContain(mathGame.level)
   })
 
+  it('shows the game icon as the badge and as the faded background', async () => {
+    const w = await tile('normal', reactionGame)
+    expect(iconNames(w, '[data-testid="tile-icon"]')).toEqual(['bg:games-reaction'])
+    const ghost = w.findAllComponents({ name: 'NuxtIcon' }).filter(c => c.attributes('data-testid') === 'ghost-icon')
+    expect(ghost).toHaveLength(1)
+    expect(ghost[0]!.props('name')).toBe('bg:games-reaction')
+    expect(ghost[0]!.attributes('aria-hidden')).toBe('true')
+  })
+
   it('says not played yet when there is no best', async () => {
     const w = await tile()
     expect(w.text()).toContain('Speed · not played yet')
@@ -56,14 +65,14 @@ describe('GameTile', () => {
     expect(w.text()).toContain(`Best 320 ${reactionGame.unit} · Relaxed`)
   })
 
-  it.each(['wide', 'tall', 'big'] as const)('adds the %s size class', async size => {
+  it.each(['wide', 'tall', 'big'] as const)('marks the tile with the %s size', async size => {
     const w = await tile(size)
-    expect(w.get('a').classes()).toContain(size)
+    expect(w.get('a[data-testid="tile"]').attributes('data-size')).toBe(size)
   })
 
-  it('adds no size class for normal tiles', async () => {
+  it('adds no size marker for normal tiles', async () => {
     const w = await tile('normal')
-    expect(w.get('a').classes()).toEqual(['tile'])
+    expect(w.get('a[data-testid="tile"]').attributes('data-size')).toBeUndefined()
   })
 
   it('shows Play now only on big tiles', async () => {

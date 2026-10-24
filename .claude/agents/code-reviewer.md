@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Read-only reviewer for Brain Garden changes. Use in step 7 of the /feature loop, or whenever a diff needs review before commit. Checks the diff against CLAUDE.md rules 1 to 12, docs/functional-requirements.md, the reference logic in docs/design.html, and test quality. Returns findings ranked by severity. Never edits files.
+description: Read-only reviewer for Brain Garden changes. Use in step 7 of the /feature loop, or whenever a diff needs review before commit. Checks the diff against CLAUDE.md rules 1 to 13, docs/functional-requirements.md, the reference logic in docs/design.html, and test quality. Returns findings ranked by severity. Never edits files.
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
@@ -22,17 +22,18 @@ Right after you read the brief, call the savvy-progress `step` tool with your pl
 **CLAUDE.md rules**
 
 1. Game contract: only `props: { game }` and `emits: finish(score)`. No progress or routing in a game.
-2. Registered in `app/games/registry.ts`; key equals `component` in the JSON.
+2. Registered in `app/components/games/registry.ts`; key equals `component` in the JSON.
 3. Timers through `useCountdown` / `useTimeouts`; nothing left running after unmount.
 4. `useCheer().cheer()` on milestones; copy is kind ("It was X. Carry on from there."), never "Wrong!".
 5. Scores through `bandIndex`; `lowerIsBetter` and `at: null` handled.
 6. Progress only through `useProgress()`; `bgarden` shape stays compatible with design.html.
-7. CSS variables only; no hard-coded colours; both themes.
+7. Tailwind utilities mapped to tokens (or CSS variables); no hard-coded colours; both themes.
 8. Mobile: 44px targets, tab bar clear, inputs ≥16px.
 9. Accessibility: real buttons and links, `aria-label` on icon-only buttons, `:focus-visible`, keyboard play.
-10. `v-html` only for repo JSON `icon.svg` and `demo[].scene`.
-11. Science copy cites real norms or says "Brain Garden guide".
-12. Components under about 150 lines.
+10. `v-html` only for repo JSON `demo[].scene`.
+11. Every SVG is a file in `app/assets/icons/{nav,games,brand}/`, rendered with `<Icon name="bg:<folder>-<name>">`. No inline SVG markup in components or JSON.
+12. Science copy cites real norms or says "Brain Garden guide".
+13. Components under about 150 lines.
 
 **Also**
 

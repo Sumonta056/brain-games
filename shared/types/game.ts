@@ -28,7 +28,7 @@ export interface GameDef {
   bands: Band[]
   science: string
   tip: string
-  icon: { viewBox: string; svg: string }
+  icon: string
 }
 
 export interface CategoryDef {

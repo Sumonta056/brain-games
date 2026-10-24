@@ -4,6 +4,8 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import ProfilePage from '~/pages/profile.vue'
 import { useProgress } from '~/composables/useProgress'
+import copy from '~/data/copy.json'
+import { buttonNamed, iconNames } from '../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -19,7 +21,7 @@ async function mountProfile() {
 
 function stat(wrapper: Awaited<ReturnType<typeof mountProfile>>, label: string) {
   return wrapper
-    .findAll('.stat')
+    .findAll('[data-testid="stat"]')
     .find(s => s.text().includes(label))!
     .get('b')
     .text()
@@ -40,13 +42,13 @@ describe('pages/profile', () => {
 
   it('shows an empty profile for a new player', async () => {
     const wrapper = await mountProfile()
-    expect(wrapper.get('.avatar').text()).toBe('🦉')
-    expect(wrapper.get('.plant b').text()).toBe('Seed')
+    expect(wrapper.get('[data-testid="avatar"]').text()).toBe('🦉')
+    expect(wrapper.get('[data-testid="plant"] b').text()).toBe('Seed')
     expect(stat(wrapper, 'day streak')).toBe('🔥 0')
     expect(stat(wrapper, 'games played')).toBe('0')
     expect(stat(wrapper, 'games tried')).toBe('0 / 15')
     expect(wrapper.text()).toContain('No games yet. Your first one plants the seed 🌱')
-    expect(wrapper.findAll('.skill small').every(s => s.text() === 'not yet')).toBe(true)
+    expect(wrapper.findAll('[data-testid="skill"] small').every(s => s.text() === 'not yet')).toBe(true)
   })
 
   it('shows stats, level, week and recent games from stored progress', async () => {
@@ -61,12 +63,12 @@ describe('pages/profile', () => {
       ]
     })
     const wrapper = await mountProfile()
-    expect(wrapper.get('.plant b').text()).toBe('Sprout')
+    expect(wrapper.get('[data-testid="plant"] b').text()).toBe('Sprout')
     expect(wrapper.text()).toContain('130 growth points')
     expect(stat(wrapper, 'day streak')).toBe('🔥 2')
     expect(stat(wrapper, 'games played')).toBe('3')
     expect(stat(wrapper, 'games tried')).toBe('2 / 15')
-    expect(wrapper.findAll('.week i').map(i => i.classes().includes('on'))).toEqual([
+    expect(wrapper.findAll('[data-testid="week-day"]').map(d => d.attributes('data-state') === 'on')).toEqual([
       false,
       false,
       false,
@@ -75,7 +77,7 @@ describe('pages/profile', () => {
       true,
       true
     ])
-    const rows = wrapper.findAll('.hist li')
+    const rows = wrapper.findAll('[data-testid="history"] li')
     expect(rows).toHaveLength(2)
     expect(rows[0]!.text()).toContain('Mental math')
     expect(rows[0]!.text()).toContain('Sharp')
@@ -84,23 +86,41 @@ describe('pages/profile', () => {
     expect(rows[1]!.text()).toContain('Fast')
   })
 
+  it('shows the game icon on each recent game', async () => {
+    seed({
+      hist: [
+        { id: 'math', s: 12, d: '2026-05-10', t: 2 },
+        { id: 'reaction', s: 240, d: '2026-05-09', t: 1 }
+      ]
+    })
+    const wrapper = await mountProfile()
+    expect(iconNames(wrapper, '[data-testid="history"]')).toEqual(['bg:games-math', 'bg:games-reaction'])
+  })
+
   it('shows at most 10 recent games', async () => {
     seed({ hist: Array.from({ length: 12 }, (_, i) => ({ id: 'math', s: i, d: '2026-05-10', t: i })) })
     const wrapper = await mountProfile()
-    expect(wrapper.findAll('.hist li')).toHaveLength(10)
+    expect(wrapper.findAll('[data-testid="history"] li')).toHaveLength(10)
   })
 
   it('averages band position per category for brain skills', async () => {
     seed({ best: { math: 12, reaction: 240 } })
     const wrapper = await mountProfile()
-    const speed = wrapper.findAll('.skill').find(s => s.get('b').text() === 'Speed')!
+    const speed = wrapper.findAll('[data-testid="skill"]').find(s => s.get('b').text() === 'Speed')!
     expect(speed.get('small').text()).toBe('70%')
+  })
+
+  it('offers every avatar from copy.json in order', async () => {
+    const wrapper = await mountProfile()
+    const buttons = wrapper.findAll('[data-testid="avatars"] button')
+    expect(buttons.map(b => b.text())).toEqual(copy.avatars)
+    expect(buttons.map(b => b.attributes('aria-label'))).toEqual(copy.avatars.map(a => `Choose ${a}`))
   })
 
   it('changes the avatar and name', async () => {
     const wrapper = await mountProfile()
     await wrapper.get('button[aria-label="Choose 🐼"]').trigger('click')
-    expect(wrapper.get('.avatar').text()).toBe('🐼')
+    expect(wrapper.get('[data-testid="avatar"]').text()).toBe('🐼')
     expect(wrapper.get('button[aria-label="Choose 🐼"]').attributes('aria-pressed')).toBe('true')
     const name = wrapper.get('input[aria-label="Your name"]')
     expect(name.attributes('maxlength')).toBe('24')
@@ -115,7 +135,7 @@ describe('pages/profile', () => {
     const confirm = vi.fn(() => true)
     vi.stubGlobal('confirm', confirm)
     const wrapper = await mountProfile()
-    await wrapper.get('button.ghost').trigger('click')
+    await buttonNamed(wrapper, 'Reset all progress').trigger('click')
     expect(confirm).toHaveBeenCalledWith('Clear your profile and all scores in this browser?')
     expect(useProgress().progress.value).toMatchObject({ xp: 0, best: {}, hist: [] })
     expect(stat(wrapper, 'games played')).toBe('0')
@@ -128,7 +148,7 @@ describe('pages/profile', () => {
       vi.fn(() => false)
     )
     const wrapper = await mountProfile()
-    await wrapper.get('button.ghost').trigger('click')
+    await buttonNamed(wrapper, 'Reset all progress').trigger('click')
     expect(useProgress().progress.value.xp).toBe(50)
     expect(stat(wrapper, 'games tried')).toBe('1 / 15')
   })

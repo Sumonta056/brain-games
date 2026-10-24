@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import BoxBreathing from '~/games/BoxBreathing.vue'
-import { breathGame } from '../fixtures'
+import BoxBreathing from '~/components/games/BoxBreathing.vue'
+import { breathGame } from '../../fixtures'
 
 describe('BoxBreathing', () => {
   beforeEach(() => vi.useFakeTimers())
@@ -20,7 +20,7 @@ describe('BoxBreathing', () => {
     const labels: string[] = []
     await vi.advanceTimersByTimeAsync(1200)
     for (let i = 0; i < 4; i++) {
-      labels.push(wrapper.get('.breath span').text().replace(/\d/g, '').trim())
+      labels.push(wrapper.get('[data-testid="breath-label"]').text().replace(/\d/g, '').trim())
       await vi.advanceTimersByTimeAsync(4000)
     }
     expect(labels).toEqual(['Breathe in', 'Hold', 'Breathe out', 'Hold'])

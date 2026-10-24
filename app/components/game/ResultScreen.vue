@@ -1,16 +1,37 @@
 <template>
-  <div class="result">
-    <div class="emo">{{ emoji }}</div>
-    <div class="score">{{ score }}</div>
-    <div class="unit">{{ game.unit }}</div>
-    <h2>{{ band.label }}</h2>
-    <p>{{ band.message }}</p>
-    <div v-if="result.isPB && result.prev != null" class="pbtag">New personal best! Up from {{ result.prev }}</div>
-    <div v-else-if="result.prev == null" class="pbtag">First score planted 🌱</div>
-    <p v-else>Your best is {{ result.prev }}. {{ close ? 'So close!' : 'Every round still counts.' }}</p>
+  <div class="text-center" data-testid="result">
+    <div class="text-[52px] leading-none" data-testid="emoji">{{ emoji }}</div>
+    <div
+      class="bg-[linear-gradient(90deg,var(--accent-2),var(--accent))] bg-clip-text font-display text-[length:clamp(80px,14vw,130px)] leading-none font-extrabold text-transparent [-webkit-background-clip:text]"
+      data-testid="score"
+    >
+      {{ score }}
+    </div>
+    <div class="font-medium text-muted" data-testid="unit">{{ game.unit }}</div>
+    <h2 class="mx-0 mt-2.5 mb-1 font-display text-[34px] leading-[1.1] font-extrabold max-md:text-[28px]">
+      {{ band.label }}
+    </h2>
+    <p class="mx-auto my-1.5 max-w-[52ch] text-muted">{{ band.message }}</p>
+    <div
+      v-if="result.isPB && result.prev != null"
+      class="mt-2 inline-block rounded-pill bg-sun-bg px-3.5 py-[3px] font-semibold text-sun-fg"
+      data-testid="pb-tag"
+    >
+      New personal best! Up from {{ result.prev }}
+    </div>
+    <div
+      v-else-if="result.prev == null"
+      class="mt-2 inline-block rounded-pill bg-sun-bg px-3.5 py-[3px] font-semibold text-sun-fg"
+      data-testid="pb-tag"
+    >
+      First score planted 🌱
+    </div>
+    <p v-else class="mx-auto my-1.5 max-w-[52ch] text-muted">
+      Your best is {{ result.prev }}. {{ close ? 'So close!' : 'Every round still counts.' }}
+    </p>
     <div class="row">
       <button ref="again" class="go" @click="$emit('again')">Play again</button>
-      <NuxtLink to="/games" class="ghost" style="text-decoration: none; color: inherit">More games</NuxtLink>
+      <NuxtLink to="/games" class="ghost text-inherit no-underline">More games</NuxtLink>
     </div>
   </div>
 </template>

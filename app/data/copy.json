@@ -1,0 +1,57 @@
+{
+  "greetings": [
+    {
+      "before": 5,
+      "text": "Still awake"
+    },
+    {
+      "before": 12,
+      "text": "Good morning"
+    },
+    {
+      "before": 17,
+      "text": "Good afternoon"
+    },
+    {
+      "before": 24,
+      "text": "Good evening"
+    }
+  ],
+  "affirmations": [
+    "Small reps, every day. That’s how a mind grows.",
+    "Mistakes are just your brain finding the edges.",
+    "You don’t have to be fast today. Just be here.",
+    "Curiosity is a superpower. Use it on something small.",
+    "Rest is part of training, not a break from it.",
+    "Every new thing you try leaves a little trail in your brain.",
+    "Progress you can’t see yet is still progress."
+  ],
+  "moods": [
+    {
+      "emoji": "😌",
+      "label": "Calm",
+      "ids": ["breath", "pairs", "odd"],
+      "msg": "Keep the peace:"
+    },
+    {
+      "emoji": "😴",
+      "label": "Tired",
+      "ids": ["breath", "sequence", "category"],
+      "msg": "Go easy:"
+    },
+    {
+      "emoji": "😤",
+      "label": "Stressed",
+      "ids": ["breath", "odd", "hand"],
+      "msg": "Breathe first:"
+    },
+    {
+      "emoji": "⚡",
+      "label": "Energised",
+      "ids": ["reaction", "math", "stroop"],
+      "msg": "Use that spark:"
+    }
+  ],
+  "avatars": ["🦉", "🐼", "🦊", "🐢", "🐬", "🌻", "🐝", "🌙", "⭐", "🍀"],
+  "praise": ["Nice!", "Great!", "On a roll!", "Lovely", "Smooth", "Keep going", "Yes!", "Brain on fire 🔥"]
+}

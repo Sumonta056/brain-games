@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import ComingSoon from '~/games/ComingSoon.vue'
-import { makeGame } from '../fixtures'
+import ComingSoon from '~/components/games/ComingSoon.vue'
+import { makeGame } from '../../fixtures'
 
 describe('ComingSoon', () => {
   it('names the design.html logic to port', async () => {

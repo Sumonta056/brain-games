@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import ReactionTime from '~/games/ReactionTime.vue'
-import { reactionGame } from '../fixtures'
+import ReactionTime from '~/components/games/ReactionTime.vue'
+import { reactionGame } from '../../fixtures'
 
 const MIN_WAIT = 1200
 
@@ -11,9 +11,9 @@ describe('ReactionTime', () => {
 
   async function playRound(target: Awaited<ReturnType<typeof mountSuspended>>, ms: number) {
     await vi.advanceTimersByTimeAsync(MIN_WAIT)
-    expect(target.get('.react').classes()).toContain('go2')
+    expect(target.get('[role="button"]').attributes('data-state')).toBe('go')
     vi.advanceTimersByTime(ms)
-    await target.get('.react').trigger('keydown', { key: ' ' })
+    await target.get('[role="button"]').trigger('keydown', { key: ' ' })
   }
 
   it('averages 5 rounds and finishes with the mean in ms', async () => {
@@ -28,14 +28,14 @@ describe('ReactionTime', () => {
 
   it('restarts the round with a kind message after an early tap', async () => {
     const wrapper = await mountSuspended(ReactionTime, { props: { game: reactionGame } })
-    await wrapper.get('.react').trigger('keydown', { key: 'Enter' })
-    expect(wrapper.get('.react').text()).toContain('A little early')
+    await wrapper.get('[role="button"]').trigger('keydown', { key: 'Enter' })
+    expect(wrapper.get('[role="button"]').text()).toContain('A little early')
     expect(wrapper.text()).toContain('Round 1 of 5')
     expect(wrapper.emitted('finish')).toBeUndefined()
   })
 
   it('is focusable for keyboard play', async () => {
     const wrapper = await mountSuspended(ReactionTime, { props: { game: reactionGame } })
-    expect(wrapper.get('.react').attributes('tabindex')).toBe('0')
+    expect(wrapper.get('[role="button"]').attributes('tabindex')).toBe('0')
   })
 })

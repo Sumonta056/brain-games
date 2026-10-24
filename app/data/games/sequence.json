@@ -58,8 +58,5 @@
   ],
   "science": "Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.",
   "tip": "Trace the path as a shape: “L-shape, then corner.”",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<g fill=\"currentColor\" opacity=\".3\"><rect x=\"5\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"26\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/><rect x=\"5\" y=\"26\" width=\"17\" height=\"17\" rx=\"5\"/></g><rect x=\"26\" y=\"5\" width=\"17\" height=\"17\" rx=\"5\" fill=\"currentColor\"/>"
-  }
+  "icon": "sequence"
 }

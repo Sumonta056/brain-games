@@ -1,6 +1,14 @@
 import { defineVitestConfig } from '@nuxt/test-utils/config'
 
 export default defineVitestConfig({
+  plugins: [
+    {
+      name: 'no-glob-cache',
+      configureVitest({ defineCacheKeyGenerator }) {
+        defineCacheKeyGenerator(({ sourceCode }) => (/import\.meta\.glob\s*[<(]/.test(sourceCode) ? false : undefined))
+      }
+    }
+  ],
   test: {
     environment: 'nuxt',
     environmentOptions: { nuxt: { domEnvironment: 'happy-dom' } },

@@ -5,6 +5,7 @@ import { clearNuxtState } from '#imports'
 import DailyFive from '~/components/home/DailyFive.vue'
 import { useGames } from '~/composables/useGames'
 import { useProgress } from '~/composables/useProgress'
+import { iconNames } from '../../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -34,8 +35,14 @@ describe('DailyFive', () => {
     const links = w.findAll('a')
     expect(links.map(a => a.attributes('href'))).toEqual(five.map(g => `/games/${g.id}`))
     expect(links.map(a => a.get('span').text())).toEqual(five.map(g => g.name))
-    expect(w.get('.lbl').text()).toBe('Today’s five · 0/5')
-    expect(links.some(a => a.classes().includes('done'))).toBe(false)
+    expect(w.get('[data-testid="daily-label"]').text()).toBe('Today’s five · 0/5')
+    expect(links.some(a => a.attributes('data-state') === 'done')).toBe(false)
+  })
+
+  it('shows each pick with its game icon', async () => {
+    const five = useGames().todaysFive()
+    const w = await daily()
+    expect(iconNames(w)).toEqual(five.map(g => `bg:games-${g.id}`))
   })
 
   it('marks a game played today and counts it', async () => {
@@ -43,8 +50,8 @@ describe('DailyFive', () => {
     const w = await daily()
     useProgress().record(five[1]!, 3)
     await nextTick()
-    expect(w.get('.lbl').text()).toBe('Today’s five · 1/5')
-    expect(w.findAll('a').map(a => a.classes().includes('done'))).toEqual([false, true, false, false, false])
+    expect(w.get('[data-testid="daily-label"]').text()).toBe('Today’s five · 1/5')
+    expect(w.findAll('a').map(a => a.attributes('data-state') === 'done')).toEqual([false, true, false, false, false])
   })
 
   it('does not count games played on another day or outside the five', async () => {
@@ -60,7 +67,7 @@ describe('DailyFive', () => {
       })
     )
     const w = await daily()
-    expect(w.get('.lbl').text()).toBe('Today’s five · 0/5')
+    expect(w.get('[data-testid="daily-label"]').text()).toBe('Today’s five · 0/5')
   })
 
   it('celebrates when all five are done', async () => {
@@ -69,7 +76,7 @@ describe('DailyFive', () => {
     const { record } = useProgress()
     five.forEach(g => record(g, 1))
     await nextTick()
-    expect(w.get('.lbl').text()).toBe('Today’s five: all done 🌸')
-    expect(w.findAll('a.done')).toHaveLength(5)
+    expect(w.get('[data-testid="daily-label"]').text()).toBe('Today’s five: all done 🌸')
+    expect(w.findAll('a[data-state="done"]')).toHaveLength(5)
   })
 })

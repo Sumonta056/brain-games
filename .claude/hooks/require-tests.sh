@@ -5,7 +5,7 @@ cd "$ROOT" || exit 0
 
 is_exempt() {
   case "$1" in
-    app/app.vue|app/games/registry.ts|app/layouts/*|app/data/*|app/assets/*|shared/types/*|*.d.ts) return 0 ;;
+    app/app.vue|app/components/games/registry.ts|app/layouts/*|app/data/*|app/assets/*|shared/types/*|*.d.ts) return 0 ;;
   esac
   return 1
 }

@@ -52,8 +52,5 @@
   ],
   "science": "Slow, paced breathing at about 4–6 breaths a minute is widely used to calm the stress response. Box breathing is a simple version of it.",
   "tip": "Try this before a hard task or a meeting.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"12\" fill=\"currentColor\" opacity=\".4\"/><circle cx=\"24\" cy=\"24\" r=\"5\" fill=\"currentColor\"/>"
-  }
+  "icon": "breath"
 }

@@ -60,8 +60,5 @@
   ],
   "science": "Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.",
   "tip": "Look at the centre and let numbers find you in your side vision.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"currentColor\" opacity=\".18\"/><circle cx=\"24\" cy=\"24\" r=\"9\" stroke=\"currentColor\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"24\" cy=\"24\" r=\"3\" fill=\"currentColor\"/><path d=\"M24 4v8M24 36v8M4 24h8M36 24h8\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
-  }
+  "icon": "schulte"
 }

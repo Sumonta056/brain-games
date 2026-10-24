@@ -80,22 +80,24 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 ## 4. Game JSON contract (`app/data/games/<id>.json`)
 
-| Field                     | Type                               | Notes                                |
-| ------------------------- | ---------------------------------- | ------------------------------------ |
-| id                        | string                             | URL slug, unique                     |
-| order                     | number                             | Display order                        |
-| component                 | string                             | Key in `app/games/registry.ts`       |
-| name, blurb, trains, unit | string                             | Copy                                 |
-| category                  | Calm/Speed/Words/Memory/Focus/Body | Drives tint                          |
-| level                     | Easy/Medium/Hard                   |                                      |
-| size                      | normal/wide/tall/big               | Bento tile size                      |
-| durationSec               | number or null                     | Timed games only                     |
-| lowerIsBetter             | boolean                            | reaction, schulte, pairs             |
-| steps                     | string[3]                          | How to play                          |
-| demo                      | {scene (HTML), caption}[3]         | Ready-screen animation frames        |
-| bands                     | {at, range, label, message}[]      | Lowest → highest performance         |
-| science, tip              | string                             | Sidebar                              |
-| icon                      | {viewBox, svg}                     | 48×48 inner SVG, uses `currentColor` |
+| Field                     | Type                               | Notes                                                                                                          |
+| ------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| id                        | string                             | URL slug, unique                                                                                               |
+| order                     | number                             | Display order                                                                                                  |
+| component                 | string                             | Key in `app/components/games/registry.ts`                                                                      |
+| name, blurb, trains, unit | string                             | Copy                                                                                                           |
+| category                  | Calm/Speed/Words/Memory/Focus/Body | Drives tint                                                                                                    |
+| level                     | Easy/Medium/Hard                   |                                                                                                                |
+| size                      | normal/wide/tall/big               | Bento tile size                                                                                                |
+| durationSec               | number or null                     | Timed games only                                                                                               |
+| lowerIsBetter             | boolean                            | reaction, schulte, pairs                                                                                       |
+| steps                     | string[3]                          | How to play                                                                                                    |
+| demo                      | {scene (HTML), caption}[3]         | Ready-screen animation frames                                                                                  |
+| bands                     | {at, range, label, message}[]      | Lowest → highest performance                                                                                   |
+| science, tip              | string                             | Sidebar                                                                                                        |
+| icon                      | string                             | File name in `app/assets/icons/games/<icon>.svg`: a 48×48 SVG (`viewBox="0 0 48 48"`) that uses `currentColor` |
+
+Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars` and `praise`. Components never hard-code it.
 
 ## 5. The 15 games (behaviour)
 
@@ -124,7 +126,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 - **Category tints** (bg/fg pairs, same lightness per theme): Calm = mint, Speed = peach, Words = rose, Memory = lilac, Focus = sky, Body = sun.
 - **Fonts:** Baloo 2 (display, numbers, buttons), Lexend (body).
 - **Shape:** radius 22px (cards), 18px (buttons), 14px (icons). Primary button: accent fill with a 5px darker bottom shadow ("pressable").
-- All tokens are in `app/assets/css/main.css` (`:root`, `[data-theme]`).
+- All tokens are in `app/assets/css/tokens.css` (`:root`, `[data-theme]`). `app/assets/css/main.css` maps them into Tailwind `@theme`, so utilities use only these tokens (no default Tailwind palette).
 
 ## 7. Non-functional requirements
 

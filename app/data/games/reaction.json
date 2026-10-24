@@ -64,8 +64,5 @@
   ],
   "science": "Online tests put the median human visual reaction at roughly 250–280 ms. Your screen and mouse add a little delay, so compare on the same device.",
   "tip": "Sleep and a short walk improve reaction time more than practice does.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M27 6 13 27h10l-3 15 15-22H25z\" fill=\"currentColor\"/>"
-  }
+  "icon": "reaction"
 }

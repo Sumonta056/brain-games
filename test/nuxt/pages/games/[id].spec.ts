@@ -8,6 +8,7 @@ describe('pages/games/[id]', () => {
 
   it('renders the game shell for a known id', async () => {
     const wrapper = await mountSuspended(GamePage, { route: '/games/math' })
+    expect(wrapper.find('[data-testid="game-page"]').exists()).toBe(true)
     expect(wrapper.get('h1').text()).toBe('Mental math')
     expect(wrapper.text()).toContain('Ready?')
     await vi.waitFor(() => expect(document.title).toBe('Mental math — Brain Garden'))
@@ -15,7 +16,7 @@ describe('pages/games/[id]', () => {
 
   it('throws a 404 for an unknown id', async () => {
     const wrapper = await mountSuspended(GamePage, { route: '/games/nope' })
-    expect(wrapper.find('.gpage').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="game-page"]').exists()).toBe(false)
     expect(useError().value).toMatchObject({ statusCode: 404, statusMessage: 'Game not found', fatal: true })
   })
 })

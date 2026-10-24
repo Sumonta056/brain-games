@@ -1,0 +1,91 @@
+:root {
+  --bg: #fff6f7;
+  --surface: #ffffff;
+  --raise: #fff0f3;
+  --ink: #2b1d2f;
+  --muted: #6d5c70;
+  --line: #f2dde3;
+  --accent: #d9466e;
+  --accent-2: #7552e0;
+  --on-accent: #ffffff;
+  --glow: rgba(217, 70, 110, 0.18);
+  --good: #23885a;
+  --bad: #c93a4a;
+  --sun: #f6c445;
+  --mint-bg: #dff4ea;
+  --mint-fg: #1e7a50;
+  --peach-bg: #ffe9d9;
+  --peach-fg: #b4561a;
+  --rose-bg: #fde3ea;
+  --rose-fg: #b83260;
+  --lilac-bg: #ece6fd;
+  --lilac-fg: #5b3ec6;
+  --sky-bg: #e1eefb;
+  --sky-fg: #215f9e;
+  --sun-bg: #fff2cf;
+  --sun-fg: #8a6300;
+  --display: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  --body: 'Lexend', 'Segoe UI', system-ui, sans-serif;
+  --nav-h: 64px;
+  --c: var(--accent);
+  box-sizing: border-box;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #110e1f;
+    --surface: #1b1730;
+    --raise: #231e3d;
+    --ink: #f2edfb;
+    --muted: #ada4c6;
+    --line: #2e2849;
+    --accent: #ff7fa3;
+    --accent-2: #a08bff;
+    --on-accent: #1a0f1f;
+    --glow: rgba(160, 139, 255, 0.25);
+    --good: #5ed6a0;
+    --bad: #ff8a95;
+    --mint-bg: #173229;
+    --mint-fg: #7fe0b4;
+    --peach-bg: #352418;
+    --peach-fg: #ffb88a;
+    --rose-bg: #3a1a2c;
+    --rose-fg: #ff9dba;
+    --lilac-bg: #2a2252;
+    --lilac-fg: #c2b3ff;
+    --sky-bg: #172b44;
+    --sky-fg: #8ec3ff;
+    --sun-bg: #33290f;
+    --sun-fg: #f8d37a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #110e1f;
+  --surface: #1b1730;
+  --raise: #231e3d;
+  --ink: #f2edfb;
+  --muted: #ada4c6;
+  --line: #2e2849;
+  --accent: #ff7fa3;
+  --accent-2: #a08bff;
+  --on-accent: #1a0f1f;
+  --glow: rgba(160, 139, 255, 0.25);
+  --good: #5ed6a0;
+  --bad: #ff8a95;
+  --mint-bg: #173229;
+  --mint-fg: #7fe0b4;
+  --peach-bg: #352418;
+  --peach-fg: #ffb88a;
+  --rose-bg: #3a1a2c;
+  --rose-fg: #ff9dba;
+  --lilac-bg: #2a2252;
+  --lilac-fg: #c2b3ff;
+  --sky-bg: #172b44;
+  --sky-fg: #8ec3ff;
+  --sun-bg: #33290f;
+  --sun-fg: #f8d37a;
+  color-scheme: dark;
+}

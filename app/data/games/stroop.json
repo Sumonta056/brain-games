@@ -58,8 +58,5 @@
   ],
   "science": "The Stroop effect: reading is so automatic that naming ink colour is slower when the word conflicts. It’s a classic test of attention control.",
   "tip": "Blur your eyes slightly so the word is harder to read.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<path d=\"M24 4c8 10 14 17 14 24a14 14 0 0 1-28 0c0-7 6-14 14-24z\" fill=\"currentColor\"/><path d=\"M17 28a7 7 0 0 0 7 7\" stroke=\"#fff\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
-  }
+  "icon": "stroop"
 }

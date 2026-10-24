@@ -58,8 +58,5 @@
   ],
   "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.",
   "tip": "Subtract 10, then add 3. Many people find it easier.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"currentColor\" opacity=\".18\"/><path d=\"M13 13h14l-9 22\" stroke=\"currentColor\" stroke-width=\"4.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M35 14v18m-5-5 5 5 5-5\" stroke=\"currentColor\" stroke-width=\"3.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
-  }
+  "icon": "serial7"
 }

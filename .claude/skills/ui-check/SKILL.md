@@ -1,6 +1,6 @@
 ---
 name: ui-check
-description: How to compare a Brain Garden page with the approved design in docs/design.html using Chrome DevTools MCP. Use after any change to a .vue file, main.css, or game JSON copy, when the ui-verifier agent runs, or when the user asks whether a page matches the design, works on mobile, or works in dark mode. Covers viewports, themes, the route-to-design map, and the CLAUDE.md rules 7 to 9 checklist.
+description: How to compare a Brain Garden page with the approved design in docs/design.html using Chrome DevTools MCP. Use after any change to a .vue file, a CSS file in app/assets/css, or game JSON copy, when the ui-verifier agent runs, or when the user asks whether a page matches the design, works on mobile, or works in dark mode. Covers viewports, themes, the route-to-design map, and the CLAUDE.md rules 7 to 9 checklist.
 ---
 
 # UI check against docs/design.html
@@ -81,7 +81,7 @@ Ignore differences that come from different random values (questions, shuffles, 
 
 Check each item with `evaluate_script` or `get_css_styles`, not by eye alone.
 
-1. **CSS variables only.** Look for hard-coded colours in the changed components: `grep -nE '#[0-9a-fA-F]{3,8}\b|rgb\(|hsl\(' app/components app/games app/pages`. Only `main.css` defines colours.
+1. **Tokens only.** Tailwind utilities that map to the tokens, or CSS variables. Look for hard-coded colours in the changed components: `grep -nE '#[0-9a-fA-F]{3,8}\b|rgb\(|hsl\(' app/components app/pages`. Only `tokens.css` defines colours.
 2. **Both themes work.** No unreadable text, no white boxes in dark mode, no missing tints. Check contrast of body text and buttons.
 3. **Touch targets ≥44px** at 360px wide:
    ```js

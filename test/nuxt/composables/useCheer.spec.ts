@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { clearNuxtState } from '#imports'
 import { useCheer } from '~/composables/useCheer'
+import copy from '~/data/copy.json'
 
 describe('useCheer', () => {
   beforeEach(() => {
@@ -20,6 +21,17 @@ describe('useCheer', () => {
     cheer()
     expect(cheers.value).toHaveLength(1)
     expect(cheers.value[0]!.text.length).toBeGreaterThan(0)
+  })
+
+  it('picks every praise from copy.json and nothing else', () => {
+    const { cheer, cheers } = useCheer()
+    const n = copy.praise.length
+    const random = vi.spyOn(Math, 'random')
+    for (let i = 0; i < n; i++) {
+      random.mockReturnValue((i + 0.5) / n)
+      cheer()
+    }
+    expect(cheers.value.map(c => c.text)).toEqual(copy.praise)
   })
 
   it('removes each cheer after 1100ms', () => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="center">
+  <div class="text-center" data-testid="coming-soon">
     <p class="mid">Coming soon</p>
     <p class="note">
       This game is not ported yet. Its logic is <code>RUN.{{ game.id }}</code> in docs/design.html.

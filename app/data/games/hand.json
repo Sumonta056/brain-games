@@ -52,8 +52,5 @@
   ],
   "science": "Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.",
   "tip": "Start with low-stakes tasks like scrolling your phone.",
-  "icon": {
-    "viewBox": "0 0 48 48",
-    "svg": "<path d=\"M14 26V12a3 3 0 0 1 6 0v10V8a3 3 0 0 1 6 0v14V10a3 3 0 0 1 6 0v14-8a3 3 0 0 1 6 0v14c0 8-6 14-13 14s-10-3-13-8l-5-8a3 3 0 0 1 5-3z\" fill=\"currentColor\"/>"
-  }
+  "icon": "hand"
 }

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import AppNav from '~/components/app/AppNav.vue'
+import { iconNames } from '../../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -38,6 +39,42 @@ describe('AppNav', () => {
     expect(logo.text()).toContain('Brain Garden')
   })
 
+  it('shows the brain logo icon in the home link', async () => {
+    const w = await mountAt('/')
+    expect(iconNames(w, 'a[aria-label="Brain Garden home"]')).toEqual(['bg:brand-logo'])
+  })
+
+  it('shows a home, games and user icon on the tabs', async () => {
+    const w = await mountAt('/')
+    expect(['Home', 'Games', 'Profile'].map(label => iconNames(w, `nav a[aria-label="${label}"]`))).toEqual([
+      ['bg:nav-home'],
+      ['bg:nav-games'],
+      ['bg:nav-user']
+    ])
+  })
+
+  it('shows a flame icon next to the streak', async () => {
+    const w = await mountAt('/')
+    expect(iconNames(w, '[data-testid="streak"]')).toEqual(['bg:nav-flame'])
+  })
+
+  it('shows the auto, sun and moon icon for the auto, light and dark themes', async () => {
+    const w = await mountAt('/')
+    const btnIcon = () => iconNames(w, 'button')
+    expect(btnIcon()).toEqual(['bg:nav-auto'])
+    await w.get('button').trigger('click')
+    expect(btnIcon()).toEqual(['bg:nav-sun'])
+    await w.get('button').trigger('click')
+    expect(btnIcon()).toEqual(['bg:nav-moon'])
+  })
+
+  it('keeps every nav icon decorative', async () => {
+    const w = await mountAt('/')
+    const icons = w.findAllComponents({ name: 'NuxtIcon' })
+    expect(icons).toHaveLength(6)
+    icons.forEach(i => expect(i.attributes('aria-hidden')).toBe('true'))
+  })
+
   it('has Home, Games and Profile tabs', async () => {
     const w = await mountAt('/')
     const tabs = w.findAll('nav a')
@@ -60,7 +97,7 @@ describe('AppNav', () => {
   it('shows the current streak', async () => {
     save({ days: ['2026-05-08', '2026-05-09', '2026-05-10'] })
     const w = await mountAt('/')
-    expect(w.get('.streak').text()).toBe('3')
+    expect(w.get('[data-testid="streak"]').text()).toBe('3')
   })
 
   it('cycles the theme Auto → Light → Dark → Auto on click', async () => {

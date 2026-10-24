@@ -1,12 +1,23 @@
+import tailwindcss from '@tailwindcss/vite'
+
 // Brain Garden — Nuxt 4 (app/ directory). Client-only for now: all progress lives in localStorage.
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   ssr: false,
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint'],
+  modules: ['@nuxt/eslint', '@nuxt/icon'],
+  icon: {
+    mode: 'svg',
+    provider: 'none',
+    fallbackToApi: false,
+    serverBundle: false,
+    clientBundle: { includeCustomCollections: true },
+    customCollections: [{ prefix: 'bg', dir: './app/assets/icons', recursive: true }]
+  },
   css: ['~/assets/css/main.css'],
+  vite: { plugins: [tailwindcss()] },
   // Components are referenced by file name only (<GameTile>, not <HomeGameTile>).
-  components: [{ path: '~/components', pathPrefix: false }],
+  components: [{ path: '~/components', pathPrefix: false, extensions: ['vue'] }],
   typescript: { strict: true },
   app: {
     head: {

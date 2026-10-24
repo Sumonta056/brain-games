@@ -2,7 +2,7 @@
   <div>
     <div class="breath">
       <i :style="{ transform: `scale(${scale})` }" /><i class="b2" :style="{ transform: `scale(${scale})` }" />
-      <span>{{ phaseLabel }}<br v-if="count" />{{ count || '' }}</span>
+      <span data-testid="breath-label">{{ phaseLabel }}<br v-if="count" />{{ count || '' }}</span>
     </div>
     <p class="note">{{ cycles }} of 4 rounds · {{ cycles < 4 ? 'beautiful' : 'done' }}</p>
     <div class="row"><button class="ghost" @click="emit('finish', cycles)">Finish early</button></div>

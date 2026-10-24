@@ -8,12 +8,7 @@ export default withNuxt(
     }
   },
   {
-    files: [
-      'app/components/app/GameIcon.vue',
-      'app/components/app/NavIcon.vue',
-      'app/components/game/ReadyScreen.vue',
-      'app/components/home/GameTile.vue'
-    ],
+    files: ['app/components/game/ReadyScreen.vue'],
     rules: {
       'vue/no-v-html': 'off'
     }

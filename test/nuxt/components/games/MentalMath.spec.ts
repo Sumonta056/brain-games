@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import MentalMath from '~/games/MentalMath.vue'
-import { mathGame } from '../fixtures'
+import MentalMath from '~/components/games/MentalMath.vue'
+import { mathGame } from '../../fixtures'
 
 function solve(q: string) {
   const [a, op, b] = q.trim().split(' ')
@@ -18,7 +18,7 @@ describe('MentalMath', () => {
     const wrapper = await mountSuspended(MentalMath, { props: { game: mathGame } })
     const input = wrapper.get('input')
     for (let i = 0; i < 3; i++) {
-      await input.setValue(String(solve(wrapper.get('.big').text())))
+      await input.setValue(String(solve(wrapper.get('[data-testid="question"]').text())))
     }
     expect(wrapper.text()).toContain('Score 3')
     vi.advanceTimersByTime((mathGame.durationSec ?? 60) * 1000 + 200)
@@ -27,10 +27,10 @@ describe('MentalMath', () => {
 
   it('does not score a wrong answer', async () => {
     const wrapper = await mountSuspended(MentalMath, { props: { game: mathGame } })
-    const question = wrapper.get('.big').text()
+    const question = wrapper.get('[data-testid="question"]').text()
     await wrapper.get('input').setValue(String(solve(question) + 1))
     expect(wrapper.text()).toContain('Score 0')
-    expect(wrapper.get('.big').text()).toBe(question)
+    expect(wrapper.get('[data-testid="question"]').text()).toBe(question)
   })
 
   it('labels the answer input for screen readers', async () => {
