@@ -99,6 +99,13 @@ describe('game JSON contract (functional-requirements §4)', () => {
     })
   })
 
+  it('has a one-sentence blurb that ends with a single full stop', () => {
+    for (const { game } of games) {
+      expect(game.blurb, game.id).toMatch(/[^.]\.$/)
+      expect(game.blurb.slice(0, -1), game.id).not.toMatch(/[.!?]\s/)
+    }
+  })
+
   it('registers ComingSoon as the fallback component', () => {
     expect(gameComponents.ComingSoon).toBeDefined()
   })

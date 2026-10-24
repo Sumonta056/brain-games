@@ -21,7 +21,8 @@ describe('ReadyScreen', () => {
   it('shows Ready? with the game blurb', async () => {
     const wrapper = await mountReady()
     expect(wrapper.get('h2').text()).toBe('Ready?')
-    expect(wrapper.text()).toContain(`${mathGame.blurb}. Watch the demo, then jump in.`)
+    expect(wrapper.text()).toContain(`${mathGame.blurb} Watch the demo, then jump in.`)
+    expect(wrapper.text()).not.toContain('..')
   })
 
   it('starts on the first demo frame with one dot per frame', async () => {

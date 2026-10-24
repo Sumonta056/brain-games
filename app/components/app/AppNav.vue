@@ -5,7 +5,7 @@
     <div class="mx-auto flex h-full max-w-page items-center gap-3.5 px-5 max-md:gap-2 max-md:px-3">
       <NuxtLink
         to="/"
-        class="flex cursor-pointer items-center gap-2 p-0 font-display text-[22px] leading-none font-extrabold text-ink no-underline max-md:text-[19px] max-xs:gap-0 max-xs:text-[0px]"
+        class="flex cursor-pointer items-center gap-2 p-0 font-display text-[22px] leading-none font-extrabold text-ink no-underline max-md:min-h-11 max-md:min-w-11 max-md:text-[19px] max-xs:gap-0 max-xs:text-[0px]"
         aria-label="Brain Garden home"
         ><Icon name="bg:brand-logo" width="unset" height="unset" class="size-[34px] max-md:size-[30px]" />Brain
         Garden</NuxtLink
@@ -44,7 +44,7 @@
         </button>
         <NuxtLink
           to="/profile"
-          class="flex cursor-pointer items-center gap-2 rounded-pill border border-line bg-surface py-1 pr-3.5 pl-1 text-[15px] font-medium text-ink no-underline max-md:p-[3px]"
+          class="flex cursor-pointer items-center gap-2 rounded-pill border border-line bg-surface py-1 pr-3.5 pl-1 text-[15px] font-medium text-ink no-underline max-md:min-h-11 max-md:min-w-11 max-md:p-[3px]"
           aria-label="Open your profile"
         >
           <span class="grid size-8 place-items-center rounded-[50%] bg-lilac-bg text-[18px] max-md:size-[34px]">{{

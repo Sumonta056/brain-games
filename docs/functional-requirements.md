@@ -85,7 +85,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 | id                        | string                             | URL slug, unique                                                                                               |
 | order                     | number                             | Display order                                                                                                  |
 | component                 | string                             | Key in `app/components/games/registry.ts`                                                                      |
-| name, blurb, trains, unit | string                             | Copy                                                                                                           |
+| name, blurb, trains, unit | string                             | Copy. The blurb is one sentence that ends with a full stop.                                                    |
 | category                  | Calm/Speed/Words/Memory/Focus/Body | Drives tint                                                                                                    |
 | level                     | Easy/Medium/Hard                   |                                                                                                                |
 | size                      | normal/wide/tall/big               | Bento tile size                                                                                                |
@@ -135,7 +135,7 @@ Shared copy that is not about one game lives in `app/data/copy.json`: `greetings
 - **Light, "pink matter":** bg `#FFF6F7`, surface `#FFFFFF`, ink `#2B1D2F`, accent `#D9466E`, accent-2 `#7552E0`.
 - **Dark, "neural night":** bg `#110E1F`, surface `#1B1730`, ink `#F2EDFB`, accent `#FF7FA3`, accent-2 `#A08BFF`.
 - **Category tints** (bg/fg pairs, same lightness per theme): Calm = mint, Speed = peach, Words = rose, Memory = lilac, Focus = sky, Body = sun.
-- **Stroop inks:** `--stroop-red` `#E04848`, `--stroop-blue` `#2F80E8`, `--stroop-green` `#2E9E5B`, `--stroop-yellow` `#E8A800` (the same in both themes, with white button text). Only the Stroop game uses them.
+- **Stroop inks:** `--stroop-red` `#E04848`, `--stroop-blue` `#2F80E8`, `--stroop-green` `#2E9E5B`, `--stroop-yellow` `#E8A800` (the same in both themes). Buttons use white text, except Yellow, which uses dark text `--stroop-yellow-text` `#2B1D2F` for contrast. A colour token `<t>` can define `--<t>-text`; the default is `--stroop-text` `#FFFFFF`. Neither changes with the theme. Only the Stroop game uses them.
 - **Fonts:** Baloo 2 (display, numbers, buttons), Lexend (body).
 - **Shape:** radius 22px (cards), 18px (buttons), 14px (icons). Primary button: accent fill with a 5px darker bottom shadow ("pressable").
 - All tokens are in `app/assets/css/tokens.css` (`:root`, `[data-theme]`). `app/assets/css/main.css` maps them into Tailwind `@theme`, so utilities use only these tokens (no default Tailwind palette).

@@ -9,7 +9,7 @@
       >
         Ready?
       </h2>
-      <p class="mx-0 mt-0 mb-5 text-muted max-md:mb-3.5">{{ game.blurb }}. Watch the demo, then jump in.</p>
+      <p class="mx-0 mt-0 mb-5 text-muted max-md:mb-3.5">{{ game.blurb }} Watch the demo, then jump in.</p>
       <button ref="btn" class="go" @click="$emit('start')">Start ▸</button>
       <div class="mt-3 text-[13px] text-muted max-md:hidden">
         or press

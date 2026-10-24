@@ -28,9 +28,12 @@
   --stroop-blue: #2f80e8;
   --stroop-green: #2e9e5b;
   --stroop-yellow: #e8a800;
+  --stroop-yellow-text: #2b1d2f;
+  --stroop-text: #ffffff;
   --display: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
   --body: 'Lexend', 'Segoe UI', system-ui, sans-serif;
   --nav-h: 64px;
+  --tabbar-h: 68px;
   --c: var(--accent);
   box-sizing: border-box;
   color-scheme: light;

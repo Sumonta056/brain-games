@@ -10,11 +10,11 @@
       <div
         class="flex items-center gap-3 border-b border-b-line px-[18px] py-3.5 max-md:gap-2.5 max-md:px-3 max-md:py-2.5"
       >
-        <NuxtLink to="/games" class="iconbtn" aria-label="Back to games"
+        <NuxtLink to="/games" class="iconbtn shrink-0" aria-label="Back to games"
           ><Icon name="bg:nav-back" size="20"
         /></NuxtLink>
         <span
-          class="grid size-[46px] place-items-center rounded-icon bg-tint-bg max-md:size-10 [&_svg]:size-8 max-md:[&_svg]:size-7"
+          class="grid size-[46px] shrink-0 place-items-center rounded-icon bg-tint-bg max-md:size-10 [&_svg]:size-8 max-md:[&_svg]:size-7"
           data-testid="game-icon"
           ><GameIcon :game="game"
         /></span>

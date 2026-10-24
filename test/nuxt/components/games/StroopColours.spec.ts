@@ -145,4 +145,18 @@ describe('StroopColours', () => {
     wrapper.unmount()
     expect(vi.getTimerCount()).toBe(0)
   })
+
+  it('gives Yellow dark text and the other buttons white text that does not change with the theme', async () => {
+    const wrapper = await mountSuspended(StroopColours, { props: { game: stroopGame } })
+    for (const b of colourButtons(wrapper)) {
+      const token = tokenIn(b.attributes('style'))
+      expect(b.attributes('style')).toContain(`color: var(--${token}-text, var(--stroop-text))`)
+    }
+    const tokensCss = readFileSync(resolve(process.cwd(), 'app/assets/css/tokens.css'), 'utf8')
+    expect(tokensCss).toMatch(/--stroop-text:\s*#fff(fff)?;/i)
+    expect(tokensCss).toMatch(/--stroop-yellow-text:\s*#2b1d2f;/i)
+    expect([...tokensCss.matchAll(/--(stroop-[a-z]+)-text:/g)].map(m => m[1])).toEqual(['stroop-yellow'])
+    const stroopDecls = [...tokensCss.matchAll(/--(stroop-[a-z-]+):/g)].map(m => m[1])
+    expect(stroopDecls).toHaveLength(new Set(stroopDecls).size)
+  })
 })

@@ -6,7 +6,12 @@
     </div>
     <div class="big" data-testid="word" :style="{ color: `var(--${ink.token})` }">{{ word.name.toUpperCase() }}</div>
     <div class="colorbtns" data-testid="colour-buttons">
-      <button v-for="c in colours" :key="c.token" :style="{ background: `var(--${c.token})` }" @click="tap(c)">
+      <button
+        v-for="c in colours"
+        :key="c.token"
+        :style="{ background: `var(--${c.token})`, color: `var(--${c.token}-text, var(--stroop-text))` }"
+        @click="tap(c)"
+      >
         {{ c.name }}
       </button>
     </div>
