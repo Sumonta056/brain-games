@@ -1,0 +1,6 @@
+.nuxt
+.output
+node_modules
+coverage
+package-lock.json
+docs/design.html

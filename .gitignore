@@ -1,0 +1,17 @@
+node_modules
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+coverage
+logs
+*.log
+.DS_Store
+.idea
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+.claude/.cache
