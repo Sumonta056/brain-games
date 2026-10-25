@@ -1,6 +1,6 @@
 ---
 name: write-unit-tests
-description: How to write Vitest specs for Brain Garden. Use when writing or changing any file under test/nuxt/, when a source file under app/ needs its spec, when the Stop hook reports a missing spec, or when the test-writer agent runs. Covers the spec path rule, the patterns for games, composables, components, pages and game JSON, and the mutation check that proves each test can fail.
+description: How to write Vitest specs for Brain Games. Use when writing or changing any file under test/nuxt/, when a source file under app/ needs its spec, when the Stop hook reports a missing spec, or when the test-writer agent runs. Covers the spec path rule, the patterns for games, composables, components, pages and game JSON, and the mutation check that proves each test can fail.
 ---
 
 # Write unit tests

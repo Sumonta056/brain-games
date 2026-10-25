@@ -1,6 +1,6 @@
-# Brain Garden — Functional Requirements
+# Brain Games — Functional Requirements
 
-Brain Garden is a relaxing, simple brain-training website. People come to **feel calm and sharpen their mind** in short (about 1 minute) games. Every screen should feel friendly, positive and easy.
+Brain Games is a relaxing, simple brain-training website. People come to **feel calm and sharpen their mind** in short (about 1 minute) games. Every screen should feel friendly, positive and easy.
 
 Reference implementation: `docs/design.html` (single file, all 15 games working). Game content: `app/data/games/*.json` (all 15) and `docs/games.json` (the same, in one array).
 
@@ -9,7 +9,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 1. **Relax first, challenge second.** Encouraging copy everywhere, never shaming. Mistakes get "No worries, carry on" style feedback.
 2. **One minute or less** per game, with a clear finish.
 3. **Explain every score.** Each result shows a band (e.g. "Steady"), what it means, the research behind it, and one tip.
-4. **Honest science.** Bands are based on published norms where they exist; otherwise they're labelled as a Brain Garden guide. No "boost your IQ" claims.
+4. **Honest science.** Bands are based on published norms where they exist; otherwise they're labelled as a Brain Games guide. No "boost your IQ" claims.
 5. **Accessible and mobile-first.** Touch targets 44px or larger, keyboard playable, works at 320px wide, respects reduced motion, AA contrast in both themes.
 
 ## 2. Pages
@@ -24,7 +24,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 ### 2.1 Navbar (identical on every page)
 
-- Left: brain logo + "Brain Garden" (links home).
+- Left: brain logo + "Brain Games" (links home).
 - Tabs: Home, Games, Profile. The active tab is highlighted (`aria-current="page"`).
 - Right: streak (🔥 n), theme toggle (Auto → Light → Dark), and the avatar with name and level emoji (links to profile).
 - **≤640px:** tabs move to a fixed bottom tab bar (thumb reach). The top bar keeps the logo, theme and avatar. Streak and name are hidden below 760px.

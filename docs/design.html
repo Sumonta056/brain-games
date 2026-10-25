@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Brain Garden — relax and sharpen your mind</title>
+<title>Brain Games — relax and sharpen your mind</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -372,7 +372,7 @@ function tint(el,cat){el.style.setProperty('--tbg',tbg(cat));el.style.setPropert
 /* ================= navbar (same everywhere) ================= */
 function renderNav(cur){
   const nav=document.getElementById('nav');nav.innerHTML='';
-  const logo=hh('button','logo',BRAIN+'Brain Garden');logo.setAttribute('aria-label','Brain Garden home');logo.onclick=()=>go('');
+  const logo=hh('button','logo',BRAIN+'Brain Games');logo.setAttribute('aria-label','Brain Games home');logo.onclick=()=>go('');
   const tabs=h('nav','tabs');tabs.setAttribute('aria-label','Main');
   [['home','Home',''],['games','Games','games'],['user','Profile','profile']].forEach(([k,l,hash])=>{const b=hh('button','tab',ni(k)+`<span class="tl">${l}</span>`);b.setAttribute('aria-label',l);if(cur===hash)b.setAttribute('aria-current','page');b.onclick=()=>go(hash);tabs.append(b);});
   const r=h('div','nav-r');
@@ -392,7 +392,7 @@ window.addEventListener('hashchange',route);
 
 /* ================= home ================= */
 function renderHome(scrollToGames){
-  document.title='Brain Garden — relax and sharpen your mind';app.innerHTML='';const page=h('div','page');
+  document.title='Brain Games — relax and sharpen your mind';app.innerHTML='';const page=h('div','page');
   const hr=new Date().getHours();const part=hr<5?'Still awake':hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
   const hero=h('section','hero');
   const hc=h('div','hcard');hc.insertAdjacentHTML('beforeend',NEURONS);
@@ -431,7 +431,7 @@ function tileFor(g,size){
 /* ================= game page ================= */
 let side=null;
 function renderGame(g){
-  document.title=g.name+' — Brain Garden';app.innerHTML='';
+  document.title=g.name+' — Brain Games';app.innerHTML='';
   const wrap=h('div','gpage');tint(wrap,g.cat);
   const play=h('section','play');stageEl=play;
   const head=h('div','phead');const back=hh('button','iconbtn',ni('back'));back.setAttribute('aria-label','Back to games');back.onclick=()=>go('games');
@@ -489,7 +489,7 @@ function confetti(){if(reduced)return;const cv=document.getElementById('confetti
 
 /* ================= profile ================= */
 function renderProfile(){
-  document.title='Your profile — Brain Garden';app.innerHTML='';const page=h('div','page');
+  document.title='Your profile — Brain Games';app.innerHTML='';const page=h('div','page');
   const p=h('section','prof');const L=h('div','panel');
   const avatar=h('div','avatar',S.av);L.append(avatar);
   const avs=h('div','avs');AV.forEach(a=>{const b=h('button',null,a);b.setAttribute('aria-pressed',String(a===S.av));b.setAttribute('aria-label','Choose '+a);b.onclick=()=>{S.av=a;save();avatar.textContent=a;avs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderNav('profile');};avs.append(b);});
@@ -544,7 +544,7 @@ const GAMES=[
   steps:['Tap a card to flip it.','Tap another card. If they match, they stay open.','Find all 8 pairs in as few moves as you can.'],unit:'moves',
   demo:[['<div class="mk">🟩 🟩<small>Tap a card</small></div>','Flip one card'],['<div class="mk">🌻 🟩<small>Remember where it is</small></div>','Remember what you saw'],['<div class="mk">🌻 🌻<small>Match!</small></div>','Find its twin']],
   bands:[{at:Infinity,r:'27+',l:'Exploring',m:'You found them all. Next time, try to remember each card you flip.'},{at:26,r:'19–26',l:'Steady',m:'A relaxed, solid game.'},{at:18,r:'13–18',l:'Good memory',m:'You’re remembering positions well.'},{at:12,r:'9–12',l:'Excellent',m:'Very few wasted moves. Great spatial memory.'},{at:8,r:'8',l:'Perfect',m:'Not a single wasted move.'}],
-  science:'8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Garden guide, not a clinical norm.',tip:'Say what you see out loud in your head, “sun, top left”. Naming helps memory.'},
+  science:'8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Games guide, not a clinical norm.',tip:'Say what you see out loud in your head, “sun, top left”. Naming helps memory.'},
  {id:'odd',cat:'Calm',lvl:'Easy',name:'Odd colour out',blurb:'Spot the one tile with a slightly different shade.',trains:'Visual perception and calm focus',
   steps:['A grid of same-coloured tiles appears.','One tile is a tiny bit lighter or darker. Tap it.','Grids get bigger and shades get closer. 60 seconds.'],unit:'levels',
   demo:[['<div class="mk">🟦🟦<br>🟦🟦<small>Look closely</small></div>','Which one is different?'],['<div class="mk">🟦🟦<br>🟦<span style="opacity:.6">🟦</span><small>That one!</small></div>','Tap the odd tile'],['<div class="mk">➕<small>Bigger grid, closer shades</small></div>','It gets trickier']],
@@ -554,12 +554,12 @@ const GAMES=[
   steps:['A sum appears, like 23 + 18.','Type the answer. It moves on the moment you’re right.','Every 5 correct answers, sums get harder. 60 seconds.'],unit:'solved',
   demo:[['<div class="mk">23 + 18</div>','A sum appears'],['<div class="mk">23 + 18<small>you type: 41</small></div>','Type the answer'],['<div class="mk ok">✓ 41<small>next one comes instantly</small></div>','Next sum, straight away']],
   bands:[{at:0,r:'0–5',l:'Warming up',m:'Your brain is switching gears. Scores usually jump after 2–3 tries.'},{at:6,r:'6–10',l:'Steady',m:'About one answer every 6–10 seconds, including some harder sums. That’s a normal, healthy pace for someone not doing arithmetic daily.'},{at:11,r:'11–16',l:'Sharp',m:'Quicker than most casual players. Your arithmetic is well practised.'},{at:17,r:'17–24',l:'Quick',m:'Under 4 seconds per answer while sums get harder. Impressive.'},{at:25,r:'25+',l:'Lightning',m:'Calculator-level speed.'}],
-  science:'There’s no standard clinical norm for this exact game, so these bands are a Brain Garden guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.',tip:'Break sums apart: 47 + 38 is 47 + 40 − 2.'},
+  science:'There’s no standard clinical norm for this exact game, so these bands are a Brain Games guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.',tip:'Break sums apart: 47 + 38 is 47 + 40 − 2.'},
  {id:'serial7',cat:'Speed',lvl:'Medium',name:'Serial sevens',blurb:'Count down by 7 from a random number.',trains:'Working memory and concentration',
   steps:['You get a start number, like 143.','Type the number 7 less (136) and press Enter.','Keep going from your answer. 60 seconds.'],unit:'steps',
   demo:[['<div class="mk">143</div>','A start number'],['<div class="mk">143 → 136<small>press Enter</small></div>','Subtract 7'],['<div class="mk">136 → 129</div>','Keep going']],
   bands:[{at:0,r:'0–5',l:'Warming up',m:'Holding a number while subtracting is genuinely hard. It gets easier fast.'},{at:6,r:'6–10',l:'Steady',m:'A calm, accurate pace.'},{at:11,r:'11–16',l:'Sharp',m:'Strong concentration.'},{at:17,r:'17+',l:'Excellent',m:'Very fast and fluent.'}],
-  science:'Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.',tip:'Subtract 10, then add 3. Many people find it easier.'},
+  science:'Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Games guide.',tip:'Subtract 10, then add 3. Many people find it easier.'},
  {id:'reaction',cat:'Speed',lvl:'Easy',name:'Reaction time',blurb:'Tap the moment the box turns green.',trains:'Alertness and reflexes',lower:true,
   steps:['Wait while the box is calm.','Tap as soon as it turns green.','5 rounds. Tapping too early restarts the round.'],unit:'ms average',
   demo:[['<div class="mk">⏳<small>wait…</small></div>','Wait patiently'],['<div class="mk" style="color:#2E9E5B">🟢<small>GO!</small></div>','It turns green'],['<div class="mk">👆 248 ms</div>','Tap fast!']],

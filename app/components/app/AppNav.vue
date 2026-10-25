@@ -6,9 +6,9 @@
       <NuxtLink
         to="/"
         class="flex cursor-pointer items-center gap-2 p-0 font-display text-[22px] leading-none font-extrabold text-ink no-underline max-md:min-h-11 max-md:min-w-11 max-md:text-[19px] max-xs:gap-0 max-xs:text-[0px]"
-        aria-label="Brain Garden home"
+        aria-label="Brain Games home"
         ><Icon name="bg:brand-logo" width="unset" height="unset" class="size-[34px] max-md:size-[30px]" />Brain
-        Garden</NuxtLink
+        Games</NuxtLink
       >
       <nav
         class="ml-4 flex gap-1 max-lg:ml-1 max-md:fixed max-md:inset-x-0 max-md:bottom-0 max-md:z-9 max-md:m-0 max-md:justify-around max-md:border-t max-md:border-t-line max-md:bg-surface max-md:px-2 max-md:pt-1.5 max-md:pb-[calc(6px+env(safe-area-inset-bottom,0px))]"

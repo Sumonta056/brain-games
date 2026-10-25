@@ -1,6 +1,6 @@
 ---
 name: feature
-description: The required loop for every change to Brain Garden. Use for any new feature, bug fix, game port, UI tweak, or requirement change, and whenever the user types /feature <description>. Plan, get approval, write failing specs, implement, check, verify the UI against docs/design.html, review, then ask before committing.
+description: The required loop for every change to Brain Games. Use for any new feature, bug fix, game port, UI tweak, or requirement change, and whenever the user types /feature <description>. Plan, get approval, write failing specs, implement, check, verify the UI against docs/design.html, review, then ask before committing.
 ---
 
 # /feature: plan, red, green, verify, review

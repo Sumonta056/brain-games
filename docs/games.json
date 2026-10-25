@@ -119,7 +119,7 @@
         "message": "Not a single wasted move."
       }
     ],
-    "science": "8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Garden guide, not a clinical norm.",
+    "science": "8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Games guide, not a clinical norm.",
     "tip": "Say what you see out loud in your head, “sun, top left”. Naming helps memory.",
     "icon": "pairs"
   },
@@ -249,7 +249,7 @@
         "message": "Calculator-level speed."
       }
     ],
-    "science": "There’s no standard clinical norm for this exact game, so these bands are a Brain Garden guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.",
+    "science": "There’s no standard clinical norm for this exact game, so these bands are a Brain Games guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.",
     "tip": "Break sums apart: 47 + 38 is 47 + 40 − 2.",
     "icon": "math"
   },
@@ -311,7 +311,7 @@
         "message": "Very fast and fluent."
       }
     ],
-    "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Garden guide.",
+    "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Games guide.",
     "tip": "Subtract 10, then add 3. Many people find it easier.",
     "icon": "serial7"
   },

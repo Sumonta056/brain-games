@@ -34,14 +34,14 @@ describe('AppNav', () => {
 
   it('links the logo home', async () => {
     const w = await mountAt('/')
-    const logo = w.get('a[aria-label="Brain Garden home"]')
+    const logo = w.get('a[aria-label="Brain Games home"]')
     expect(logo.attributes('href')).toBe('/')
-    expect(logo.text()).toContain('Brain Garden')
+    expect(logo.text()).toContain('Brain Games')
   })
 
   it('shows the brain logo icon in the home link', async () => {
     const w = await mountAt('/')
-    expect(iconNames(w, 'a[aria-label="Brain Garden home"]')).toEqual(['bg:brand-logo'])
+    expect(iconNames(w, 'a[aria-label="Brain Games home"]')).toEqual(['bg:brand-logo'])
   })
 
   it('shows a home, games and user icon on the tabs', async () => {

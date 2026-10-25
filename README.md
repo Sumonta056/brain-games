@@ -1,6 +1,6 @@
 <div align="center">
 
-# Brain Garden 🧠🌱
+# Brain Games 🧠🌱
 
 **Short, friendly brain games to relax and sharpen your mind.**
 
@@ -18,13 +18,13 @@
 
 <br>
 
-<img src="docs/screenshots/home.png" alt="Brain Garden home page" width="900">
+<img src="docs/screenshots/home.png" alt="Brain Games home page" width="900">
 
 </div>
 
-## Why Brain Garden
+## Why Brain Games
 
-Most brain-training apps push streaks, ads and sign-ups. Brain Garden does not.
+Most brain-training apps push streaks, ads and sign-ups. Brain Games does not.
 
 Each game takes about one minute. The words are kind. The app never says "Wrong!". It says "It was X. Carry on from there."
 
@@ -35,7 +35,7 @@ Open the site and play. Your progress stays on your device.
 - **15 short games** in 6 categories: Calm, Speed, Words, Memory, Focus and Body.
 - **Today's Five.** A new set of 5 games each day.
 - **Mood check.** Tell the app how you feel. It suggests games to match.
-- **Friendly bands, not grades.** Each result maps to a band. When a band comes from research, the science note names the source. When it does not, the note says it is a Brain Garden guide.
+- **Friendly bands, not grades.** Each result maps to a band. When a band comes from research, the science note names the source. When it does not, the note says it is a Brain Games guide.
 - **Streak and best scores.** See them on your profile.
 - **Light, dark and auto themes.**
 - **Play by keyboard.** Every game works with Enter and Space.
@@ -52,7 +52,7 @@ Open the site and play. Your progress stays on your device.
 </table>
 
 <div align="center">
-  <img src="docs/screenshots/mobile.png" alt="Brain Garden on a phone" width="280"><br>
+  <img src="docs/screenshots/mobile.png" alt="Brain Games on a phone" width="280"><br>
   <sub>Made for phones too</sub>
 </div>
 
@@ -96,7 +96,7 @@ Open the site and play. Your progress stays on your device.
 
 ## For developers
 
-Do you want to run Brain Garden on your own machine or add a game? Start here.
+Do you want to run Brain Games on your own machine or add a game? Start here.
 
 ### Run locally
 

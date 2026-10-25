@@ -103,7 +103,7 @@
 <script setup lang="ts">
 import type { Category } from '~~/shared/types/game'
 import copy from '~/data/copy.json'
-useHead({ title: 'Your profile — Brain Garden' })
+useHead({ title: 'Your profile — Brain Games' })
 const { progress, streak, level, reset } = useProgress()
 const { games, categories, byId, tintVars } = useGames()
 const week = computed(() =>

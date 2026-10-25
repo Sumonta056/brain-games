@@ -6,5 +6,5 @@ const route = useRoute()
 const { byId } = useGames()
 const game = computed(() => byId(String(route.params.id)))
 if (!game.value) throw createError({ statusCode: 404, statusMessage: 'Game not found', fatal: true })
-useHead(() => ({ title: `${game.value?.name} — Brain Garden` }))
+useHead(() => ({ title: `${game.value?.name} — Brain Games` }))
 </script>

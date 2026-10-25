@@ -1,4 +1,4 @@
-# CLAUDE.md — Brain Garden
+# CLAUDE.md — Brain Games
 
 Relaxing brain-training website. Nuxt 4 + Vue 3 + TypeScript, client-only (`ssr: false`), progress in localStorage.
 
@@ -70,7 +70,7 @@ test/nuxt/                Vitest specs (Nuxt env, happy-dom); fixtures.ts holds 
 9. **Accessibility:** real buttons and links, `aria-label` on icon-only buttons, a visible `:focus-visible`, and every game playable by keyboard (Enter/Space).
 10. **Trusted HTML:** `v-html` is allowed only for `demo[].scene` from repo JSON. Never for user input.
 11. **Icons and images:** every SVG lives as a file in `app/assets/icons/{nav,games,brand}/`. Render it with `<Icon>` from `@nuxt/icon` (`bg:nav-<name>`, `bg:games-<name>`, `bg:brand-<name>`: one collection `bg`, and the folder becomes the name prefix). Never inline SVG markup in a component or JSON.
-12. **Science copy:** only cite real norms. If a band isn't from research, the `science` text must say it's a Brain Garden guide.
+12. **Science copy:** only cite real norms. If a band isn't from research, the `science` text must say it's a Brain Games guide.
 13. Keep each component under ~150 lines. Split logic into composables before it grows.
 
 ## Porting status

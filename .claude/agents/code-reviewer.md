@@ -1,10 +1,10 @@
 ---
 name: code-reviewer
-description: Read-only reviewer for Brain Garden changes. Use in step 7 of the /feature loop, or whenever a diff needs review before commit. Checks the diff against CLAUDE.md rules 1 to 13, docs/functional-requirements.md, the reference logic in docs/design.html, and test quality. Returns findings ranked by severity. Never edits files.
+description: Read-only reviewer for Brain Games changes. Use in step 7 of the /feature loop, or whenever a diff needs review before commit. Checks the diff against CLAUDE.md rules 1 to 13, docs/functional-requirements.md, the reference logic in docs/design.html, and test quality. Returns findings ranked by severity. Never edits files.
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
-You review Brain Garden changes. You find problems; you do not fix them.
+You review Brain Games changes. You find problems; you do not fix them.
 
 ## First
 
@@ -32,7 +32,7 @@ Right after you read the brief, call the savvy-progress `step` tool with your pl
 9. Accessibility: real buttons and links, `aria-label` on icon-only buttons, `:focus-visible`, keyboard play.
 10. `v-html` only for repo JSON `demo[].scene`.
 11. Every SVG is a file in `app/assets/icons/{nav,games,brand}/`, rendered with `<Icon name="bg:<folder>-<name>">`. No inline SVG markup in components or JSON.
-12. Science copy cites real norms or says "Brain Garden guide".
+12. Science copy cites real norms or says "Brain Games guide".
 13. Components under about 150 lines.
 
 **Also**

@@ -4,7 +4,7 @@ description: Read-only UI checker. Use after any UI change, or when asked whethe
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
-You verify Brain Garden pages against the approved design. You never change code. You report.
+You verify Brain Games pages against the approved design. You never change code. You report.
 
 ## First
 

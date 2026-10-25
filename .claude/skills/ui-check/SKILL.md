@@ -1,6 +1,6 @@
 ---
 name: ui-check
-description: How to compare a Brain Garden page with the approved design in docs/design.html using Chrome DevTools MCP. Use after any change to a .vue file, a CSS file in app/assets/css, or game JSON copy, when the ui-verifier agent runs, or when the user asks whether a page matches the design, works on mobile, or works in dark mode. Covers viewports, themes, the route-to-design map, and the CLAUDE.md rules 7 to 9 checklist.
+description: How to compare a Brain Games page with the approved design in docs/design.html using Chrome DevTools MCP. Use after any change to a .vue file, a CSS file in app/assets/css, or game JSON copy, when the ui-verifier agent runs, or when the user asks whether a page matches the design, works on mobile, or works in dark mode. Covers viewports, themes, the route-to-design map, and the CLAUDE.md rules 7 to 9 checklist.
 ---
 
 # UI check against docs/design.html

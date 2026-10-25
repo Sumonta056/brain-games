@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 
-// Brain Garden — Nuxt 4 (app/ directory). Client-only for now: all progress lives in localStorage.
+// Brain Games — Nuxt 4 (app/ directory). Client-only for now: all progress lives in localStorage.
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   ssr: false,
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   typescript: { strict: true },
   app: {
     head: {
-      title: 'Brain Garden — relax and sharpen your mind',
+      title: 'Brain Games — relax and sharpen your mind',
       htmlAttrs: { lang: 'en' },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
