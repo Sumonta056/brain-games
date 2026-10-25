@@ -1,84 +1,106 @@
+<div align="center">
+
 # Brain Garden 🧠🌱
 
-Short, friendly brain games to relax and sharpen your mind. 15 games, no account, no tracking.
+**Short, friendly brain games to relax and sharpen your mind.**
 
-![Node](https://img.shields.io/badge/node-24-339933)
+15 games · about one minute each · no account · no tracking
+
+[![Play now](https://img.shields.io/badge/▶_Play_now-d9466e?style=for-the-badge)](https://YOUR-DEPLOY-URL)
+
 ![Nuxt](https://img.shields.io/badge/Nuxt-4-00dc82)
 ![Vue](https://img.shields.io/badge/Vue-3-42b883)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
 ![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-[Install](#install) · [Games](#games) · [Add a game](#add-a-new-game) · [Docs](#documentation)
+[Play now](https://YOUR-DEPLOY-URL) · [Features](#features) · [Games](#the-15-games) · [For developers](#for-developers)
 
-```bash
-nvm use && npm install && npm run dev
-```
+<br>
 
-![Home page](docs/screenshots/home.png)
+<img src="docs/screenshots/home.png" alt="Brain Garden home page" width="900">
 
-## Contents
-
-- [Why Brain Garden](#why-brain-garden)
-- [Features](#features)
-- [Games](#games)
-- [Install](#install)
-- [Scripts](#scripts)
-- [Progress and privacy](#progress-and-privacy)
-- [How it works](#how-it-works)
-- [Add a new game](#add-a-new-game)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Limitations](#limitations)
-- [Documentation](#documentation)
-- [License](#license)
+</div>
 
 ## Why Brain Garden
 
 Most brain-training apps push streaks, ads and sign-ups. Brain Garden does not.
 
-Each game takes about one minute. The copy is kind: it never says "Wrong!". It says "It was X. Carry on from there."
+Each game takes about one minute. The words are kind. The app never says "Wrong!". It says "It was X. Carry on from there."
 
-The app runs fully in your browser. Your progress stays on your device.
+Open the site and play. Your progress stays on your device.
 
 ## Features
 
 - **15 short games** in 6 categories: Calm, Speed, Words, Memory, Focus and Body.
-- **Today's Five**: a daily set of 5 games.
-- **Mood check**: pick how you feel and get game suggestions.
-- **Bands, not grades**: each result maps to a friendly band. Where a band comes from research, the science note names the source. Where it does not, the note says it is a Brain Garden guide.
-- **Streak and best scores** on the profile page.
+- **Today's Five.** A new set of 5 games each day.
+- **Mood check.** Tell the app how you feel. It suggests games to match.
+- **Friendly bands, not grades.** Each result maps to a band. When a band comes from research, the science note names the source. When it does not, the note says it is a Brain Garden guide.
+- **Streak and best scores.** See them on your profile.
 - **Light, dark and auto themes.**
-- **Keyboard play**: every game works with Enter and Space.
-- **Mobile ready**: tested at 360px, with 44px touch targets.
+- **Play by keyboard.** Every game works with Enter and Space.
+- **Works on phones.** Large touch targets and a bottom tab bar.
+- **No account and no tracking.** Progress is saved in your browser only.
 
-| Game list                                | Ready screen                                          | Mobile                                      |
-| ---------------------------------------- | ----------------------------------------------------- | ------------------------------------------- |
-| ![All games](docs/screenshots/games.png) | ![Game ready screen](docs/screenshots/game-ready.png) | ![Mobile home](docs/screenshots/mobile.png) |
+## See it in action
 
-## Games
+<table>
+  <tr>
+    <td align="center" width="50%"><img src="docs/screenshots/games.png" alt="All games"><br><sub>Pick from 15 games, filter by category</sub></td>
+    <td align="center" width="50%"><img src="docs/screenshots/game-ready.png" alt="Game ready screen"><br><sub>Each game starts with a short demo</sub></td>
+  </tr>
+</table>
 
-| Game               | Category | What you do                                        |
-| ------------------ | -------- | -------------------------------------------------- |
-| Box breathing      | Calm     | Breathe with a growing circle for one minute.      |
-| Memory pairs       | Calm     | Flip cards and find matching pairs.                |
-| Odd colour out     | Calm     | Spot the one tile with a slightly different shade. |
-| Mental math        | Speed    | Solve sums that get harder the faster you go.      |
-| Reaction time      | Speed    | Tap the moment the box turns green.                |
-| Serial sevens      | Speed    | Count down by 7 from a random number.              |
-| Backward spelling  | Words    | See a word, then spell it in reverse.              |
-| Category challenge | Words    | Name things in a category before time runs out.    |
-| Word sprint        | Words    | Write as many words as you can from one letter.    |
-| Digit span         | Memory   | Remember a growing string of numbers.              |
-| 2-back             | Memory   | Spot a letter that matches the one two steps ago.  |
-| Sequence memory    | Memory   | Repeat the pattern of lit squares.                 |
-| Schulte table      | Focus    | Find 1 to 25 in a scrambled grid.                  |
-| Stroop colours     | Focus    | Pick the ink colour, not the word.                 |
-| Other hand day     | Body     | Do today's tasks with your other hand.             |
+<div align="center">
+  <img src="docs/screenshots/mobile.png" alt="Brain Garden on a phone" width="280"><br>
+  <sub>Made for phones too</sub>
+</div>
 
-## Install
+## The 15 games
 
-Requires Node 24. The version is pinned in `.nvmrc`.
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="docs/screenshots/games/breath.png" alt="Box breathing"><br><b>Box breathing</b><br><sub>Calm · Breathe with a growing circle for one minute.</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/games/pairs.png" alt="Memory pairs"><br><b>Memory pairs</b><br><sub>Calm · Flip cards and find matching pairs.</sub></td>
+    <td align="center" width="33%"><img src="docs/screenshots/games/odd.png" alt="Odd colour out"><br><b>Odd colour out</b><br><sub>Calm · Spot the tile with a slightly different shade.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/games/math.png" alt="Mental math"><br><b>Mental math</b><br><sub>Speed · Sums get harder the faster you go.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/reaction.png" alt="Reaction time"><br><b>Reaction time</b><br><sub>Speed · Tap the moment the box turns green.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/serial7.png" alt="Serial sevens"><br><b>Serial sevens</b><br><sub>Speed · Count down by 7 from a random number.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/games/backward.png" alt="Backward spelling"><br><b>Backward spelling</b><br><sub>Words · See a word, then spell it in reverse.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/category.png" alt="Category challenge"><br><b>Category challenge</b><br><sub>Words · Name things in a category before time runs out.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/words.png" alt="Word sprint"><br><b>Word sprint</b><br><sub>Words · Write as many words as you can from one letter.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/games/digits.png" alt="Digit span"><br><b>Digit span</b><br><sub>Memory · Remember a growing string of numbers.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/nback.png" alt="2-back"><br><b>2-back</b><br><sub>Memory · Spot a letter that matches the one two steps ago.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/sequence.png" alt="Sequence memory"><br><b>Sequence memory</b><br><sub>Memory · Repeat the pattern of lit squares.</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/games/schulte.png" alt="Schulte table"><br><b>Schulte table</b><br><sub>Focus · Find 1 to 25 in a scrambled grid.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/stroop.png" alt="Stroop colours"><br><b>Stroop colours</b><br><sub>Focus · Pick the ink colour, not the word.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/hand.png" alt="Other hand day"><br><b>Other hand day</b><br><sub>Body · Do today's tasks with your other hand.</sub></td>
+  </tr>
+</table>
+
+## Your progress and privacy
+
+- Progress is saved in your browser (`localStorage`, key `bgarden`).
+- The app has no server, no account and no tracking.
+- To reset, clear the site data in your browser.
+
+---
+
+## For developers
+
+Do you want to run Brain Garden on your own machine or add a game? Start here.
+
+### Run locally
+
+Node 24 is required. The version is pinned in `.nvmrc`.
 
 ```bash
 git clone https://github.com/Sumonta056/brain-games.git
@@ -90,14 +112,7 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-To make a production build:
-
-```bash
-npm run build
-npm run preview
-```
-
-## Scripts
+### Scripts
 
 | Command                                   | What it does                           |
 | ----------------------------------------- | -------------------------------------- |
@@ -112,19 +127,9 @@ npm run preview
 | `npm run test:watch`                      | Run specs in watch mode.               |
 | `npm run test:coverage`                   | Run specs and write a coverage report. |
 
-## Progress and privacy
+### How it works
 
-| Item     | Behaviour                                              |
-| -------- | ------------------------------------------------------ |
-| Storage  | Progress is in `localStorage` under the key `bgarden`. |
-| Server   | None. The app is client-only (`ssr: false`).           |
-| Account  | None.                                                  |
-| Tracking | None.                                                  |
-| Reset    | Clear the site data in your browser.                   |
-
-## How it works
-
-Nuxt 4, Vue 3 and TypeScript, with Tailwind v4 for styles. The design tokens are in `app/assets/css/tokens.css`.
+Nuxt 4, Vue 3 and TypeScript, with Tailwind v4. The app is client-only (`ssr: false`). The design tokens are in `app/assets/css/tokens.css`.
 
 ```
 app/
@@ -152,7 +157,7 @@ Each game follows one contract:
 
 All game copy lives in `app/data/games/<id>.json`. No component holds game copy.
 
-## Add a new game
+### Add a new game
 
 1. Create `app/data/games/<id>.json`. Give it 3 steps, 3 demo frames, bands from low to high, a science note, a tip and a 48×48 icon.
 2. Write `test/nuxt/components/games/<Component>.spec.ts` first. It must fail. Then create `app/components/games/<Component>.vue`.
@@ -160,7 +165,7 @@ All game copy lives in `app/data/games/<id>.json`. No component holds game copy.
 
 Read `docs/functional-requirements.md` section 4 for the full JSON contract.
 
-## Contributing
+### Contributing
 
 1. Run `nvm use` before every command.
 2. Use the `/feature` skill in Claude Code for every change. The steps are: plan, approval, failing specs, implement, lint, typecheck, test, UI check, review.
@@ -170,7 +175,7 @@ Read `docs/functional-requirements.md` section 4 for the full JSON contract.
 
 `CLAUDE.md` holds the full rules.
 
-## Tests
+### Tests
 
 Vitest runs in a Nuxt environment with happy-dom.
 
@@ -182,16 +187,7 @@ npx vitest run test/nuxt/components/games
 
 Specs select elements by `data-testid`, ARIA role or `data-state`. They never select by a styling class.
 
-## Limitations
-
-1. Progress does not sync between devices.
-2. Clearing browser data erases progress.
-3. English only.
-4. No offline mode yet.
-
-Planned: accounts and cloud sync, leaderboards, more languages (Bangla), and PWA support.
-
-## Documentation
+### Documentation
 
 | File                              | Content                                                         |
 | --------------------------------- | --------------------------------------------------------------- |
@@ -199,6 +195,15 @@ Planned: accounts and cloud sync, leaderboards, more languages (Bangla), and PWA
 | `docs/functional-requirements.md` | Product and behaviour rules.                                    |
 | `docs/games.json`                 | Game catalogue.                                                 |
 | `CLAUDE.md`                       | Rules for Claude Code and for contributors.                     |
+
+### Limitations
+
+1. Progress does not sync between devices.
+2. Clearing browser data erases progress.
+3. English only.
+4. No offline mode yet.
+
+Planned: accounts and cloud sync, leaderboards, more languages (Bangla), and PWA support.
 
 ## License
 
