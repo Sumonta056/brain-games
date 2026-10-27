@@ -31,6 +31,19 @@ describe('LevelUpDialog', () => {
     wrapper = null
   })
 
+  it('opens as a modal dialog', async () => {
+    const w = await mountDialog('easy', 'medium')
+    expect((w.get('[data-testid="level-up"]').element as HTMLDialogElement).open).toBe(true)
+  })
+
+  it('turns the browser cancel into close and keeps the dialog in control', async () => {
+    const w = await mountDialog('easy', 'medium')
+    const e = new Event('cancel', { cancelable: true })
+    w.get('[data-testid="level-up"]').element.dispatchEvent(e)
+    expect(e.defaultPrevented).toBe(true)
+    expect(w.emitted('close')).toHaveLength(1)
+  })
+
   it('is a labelled modal dialog', async () => {
     const w = await mountDialog('easy', 'medium')
     const root = w.get('[data-testid="level-up"]')

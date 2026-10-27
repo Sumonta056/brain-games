@@ -137,10 +137,10 @@ app/
   components/
     app/              AppNav, GameIcon
     home/             HomeHero, DailyFive, MoodCheck, BentoGrid, GameTile
-    game/             GameShell, GameSidebar, ReadyScreen, ResultScreen
+    game/             GameShell, GameSidebar, ReadyScreen, ResultScreen, LevelUpDialog
     games/            one component per game, plus registry.ts
   composables/        useGames, useProgress, useTheme, useCountdown, useCheer, useListGame
-  utils/              bands.ts, random.ts, confetti.ts
+  utils/              bands.ts, random.ts, confetti.ts, difficulty.ts
   data/games/*.json   the 15 game definitions
   data/copy.json      shared UI copy
 shared/types/game.ts  GameDef, Band, Progress

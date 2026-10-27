@@ -42,10 +42,10 @@ app/
   components/             pathPrefix:false → use file names (<GameTile>)
     app/   AppNav, GameIcon
     home/  HomeHero, DailyFive, MoodCheck, BentoGrid, GameTile
-    game/  GameShell, GameSidebar, ReadyScreen, ResultScreen
+    game/  GameShell, GameSidebar, ReadyScreen, ResultScreen, LevelUpDialog
     games/ one component per game, rendered through registry.ts (registry.ts is not a component: extensions ['vue'])
   composables/            useGames, useProgress, useTheme, useCountdown/useTimeouts, useCheer
-  utils/                  bands.ts, random.ts, confetti.ts (auto-imported)
+  utils/                  bands.ts, random.ts, confetti.ts, difficulty.ts (auto-imported)
   assets/css/             tokens.css, main.css (Tailwind entry + @theme), components.css
   assets/icons/           nav/, games/, brand/ SVG files (rendered with <Icon name="bg:...">)
   data/games/*.json       15 game definitions; data/categories.json
@@ -80,7 +80,7 @@ WordSprint and CategoryChallenge share `useListGame` and `ListGame.vue`. Game co
 
 ## Adding a new game
 
-1. Create `app/data/games/<id>.json` following the contract in functional-requirements §4 (3 steps, 3 demo frames, bands from low to high, a science note, a tip, and a 48×48 icon).
+1. Create `app/data/games/<id>.json` following the contract in functional-requirements §4 (3 steps, 3 demo frames, bands from low to high, a science note, a tip, and a 48×48 icon). Give it a `difficulties` block (easy, medium, hard, beast: `settings`, plus `bands` and `science` for easy, hard and beast) per functional-requirements §3.1–3.3, and read the values in the component with `setting(game, key)`.
 2. Write `test/nuxt/components/games/<Component>.spec.ts` first (it must fail), then create `app/components/games/<Component>.vue` that follows the contract above.
 3. Register it in `registry.ts`, then run the `ui-verifier` agent on the tile, the ready demo, the result band and the sidebar highlight.
 

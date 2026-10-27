@@ -63,7 +63,10 @@ function onKey(e: KeyboardEvent) {
 }
 
 onMounted(() => {
-  if (root.value?.showModal && !root.value.open) root.value.showModal()
+  if (root.value && !root.value.open) {
+    if (root.value.showModal) root.value.showModal()
+    else root.value.show()
+  }
   confetti()
   root.value?.querySelector('button')?.focus()
 })
