@@ -18,7 +18,7 @@
       </div>
     </div>
     <div
-      class="grid grid-flow-dense auto-rows-[150px] grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:gap-2.5 max-sm:auto-rows-[130px] max-sm:grid-cols-2"
+      class="grid grid-flow-dense auto-rows-[minmax(150px,auto)] grid-cols-4 gap-3 max-xl:grid-cols-3 max-md:gap-2.5 max-sm:auto-rows-[minmax(130px,auto)] max-sm:grid-cols-2"
     >
       <GameTile
         v-for="g in shown"

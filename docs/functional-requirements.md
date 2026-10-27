@@ -37,7 +37,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
   - Tired → breath, sequence, category
   - Stressed → breath, odd, hand
   - Energised → reaction, math, stroop
-- **Bento grid:** 4 columns on desktop, 3 on tablet, 2 on phones, with dense auto-flow. Tile size comes from the game JSON `size`: `big` 2×2, `wide` 2×1, `tall` 1×2, `normal` 1×1. When a category filter is active, `big` becomes `wide` and the others become `normal`.
+- **Bento grid:** 4 columns on desktop, 3 on tablet, 2 on phones, with dense auto-flow. Tile size comes from the game JSON `size`: `big` 2×2, `wide` 2×1, `tall` 1×2, `normal` 1×1. When a category filter is active, `big` becomes `wide` and the others become `normal`. Rows are at least 150px tall (130px at 560px or less) and grow when a tile needs more, so no tile cuts off its text.
 - **Tile content:** icon, level pill, name, blurb (on wide/tall/big tiles), and best score with its band label (or "not played yet"). Big tiles also get a "Play now" pill. Tile tint comes from the category.
 
 ### 2.3 Game page (full height)
