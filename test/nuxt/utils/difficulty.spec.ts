@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { DIFFICULTIES, bestKey, setting, topBest, withDifficulty } from '~/utils/difficulty'
+import { DIFFICULTIES, bestKey, isMastery, nextDifficulty, setting, topBest, withDifficulty } from '~/utils/difficulty'
+import { bandIndex } from '~/utils/bands'
 import {
   easyBands,
   easyScience,
@@ -7,8 +8,10 @@ import {
   hardScience,
   beastBands,
   beastScience,
+  makeGame,
   mathGame,
   reactionGame,
+  tieredAs,
   tieredGame,
   type TieredGame
 } from '../fixtures'
@@ -130,6 +133,62 @@ describe('utils/difficulty', () => {
 
     it('uses the plain best for a game without difficulties', () => {
       expect(topBest(reactionGame, { reaction: 240 })).toEqual({ game: reactionGame, score: 240 })
+    })
+  })
+
+  describe('nextDifficulty (functional-requirements §3.3)', () => {
+    it('goes from easy to medium', () => {
+      expect(nextDifficulty('easy')).toBe('medium')
+    })
+
+    it('goes from medium to hard', () => {
+      expect(nextDifficulty('medium')).toBe('hard')
+    })
+
+    it('goes from hard to beast', () => {
+      expect(nextDifficulty('hard')).toBe('beast')
+    })
+
+    it('has nothing after beast', () => {
+      expect(nextDifficulty('beast')).toBeNull()
+    })
+  })
+
+  describe('isMastery (functional-requirements §3.3)', () => {
+    it('masters only with the top band by default', () => {
+      const hard = tieredAs('hard')
+      expect(isMastery(hard, 2)).toBe(true)
+      expect(isMastery(hard, 1)).toBe(false)
+      expect(isMastery(hard, 0)).toBe(false)
+    })
+
+    it('uses the bands of the difficulty, so medium needs the top of five bands', () => {
+      const medium = tieredAs('medium')
+      expect(isMastery(medium, 4)).toBe(true)
+      expect(isMastery(medium, 3)).toBe(false)
+      expect(isMastery(medium, 2)).toBe(false)
+    })
+
+    it('masters with the top two bands when mastery is 2', () => {
+      const easy = { ...tieredAs('easy'), mastery: 2 }
+      expect(isMastery(easy, 2)).toBe(true)
+      expect(isMastery(easy, 1)).toBe(true)
+      expect(isMastery(easy, 0)).toBe(false)
+    })
+
+    it('masters with the best (lowest) scores when lower is better', () => {
+      const game = { ...makeGame([null, 400, 300, 250], true), difficulty: 'hard' as const }
+      expect(isMastery(game, bandIndex(game, 240))).toBe(true)
+      expect(isMastery(game, bandIndex(game, 280))).toBe(false)
+      expect(isMastery(game, bandIndex(game, 500))).toBe(false)
+      expect(isMastery({ ...game, mastery: 2 }, bandIndex(game, 280))).toBe(true)
+      expect(isMastery({ ...game, mastery: 2 }, bandIndex(game, 350))).toBe(false)
+    })
+
+    it('never masters a game without a difficulty', () => {
+      expect(isMastery(reactionGame, reactionGame.bands.length - 1)).toBe(false)
+      expect(isMastery(mathGame, mathGame.bands.length - 1)).toBe(false)
+      expect(isMastery(tieredGame, tieredGame.bands.length - 1)).toBe(false)
     })
   })
 

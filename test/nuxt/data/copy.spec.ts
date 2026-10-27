@@ -24,16 +24,29 @@ function strings(value: unknown): string[] {
 }
 
 describe('copy.json contract', () => {
-  it('has exactly the seven copy groups', () => {
+  it('has exactly the eight copy groups', () => {
     expect(Object.keys(copy).sort()).toEqual([
       'affirmations',
       'avatars',
       'difficulty',
       'greetings',
+      'levelUp',
       'loading',
       'moods',
       'praise'
     ])
+  })
+
+  it('has the level-up copy with its placeholders', () => {
+    const l = copy.levelUp
+    expect(l.title).toContain('{level}')
+    expect(l.ask).toContain('{next}')
+    expect(l.play).toContain('{next}')
+    expect(l.stay).toContain('{level}')
+    expect(l.tryNext).toContain('{next}')
+    for (const v of Object.values(l)) expect(v.trim()).not.toBe('')
+    expect(l.emoji).toBeTruthy()
+    expect(l.topEmoji).toBeTruthy()
   })
 
   it('names the difficulty group and the four difficulties', () => {

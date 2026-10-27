@@ -189,6 +189,19 @@ body::before {
 .no {
   color: var(--bad);
 }
+@keyframes level-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 @keyframes pop {
   0% {
     opacity: 0;

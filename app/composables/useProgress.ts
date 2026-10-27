@@ -69,7 +69,13 @@ export function useProgress() {
     if (!p.days.includes(todayKey())) p.days.push(todayKey())
     p.days = p.days.slice(-120)
     p.xp += 10 + (isPB && prev != null ? 5 : 0)
-    return { prev: prev ?? null, isPB, band: bandIndex(game, score) }
+    const band = bandIndex(game, score)
+    const mastered = isMastery(game, band)
+    const masteryKey = `${game.id}@${game.difficulty}`
+    const list = Array.isArray(p.mastered) ? p.mastered : []
+    const firstMastery = mastered && !list.includes(masteryKey)
+    if (firstMastery) p.mastered = [...list, masteryKey]
+    return { prev: prev ?? null, isPB, band, mastered, firstMastery }
   }
   const reset = () => {
     state.value = blank()

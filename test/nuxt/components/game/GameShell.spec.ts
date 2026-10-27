@@ -7,6 +7,7 @@ import { useProgress } from '~/composables/useProgress'
 import copy from '~/data/copy.json'
 import type { GameDef } from '~~/shared/types/game'
 import {
+  beastBands,
   buttonNamed,
   easyBands,
   hardBands,
@@ -58,8 +59,8 @@ vi.mock('~/components/games/ReactionTime.vue', async () => {
 
 const mounted: { unmount: () => void }[] = []
 
-async function mountShell(game: GameDef = mathGame) {
-  const wrapper = await mountSuspended(GameShell, { props: { game } })
+async function mountShell(game: GameDef = mathGame, attach = false) {
+  const wrapper = await mountSuspended(GameShell, { props: { game }, ...(attach && { attachTo: document.body }) })
   mounted.push(wrapper)
   return wrapper
 }
@@ -331,6 +332,160 @@ describe('GameShell', () => {
       await finishWith(wrapper, 2)
       expect(wrapper.text()).not.toContain('Your best is 3.')
       expect(useProgress().progress.value.best).toEqual({ tiered: 3, 'tiered@hard': 2 })
+    })
+
+    describe('level up (functional-requirements §3.3)', () => {
+      const name = (d: 'easy' | 'medium' | 'hard' | 'beast') => copy.difficulty[d]
+      const fill = (t: string, level: string, next?: string) =>
+        t.replace('{level}', level).replace('{next}', next ?? '')
+      const dialog = (w: Wrapper) => w.get('[data-testid="level-up"]')
+      const hasDialog = (w: Wrapper) => w.find('[data-testid="level-up"]').exists()
+      const playing = async (w: Wrapper) => {
+        await vi.waitFor(async () => {
+          await flushPromises()
+          expect(w.find('.stub-finish').exists()).toBe(true)
+        })
+      }
+      const masterEasy = async (attach = false) => {
+        const wrapper = await mountShell(tieredGame, attach)
+        await choose(wrapper, 'Easy')
+        await startGame(wrapper)
+        await finishWith(wrapper, easyBands[easyBands.length - 1]!.at!)
+        return wrapper
+      }
+
+      it('opens the level-up dialog on the first mastery of a difficulty', async () => {
+        const wrapper = await masterEasy()
+        const d = dialog(wrapper)
+        expect(d.attributes('role')).toBe('dialog')
+        expect(d.attributes('aria-modal')).toBe('true')
+        expect(d.text()).toContain(fill(copy.levelUp.title, name('easy')))
+        expect(d.text()).toContain(fill(copy.levelUp.ask, name('easy'), name('medium')))
+        expect(d.text()).toContain('You mastered Easy!')
+        expect(buttonNamed(d, 'Play Medium').exists()).toBe(true)
+        expect(buttonNamed(d, 'Stay on Easy').exists()).toBe(true)
+        expect(useProgress().progress.value.mastered).toContain('tiered@easy')
+      })
+
+      it('selects the next difficulty and starts a round from Play Medium', async () => {
+        const wrapper = await masterEasy()
+        stub.game = null
+        await buttonNamed(dialog(wrapper), fill(copy.levelUp.play, name('easy'), name('medium'))).trigger('click')
+        await playing(wrapper)
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(false)
+        expect(useProgress().progress.value.diff?.tiered).toBe('medium')
+        expect((stub.game as TieredGame).difficulty).toBe('medium')
+        expect((stub.game as TieredGame).settings).toEqual({ n: 2 })
+        expect(wrapper.text()).toContain('Speed · Medium · trains')
+      })
+
+      it('closes the dialog and stays on the result from Stay on Easy', async () => {
+        const wrapper = await masterEasy()
+        await buttonNamed(dialog(wrapper), fill(copy.levelUp.stay, name('easy'))).trigger('click')
+        await flushPromises()
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(true)
+        expect(wrapper.find('.stub-finish').exists()).toBe(false)
+        expect(useProgress().progress.value.diff?.tiered).toBe('easy')
+        expect(wrapper.get('[data-testid="try-next"]').text()).toBe(fill(copy.levelUp.tryNext, '', name('medium')))
+      })
+
+      it('hides Try while the dialog is open', async () => {
+        const wrapper = await masterEasy()
+        expect(hasDialog(wrapper)).toBe(true)
+        expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+      })
+
+      it('puts focus on the dialog, not on Play again behind it', async () => {
+        const wrapper = await masterEasy(true)
+        await flushPromises()
+        expect(document.activeElement).toBe(
+          buttonNamed(dialog(wrapper), fill(copy.levelUp.play, '', name('medium'))).element
+        )
+      })
+
+      it('returns focus to Play again after Stay', async () => {
+        const wrapper = await masterEasy(true)
+        await buttonNamed(dialog(wrapper), fill(copy.levelUp.stay, name('easy'))).trigger('click')
+        await flushPromises()
+        expect(document.activeElement).toBe(buttonNamed(wrapper.get('[data-testid="result"]'), 'Play again').element)
+      })
+
+      it('closes the dialog on Escape and keeps the result', async () => {
+        const wrapper = await masterEasy(true)
+        await dialog(wrapper).trigger('keydown', { key: 'Escape' })
+        await flushPromises()
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(true)
+        expect(document.activeElement).toBe(buttonNamed(wrapper.get('[data-testid="result"]'), 'Play again').element)
+      })
+
+      it('offers Hard after the first mastery of Medium', async () => {
+        const wrapper = await mountShell(tieredGame)
+        await startGame(wrapper)
+        await finishWith(wrapper, mathGame.bands[mathGame.bands.length - 1]!.at!)
+        const d = dialog(wrapper)
+        expect(d.text()).toContain('You mastered Medium!')
+        expect(d.text()).toContain('Ready for Hard?')
+        await buttonNamed(d, 'Play Hard').trigger('click')
+        await playing(wrapper)
+        expect(useProgress().progress.value.diff?.tiered).toBe('hard')
+        expect((stub.game as TieredGame).difficulty).toBe('hard')
+      })
+
+      it('shows Try Medium instead of the dialog on a later mastery', async () => {
+        localStorage.setItem('bgarden', JSON.stringify({ mastered: ['tiered@easy'], diff: { tiered: 'easy' } }))
+        const wrapper = await mountShell(tieredGame)
+        await startGame(wrapper)
+        await finishWith(wrapper, easyBands[easyBands.length - 1]!.at!)
+        expect(hasDialog(wrapper)).toBe(false)
+        const tryNext = wrapper.get('[data-testid="result"] [data-testid="try-next"]')
+        expect(tryNext.text()).toBe(fill(copy.levelUp.tryNext, name('easy'), name('medium')))
+        stub.game = null
+        await tryNext.trigger('click')
+        await playing(wrapper)
+        expect(useProgress().progress.value.diff?.tiered).toBe('medium')
+        expect((stub.game as TieredGame).difficulty).toBe('medium')
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(false)
+      })
+
+      it('shows the Beast dialog with only Done on mastering Beast', async () => {
+        const wrapper = await mountShell(tieredGame)
+        await choose(wrapper, 'Beast')
+        await startGame(wrapper)
+        await finishWith(wrapper, beastBands[beastBands.length - 1]!.at!)
+        const d = dialog(wrapper)
+        expect(d.text()).toContain(copy.levelUp.topTitle)
+        expect(d.findAll('button').map(b => b.text().trim())).toEqual([copy.levelUp.done])
+        await buttonNamed(d, 'Done').trigger('click')
+        await flushPromises()
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(true)
+        expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+        expect(useProgress().progress.value.diff?.tiered).toBe('beast')
+      })
+
+      it('shows no Try button on a later mastery of Beast', async () => {
+        localStorage.setItem('bgarden', JSON.stringify({ mastered: ['tiered@beast'], diff: { tiered: 'beast' } }))
+        const wrapper = await mountShell(tieredGame)
+        await startGame(wrapper)
+        await finishWith(wrapper, beastBands[beastBands.length - 1]!.at!)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(true)
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+      })
+
+      it('shows neither the dialog nor Try on a result that does not master', async () => {
+        const wrapper = await mountShell(tieredGame)
+        await choose(wrapper, 'Easy')
+        await startGame(wrapper)
+        await finishWith(wrapper, easyBands[1]!.at!)
+        expect(wrapper.find('[data-testid="result"]').exists()).toBe(true)
+        expect(hasDialog(wrapper)).toBe(false)
+        expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+        expect(useProgress().progress.value.mastered ?? []).not.toContain('tiered@easy')
+      })
     })
   })
 })

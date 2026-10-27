@@ -28,6 +28,14 @@ export function topBest(game: GameDef, best: Record<string, number>) {
   return null
 }
 
+export function nextDifficulty(d: Difficulty): Difficulty | null {
+  return DIFFICULTIES[DIFFICULTIES.indexOf(d) + 1] ?? null
+}
+
+export function isMastery(game: GameDef, band: number): boolean {
+  return !!game.difficulty && band >= game.bands.length - (game.mastery ?? 1)
+}
+
 export function setting(game: GameDef, key: string): number {
   const value = game.settings?.[key]
   if (value == null) throw new Error(`${game.id}: setting ${key} is missing`)

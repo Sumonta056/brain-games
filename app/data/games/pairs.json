@@ -11,6 +11,7 @@
   "durationSec": null,
   "unit": "moves",
   "lowerIsBetter": true,
+  "mastery": 2,
   "steps": [
     "Tap a card to flip it.",
     "Tap another card. If they match, they stay open.",

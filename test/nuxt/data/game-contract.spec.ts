@@ -281,6 +281,22 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
     expect(gameById(id).difficulties).toBeUndefined()
   })
 
+  it.each(tiered)('$file keeps mastery below the band count of every difficulty', ({ game }) => {
+    const d = (game as WithDifficulties).difficulties!
+    const m = game.mastery ?? 1
+    expect(m).toBeGreaterThanOrEqual(1)
+    for (const key of ['easy', 'hard', 'beast']) expect(m, key).toBeLessThan(d[key]!.bands!.length)
+    expect(m).toBeLessThan(game.bands.length)
+  })
+
+  it('lets pairs count its top two bands as mastery and no other game change the default', () => {
+    expect(gameById('pairs').mastery).toBe(2)
+    for (const { game } of games) {
+      if (game.id === 'pairs') continue
+      expect(game.mastery, game.id).toBeUndefined()
+    }
+  })
+
   it('names the nback game N-back', () => {
     expect(gameById('nback').name).toBe('N-back')
   })

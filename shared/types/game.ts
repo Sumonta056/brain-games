@@ -33,6 +33,7 @@ export interface GameDef {
   content?: GameContent
   difficulties?: Record<Difficulty, DifficultyDef>
   difficulty?: Difficulty
+  mastery?: number
   settings?: Record<string, number>
 }
 
@@ -74,4 +75,5 @@ export interface Progress {
   xp: number
   theme: 'auto' | 'light' | 'dark'
   diff?: Record<string, Difficulty>
+  mastered?: string[]
 }

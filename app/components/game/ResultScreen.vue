@@ -31,19 +31,23 @@
     </p>
     <div class="row">
       <button ref="again" class="go" @click="$emit('again')">Play again</button>
+      <button v-if="tryNext" class="ghost" data-testid="try-next" @click="$emit('next')">{{ tryNext }}</button>
       <NuxtLink to="/games" class="ghost text-inherit no-underline">More games</NuxtLink>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { GameDef } from '~~/shared/types/game'
+import copy from '~/data/copy.json'
+import type { Difficulty, GameDef } from '~~/shared/types/game'
 const props = defineProps<{
   game: GameDef
   score: number
-  result: { prev: number | null; isPB: boolean; band: number }
+  result: { prev: number | null; isPB: boolean; band: number; mastered: boolean; firstMastery: boolean }
+  next?: Difficulty | null
 }>()
-defineEmits<{ again: [] }>()
+defineEmits<{ again: []; next: [] }>()
 const again = ref<HTMLButtonElement>()
+defineExpose({ focus: () => again.value?.focus() })
 onMounted(() => {
   again.value?.focus()
   if (props.result.isPB && props.result.prev != null) confetti()
@@ -54,6 +58,9 @@ const emoji = computed(
     ['🌱', '🌿', '🌼', '🌟', '🏆'][
       Math.min(4, Math.round((props.result.band / Math.max(1, props.game.bands.length - 1)) * 4))
     ]
+)
+const tryNext = computed(() =>
+  props.result.mastered && props.next ? copy.levelUp.tryNext.replace('{next}', copy.difficulty[props.next]) : ''
 )
 const close = computed(
   () => props.result.prev != null && Math.abs(props.score - props.result.prev) <= (props.game.lowerIsBetter ? 2 : 1)

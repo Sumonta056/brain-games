@@ -50,7 +50,7 @@ describe('useProgress', () => {
   describe('record', () => {
     it('sets the first best and gives 10 XP', () => {
       const { record, progress } = fresh()
-      expect(record(mathGame, 8)).toEqual({ prev: null, isPB: true, band: 1 })
+      expect(record(mathGame, 8)).toEqual({ prev: null, isPB: true, band: 1, mastered: false, firstMastery: false })
       expect(progress.value.best.math).toBe(8)
       expect(progress.value.xp).toBe(10)
     })
@@ -193,6 +193,90 @@ describe('useProgress', () => {
       const { progress } = fresh()
       expect(progress.value.diff).toEqual({ pairs: 'hard' })
       expect(progress.value.best['pairs@hard']).toBe(30)
+    })
+  })
+
+  describe('record and mastery (functional-requirements §3.3)', () => {
+    it('reports the first mastery of a difficulty and adds id@difficulty', () => {
+      const { record, progress } = fresh()
+      expect(record(tieredAs('hard'), 8)).toMatchObject({ band: 2, mastered: true, firstMastery: true })
+      expect(progress.value.mastered).toEqual(['tiered@hard'])
+    })
+
+    it('reports mastered but not first mastery on a second top result', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('hard'), 8)
+      expect(record(tieredAs('hard'), 9)).toMatchObject({ mastered: true, firstMastery: false })
+      expect(progress.value.mastered).toEqual(['tiered@hard'])
+    })
+
+    it('keys a medium mastery as id@medium', () => {
+      const { record, progress } = fresh()
+      expect(record(tieredAs('medium'), 25)).toMatchObject({ band: 4, mastered: true, firstMastery: true })
+      expect(progress.value.mastered).toEqual(['tiered@medium'])
+    })
+
+    it('does not master below the top band', () => {
+      const { record, progress } = fresh()
+      expect(record(tieredAs('medium'), 24)).toMatchObject({ band: 3, mastered: false, firstMastery: false })
+      expect(record(tieredAs('hard'), 7)).toMatchObject({ band: 1, mastered: false, firstMastery: false })
+      expect(progress.value.mastered ?? []).toEqual([])
+    })
+
+    it('keeps a separate mastery for each difficulty', () => {
+      const { record, progress } = fresh()
+      expect(record(tieredAs('easy'), 20)).toMatchObject({ firstMastery: true })
+      expect(record(tieredAs('hard'), 8)).toMatchObject({ firstMastery: true })
+      expect(record(tieredAs('beast'), 4)).toMatchObject({ firstMastery: true })
+      expect(record(tieredAs('easy'), 22)).toMatchObject({ mastered: true, firstMastery: false })
+      expect([...progress.value.mastered!].sort()).toEqual(['tiered@beast', 'tiered@easy', 'tiered@hard'])
+    })
+
+    it('counts the top two bands when the game sets mastery to 2', () => {
+      const { record, progress } = fresh()
+      const easy = { ...tieredAs('easy'), mastery: 2 }
+      expect(record(easy, 10)).toMatchObject({ band: 1, mastered: true, firstMastery: true })
+      expect(progress.value.mastered).toEqual(['tiered@easy'])
+    })
+
+    it('never adds a mastery for a game without a difficulty', () => {
+      const { record, progress } = fresh()
+      const top = reactionGame.bands.at(-1)!.at as number
+      expect(record(reactionGame, top)).toMatchObject({
+        band: reactionGame.bands.length - 1,
+        mastered: false,
+        firstMastery: false
+      })
+      expect(progress.value.mastered ?? []).toEqual([])
+    })
+
+    it('persists masteries to the bgarden key', async () => {
+      const { record } = fresh()
+      record(tieredAs('hard'), 8)
+      await nextTick()
+      expect(JSON.parse(localStorage.getItem(KEY)!).mastered).toEqual(['tiered@hard'])
+    })
+
+    it('loads stored masteries, so a stored one is not first again', () => {
+      localStorage.setItem(KEY, JSON.stringify({ mastered: ['tiered@hard'] }))
+      const { record, progress } = fresh()
+      expect(progress.value.mastered).toEqual(['tiered@hard'])
+      expect(record(tieredAs('hard'), 8)).toMatchObject({ mastered: true, firstMastery: false })
+    })
+
+    it('treats a stored mastered value that is not a list as empty', () => {
+      localStorage.setItem(KEY, JSON.stringify({ mastered: 'tiered@hard' }))
+      const { record, progress } = fresh()
+      expect(record(tieredAs('hard'), 8)).toMatchObject({ mastered: true, firstMastery: true })
+      expect(progress.value.mastered).toEqual(['tiered@hard'])
+    })
+
+    it('loads old progress without mastered and records a first mastery', () => {
+      localStorage.setItem(KEY, JSON.stringify({ best: { tiered: 3 }, xp: 10 }))
+      const { record, progress } = fresh()
+      expect(progress.value.best.tiered).toBe(3)
+      expect(record(tieredAs('medium'), 25)).toMatchObject({ mastered: true, firstMastery: true })
+      expect(progress.value.mastered).toEqual(['tiered@medium'])
     })
   })
 

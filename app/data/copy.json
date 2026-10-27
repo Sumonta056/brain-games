@@ -61,5 +61,17 @@
     "medium": "Medium",
     "hard": "Hard",
     "beast": "Beast"
+  },
+  "levelUp": {
+    "title": "You mastered {level}!",
+    "ask": "Ready for {next}?",
+    "play": "Play {next}",
+    "stay": "Stay on {level}",
+    "topTitle": "You tamed Beast!",
+    "topBody": "That is the hardest level there is. Amazing work.",
+    "done": "Done",
+    "tryNext": "Try {next}",
+    "emoji": "🌟",
+    "topEmoji": "🏆"
   }
 }

@@ -1,16 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import ResultScreen from '~/components/game/ResultScreen.vue'
+import copy from '~/data/copy.json'
+import type { Difficulty } from '~~/shared/types/game'
 import { buttonNamed, mathGame, reactionGame } from '../../fixtures'
 
 const { confettiSpy } = vi.hoisted(() => ({ confettiSpy: vi.fn() }))
 vi.mock('~/utils/confetti', () => ({ confetti: confettiSpy }))
 
-type Result = { prev: number | null; isPB: boolean; band: number }
+type Result = { prev: number | null; isPB: boolean; band: number; mastered?: boolean; firstMastery?: boolean }
 
-function mountResult(score: number, result: Result, game = mathGame) {
-  return mountSuspended(ResultScreen, { props: { game, score, result } })
+function mountResult(score: number, result: Result, game = mathGame, next?: Difficulty | null) {
+  return mountSuspended(ResultScreen, {
+    props: { game, score, result: { mastered: false, firstMastery: false, ...result }, next }
+  })
 }
+
+const tryHard = copy.levelUp.tryNext.replace('{next}', copy.difficulty.hard)
 
 describe('ResultScreen', () => {
   beforeEach(() => confettiSpy.mockReset())
@@ -76,10 +82,57 @@ describe('ResultScreen', () => {
 
   it('focuses Play again so Enter replays', async () => {
     const wrapper = await mountSuspended(ResultScreen, {
-      props: { game: mathGame, score: 5, result: { prev: null, isPB: true, band: 0 } },
+      props: {
+        game: mathGame,
+        score: 5,
+        result: { prev: null, isPB: true, band: 0, mastered: false, firstMastery: false }
+      },
       attachTo: document.body
     })
     expect(document.activeElement).toBe(buttonNamed(wrapper, 'Play again').element)
     wrapper.unmount()
+  })
+
+  describe('level up (functional-requirements §3.3)', () => {
+    it('shows Try Hard on a later mastery when a next difficulty exists', async () => {
+      const wrapper = await mountResult(25, { prev: 25, isPB: false, band: 4, mastered: true }, mathGame, 'hard')
+      const button = wrapper.get('[data-testid="try-next"]')
+      expect(button.element.tagName).toBe('BUTTON')
+      expect(button.text()).toBe(tryHard)
+      expect(tryHard).toBe('Try Hard')
+    })
+
+    it('emits next from Try Hard', async () => {
+      const wrapper = await mountResult(25, { prev: 25, isPB: false, band: 4, mastered: true }, mathGame, 'hard')
+      await wrapper.get('[data-testid="try-next"]').trigger('click')
+      expect(wrapper.emitted('next')).toHaveLength(1)
+      expect(wrapper.emitted('again')).toBeUndefined()
+    })
+
+    it('keeps Play again next to Try Hard', async () => {
+      const wrapper = await mountResult(25, { prev: 25, isPB: false, band: 4, mastered: true }, mathGame, 'hard')
+      expect(buttonNamed(wrapper, 'Play again').exists()).toBe(true)
+      expect(buttonNamed(wrapper, tryHard).exists()).toBe(true)
+    })
+
+    it('shows Try Hard on a first mastery too, for after the popup closes', async () => {
+      const wrapper = await mountResult(
+        25,
+        { prev: null, isPB: true, band: 4, mastered: true, firstMastery: true },
+        mathGame,
+        'hard'
+      )
+      expect(wrapper.get('[data-testid="try-next"]').text()).toBe('Try Hard')
+    })
+
+    it('hides Try Hard when the result does not master the difficulty', async () => {
+      const wrapper = await mountResult(12, { prev: 20, isPB: false, band: 2 }, mathGame, 'hard')
+      expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+    })
+
+    it('hides the try button when there is no next difficulty', async () => {
+      const wrapper = await mountResult(25, { prev: 25, isPB: false, band: 4, mastered: true }, mathGame, null)
+      expect(wrapper.find('[data-testid="try-next"]').exists()).toBe(false)
+    })
   })
 })

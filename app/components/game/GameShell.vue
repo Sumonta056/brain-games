@@ -49,9 +49,25 @@
               <p class="text-center text-muted" data-testid="game-loading">{{ copy.loading }}</p>
             </template>
           </Suspense>
-          <ResultScreen v-else :game="played" :score="score" :result="result!" @again="start" />
+          <ResultScreen
+            v-else
+            ref="resultScreen"
+            :game="played"
+            :score="score"
+            :result="result!"
+            :next="levelUp ? null : next"
+            @again="start"
+            @next="advance"
+          />
         </div>
       </div>
+      <LevelUpDialog
+        v-if="levelUp"
+        :level="levelUp.level"
+        :next="levelUp.next"
+        @play="levelUpPlay"
+        @close="closeLevelUp"
+      />
     </section>
     <GameSidebar :game="played" :here="here" />
   </div>
@@ -88,9 +104,13 @@ const here = computed(() =>
       ? bandIndex(played.value, best.value)
       : -1
 )
+const next = computed(() => (played.value.difficulty ? nextDifficulty(played.value.difficulty) : null))
+const resultScreen = ref<{ focus: () => void }>()
+const levelUp = ref<{ level: Difficulty; next: Difficulty | null } | null>(null)
 const gameComponent = computed(() => gameComponents[props.game.component] ?? gameComponents.ComingSoon)
 
 function start() {
+  levelUp.value = null
   round.value++
   phase.value = 'playing'
 }
@@ -98,5 +118,23 @@ function finish(s: number) {
   score.value = s
   result.value = record(played.value, s)
   phase.value = 'result'
+  if (result.value.firstMastery && played.value.difficulty) {
+    levelUp.value = { level: played.value.difficulty, next: next.value }
+  }
+}
+function advance() {
+  if (!next.value) return
+  difficulty.value = next.value
+  start()
+}
+function closeLevelUp() {
+  levelUp.value = null
+  nextTick(() => resultScreen.value?.focus())
+}
+function levelUpPlay() {
+  const target = levelUp.value?.next
+  if (!target) return
+  difficulty.value = target
+  start()
 }
 </script>
