@@ -54,5 +54,11 @@
   ],
   "avatars": ["🦉", "🐼", "🦊", "🐢", "🐬", "🌻", "🐝", "🌙", "⭐", "🍀"],
   "loading": "Getting ready…",
-  "praise": ["Nice!", "Great!", "On a roll!", "Lovely", "Smooth", "Keep going", "Yes!", "Brain on fire 🔥"]
+  "praise": ["Nice!", "Great!", "On a roll!", "Lovely", "Smooth", "Keep going", "Yes!", "Brain on fire 🔥"],
+  "difficulty": {
+    "label": "Difficulty",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  }
 }

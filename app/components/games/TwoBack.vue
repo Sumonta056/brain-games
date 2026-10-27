@@ -15,14 +15,15 @@ const props = defineProps<{ game: GameDef }>()
 const emit = defineEmits<{ finish: [score: number] }>()
 const { later } = useTimeouts()
 const N = 24
+const n = setting(props.game, 'n')
 const letters = gameContent(props.game, 'letters')
 const seq: string[] = []
 for (let k = 0; k < N; k++) {
-  if (k >= 2 && Math.random() < 0.3) seq.push(seq[k - 2]!)
+  if (k >= n && Math.random() < 0.3) seq.push(seq[k - n]!)
   else {
     let l: string
     do l = pick(letters)
-    while (k >= 2 && l === seq[k - 2])
+    while (k >= n && l === seq[k - n])
     seq.push(l)
   }
 }
@@ -30,14 +31,14 @@ const pressed = new Array<boolean>(N).fill(false)
 const i = ref(-1)
 const hits = ref(0)
 const shown = ref('')
-const fb = ref('Tap Match (or Space) when it’s the same as 2 letters ago')
+const fb = ref(gameContent(props.game, 'hint').replace('{n}', String(n)))
 const ok = ref(false)
 
 function press() {
   const k = i.value
-  if (k < 2 || pressed[k]) return
+  if (k < n || pressed[k]) return
   pressed[k] = true
-  ok.value = seq[k] === seq[k - 2]
+  ok.value = seq[k] === seq[k - n]
   fb.value = ok.value ? 'Match!' : 'Not this time'
   if (ok.value) hits.value++
 }
@@ -45,8 +46,8 @@ function step() {
   i.value++
   if (i.value === N) {
     let right = 0
-    for (let k = 2; k < N; k++) if ((seq[k] === seq[k - 2]) === pressed[k]) right++
-    emit('finish', Math.round((right / (N - 2)) * 100))
+    for (let k = n; k < N; k++) if ((seq[k] === seq[k - n]) === pressed[k]) right++
+    emit('finish', Math.round((right / (N - n)) * 100))
     return
   }
   shown.value = ''

@@ -1,9 +1,14 @@
 <template>
   <div>
     <div class="hud">
-      <span>Find all 8 pairs</span><span>Moves {{ moves }}</span>
+      <span>Find all {{ pairs }} pairs</span><span>Moves {{ moves }}</span>
     </div>
-    <div class="board max-w-[440px] grid-cols-4">
+    <div
+      class="board max-w-[440px]"
+      :class="cols === 5 ? 'grid-cols-5' : 'grid-cols-4'"
+      data-testid="board"
+      :data-cols="cols"
+    >
       <button
         v-for="(c, i) in cards"
         :key="i"
@@ -25,7 +30,9 @@ const props = defineProps<{ game: GameDef }>()
 const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later } = useTimeouts()
-const emojis = shuffle(gameContent(props.game, 'emojis')).slice(0, 8)
+const pairs = setting(props.game, 'pairs')
+const cols = pairs > 8 ? 5 : 4
+const emojis = gameContent(props.game, 'emojis').slice(0, pairs)
 const cards = ref(shuffle([...emojis, ...emojis]).map(emoji => ({ emoji, state: 'down' as 'down' | 'up' | 'got' })))
 const moves = ref(0)
 let open: number[] = []
@@ -45,7 +52,7 @@ function flip(i: number) {
     a.state = b.state = 'got'
     found++
     cheer()
-    if (found === 8) later(() => emit('finish', moves.value), 700)
+    if (found === pairs) later(() => emit('finish', moves.value), 700)
   } else {
     lock = true
     later(() => {

@@ -78,6 +78,18 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
   - Lower-is-better games: the score falls in the last band where `score <= at`, with `at: null` meaning no limit.
 - **Theme:** `auto` (follows the system), `light` or `dark`, stored in Progress.
 
+### 3.1 Difficulty
+
+- A game with a `difficulties` block in its JSON has three difficulties: `easy`, `medium` and `hard`. Reaction, breath and hand have no block and no selector.
+- **Selector:** the Ready screen shows a radio group (Easy, Medium, Hard) above the Start button. Arrow keys move the choice. The default is Medium. The last choice for each game is stored in `Progress.diff[id]` and is selected the next time.
+- **Resolved game:** `withDifficulty(game, d)` returns the game with that difficulty's `bands`, `science` and `settings`, and with `difficulty: d`. Medium has no `bands` or `science` of its own and uses the top-level ones. The game component, the sidebar, the result screen and the header all get the resolved game. A game reads a setting with `setting(game, key)`, which throws when the key is missing.
+- **Best score per difficulty:** Medium keeps `best[id]` (compatible with design.html). Easy and Hard use `best['<id>@easy']` and `best['<id>@hard']`. The header and the result screen compare only with the best of the selected difficulty.
+- **History:** each entry stores its difficulty in `l` (missing means medium). Recent games on the profile use the bands of that difficulty.
+- **Games tried** on the profile counts each game id once, whatever its difficulties. Brain skills on the profile and the best score on the home tile use `topBest(game, best)`: the best of the hardest difficulty played (Hard, then Medium, then Easy). The tile names that difficulty, for example `Best 12.3 s · Excellent · Hard`.
+- The game header shows the selected difficulty in place of the fixed `level` for a game with difficulties.
+- A stored `diff[id]` that is not one of the three difficulties is ignored, and Medium is selected.
+- Easy and Hard bands are Brain Games guides, not research norms, and their `science` says so.
+
 ## 4. Game JSON contract (`app/data/games/<id>.json`)
 
 | Field                     | Type                               | Notes                                                                                                          |
@@ -97,40 +109,41 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 | science, tip              | string                             | Sidebar                                                                                                        |
 | icon                      | string                             | File name in `app/assets/icons/games/<icon>.svg`: a 48×48 SVG (`viewBox="0 0 48 48"`) that uses `currentColor` |
 | content                   | object (optional)                  | Game-specific lists the game reads at play time. Components never hard-code them. See the table below.         |
+| difficulties              | object (optional)                  | `{ easy, medium, hard }`. Each has `settings` (name → number). Easy and Hard also have `bands` and `science`.  |
 
 | Game     | `content` shape                                                                                                  |
 | -------- | ---------------------------------------------------------------------------------------------------------------- |
-| pairs    | `{ emojis: string[8] }`                                                                                          |
+| pairs    | `{ emojis: string[12] }`                                                                                         |
 | words    | `{ letters: string[] }` (the start letters)                                                                      |
 | category | `{ categories: string[] }`                                                                                       |
 | backward | `{ pools: string[][5] }` (word pools, shortest words first)                                                      |
-| nback    | `{ letters: string[] }`                                                                                          |
+| nback    | `{ letters: string[], hint: string }` (`hint` holds `{n}`)                                                       |
 | stroop   | `{ colours: { name: string, token: string }[4] }` (`token` is a colour token in `tokens.css`, e.g. `stroop-red`) |
 | hand     | `{ tasks: string[] }` (at least 4)                                                                               |
 
 **Word list (words):** `app/data/wordlists/<letter>.txt` holds one lowercase word per line for each letter a–z. `npm run wordlists` builds the files from `wordlist-english` (SCOWL size 60, American, British and Canadian spellings) plus a fixed list of common contractions. It leaves out every word that matches the local client-data guard patterns (`CLIENT_GUARD_PATTERNS`, or `~/.config/git/client-data-patterns` when that file exists), because the commit guard blocks those words. Word sprint loads only its letter's file, and its countdown starts after the file loads. A word is real when it is in the list. The list has no hyphenated words, so a hyphenated word gets no point. An unknown word gets no point and the message "I do not know that one yet. Try another". If the file fails to load, the game still plays and counts every word that passes the other rules. The SCOWL copyright notice ships in `app/data/wordlists/COPYRIGHT` and on the site at `/licenses/scowl.txt`.
 
-Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars`, `praise` and `loading` (the line the game page shows while a game loads). Components never hard-code it.
+Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars`, `praise`, `loading` (the line the game page shows while a game loads) and `difficulty` (the selector's label and the names Easy, Medium, Hard). Components never hard-code it.
 
 ## 5. The 15 games (behaviour)
 
-| id       | Name               | Rules                                                                                                    | Score                       |
-| -------- | ------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------- |
-| breath   | Box breathing      | 4 rounds of in 4s / hold 4s / out 4s / hold 4s; circle scales; "Finish early"                            | rounds (0–4)                |
-| pairs    | Memory pairs       | 16 cards, 8 emoji pairs; a mismatch flips back after 0.8s                                                | moves (lower better)        |
-| odd      | Odd colour out     | n×n grid (2→7, grows every 3 levels); one tile ±lightness, delta shrinks per level; 60s                  | levels                      |
-| math     | Mental math        | +/− (then ×) sums; auto-advance on correct answer; difficulty up every 5; 60s                            | solved                      |
-| serial7  | Serial sevens      | Start 100–199, subtract 7, Enter; wrong answers show the correct one and continue; restarts below 7; 60s | steps                       |
-| reaction | Reaction time      | Random 1.2–3.8s wait, then green; tapping early restarts the round; 5 rounds                             | avg ms (lower better)       |
-| words    | Word sprint        | Random letter; real words of 3+ letters starting with it, no repeats; 60s (see the word list rule below) | words                       |
-| category | Category challenge | Random category; items with no repeats; 60s                                                              | items                       |
-| backward | Backward spelling  | Word shown for 1.8s + 0.22s per letter, then hidden; type it reversed; 8 rounds, longer words            | out of 8                    |
-| digits   | Digit span         | Digits shown 0.9s each; starts at 3; +1 per success; 2 misses in a row ends                              | longest span                |
-| sequence | Sequence memory    | 3×3 grid; pattern +1 each level; repeat it by tapping                                                    | levels                      |
-| nback    | 2-back             | 24 letters, 2.4s each, about 30% matches; Match button or Space                                          | % accuracy over trials 3–24 |
-| stroop   | Stroop colours     | Colour word in a different ink; tap the ink; wrong = −1; 45s                                             | points (min 0)              |
-| schulte  | Schulte table      | 5×5 grid of 1–25 shuffled; tap in order; wrong taps flash                                                | seconds (lower better)      |
-| hand     | Other hand day     | 4 daily tasks (date-seeded) + a drawing pad; tick the tasks                                              | out of 4                    |
+| id       | Name               | Rules                                                                                                     | Score                         |
+| -------- | ------------------ | --------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| breath   | Box breathing      | 4 rounds of in 4s / hold 4s / out 4s / hold 4s; circle scales; "Finish early"                             | rounds (0–4)                  |
+| pairs    | Memory pairs       | `pairs` emoji pairs (easy 6, medium 8, hard 10); 5 columns for 10 pairs, else 4; mismatch flips back 0.8s | moves (lower better)          |
+| odd      | Odd colour out     | n×n grid (2→7, grows every 3 levels); one tile ±lightness, delta shrinks per level; 60s                   | levels                        |
+| math     | Mental math        | +/− (then ×) sums; auto-advance on correct answer; difficulty up every 5; 60s                             | solved                        |
+| serial7  | Serial sevens      | Start 100–199, subtract 7, Enter; wrong answers show the correct one and continue; restarts below 7; 60s  | steps                         |
+| reaction | Reaction time      | Random 1.2–3.8s wait, then green; tapping early restarts the round; 5 rounds                              | avg ms (lower better)         |
+| words    | Word sprint        | Random letter; real words of 3+ letters starting with it, no repeats; 60s (see the word list rule below)  | words                         |
+| category | Category challenge | Random category; items with no repeats; 60s                                                               | items                         |
+| backward | Backward spelling  | Word shown for 1.8s + 0.22s per letter, then hidden; type it reversed; 8 rounds, longer words             | out of 8                      |
+| digits   | Digit span         | Digits shown 0.9s each; starts at 3; +1 per success; 2 misses in a row ends                               | longest span                  |
+| sequence | Sequence memory    | 3×3 grid; pattern +1 each level; repeat it by tapping                                                     | levels                        |
+| nback    | N-back             | `n`-back (easy 1, medium 2, hard 3); 24 letters, 2.4s each, about 30% matches; Match button or Space      | % accuracy over trials n+1–24 |
+| stroop   | Stroop colours     | Colour word in a different ink; tap the ink; wrong = −1; 45s                                              | points (min 0)                |
+| schulte  | Schulte table      | `size`×`size` grid (easy 4, medium 5, hard 6) of 1–size² shuffled; tap in order; wrong taps flash         | seconds (lower better)        |
+| hand     | Other hand day     | 4 daily tasks (date-seeded) + a drawing pad; tick the tasks                                               | out of 4                      |
 
 ## 6. Visual system
 

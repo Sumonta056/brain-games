@@ -5,7 +5,13 @@ import { clearNuxtState } from '#imports'
 import ProfilePage from '~/pages/profile.vue'
 import { useProgress } from '~/composables/useProgress'
 import copy from '~/data/copy.json'
-import { buttonNamed, iconNames } from '../fixtures'
+import pairs from '~/data/games/pairs.json'
+import type { Band } from '~~/shared/types/game'
+import { bandIndex } from '~/utils/bands'
+import { buttonNamed, iconNames, type TieredGame } from '../fixtures'
+
+const pairsGame = pairs as unknown as TieredGame
+const labelFor = (bands: Band[], s: number) => bands[bandIndex({ ...pairsGame, bands }, s)]!.label
 
 const mounted: { unmount: () => void }[] = []
 
@@ -110,6 +116,13 @@ describe('pages/profile', () => {
     expect(speed.get('small').text()).toBe('70%')
   })
 
+  it('counts a game played only on hard in brain skills, with its hard bands', async () => {
+    seed({ best: { 'schulte@hard': 12.3 } })
+    const wrapper = await mountProfile()
+    const focus = wrapper.findAll('[data-testid="skill"]').find(s => s.get('b').text() === 'Focus')!
+    expect(focus.get('small').text()).toBe('100%')
+  })
+
   it('offers every avatar from copy.json in order', async () => {
     const wrapper = await mountProfile()
     const buttons = wrapper.findAll('[data-testid="avatars"] button')
@@ -151,5 +164,41 @@ describe('pages/profile', () => {
     await buttonNamed(wrapper, 'Reset all progress').trigger('click')
     expect(useProgress().progress.value.xp).toBe(50)
     expect(stat(wrapper, 'games tried')).toBe('1 / 15')
+  })
+
+  describe('difficulty (functional-requirements §3.1)', () => {
+    it('labels a recent game with the bands of its difficulty', async () => {
+      const hard = pairsGame.difficulties?.hard?.bands
+      const easy = pairsGame.difficulties?.easy?.bands
+      expect(hard, 'pairs.json difficulties.hard.bands').toBeDefined()
+      expect(easy, 'pairs.json difficulties.easy.bands').toBeDefined()
+      const scores = Array.from({ length: 80 }, (_, i) => i + 1)
+      const sHard = scores.find(s => labelFor(hard!, s) !== labelFor(pairsGame.bands, s))!
+      const sEasy = scores.find(s => labelFor(easy!, s) !== labelFor(pairsGame.bands, s))!
+      expect(sHard).toBeDefined()
+      expect(sEasy).toBeDefined()
+      seed({
+        hist: [
+          { id: 'pairs', s: sHard, d: '2026-05-10', t: 3, l: 'hard' },
+          { id: 'pairs', s: sEasy, d: '2026-05-10', t: 2, l: 'easy' },
+          { id: 'pairs', s: sHard, d: '2026-05-10', t: 1 }
+        ]
+      })
+      const wrapper = await mountProfile()
+      const rows = wrapper.findAll('[data-testid="history"] li').map(r => r.get('small').text())
+      expect(rows).toEqual([labelFor(hard!, sHard), labelFor(easy!, sEasy), labelFor(pairsGame.bands, sHard)])
+    })
+
+    it('counts each game id once in games tried, whatever its difficulties', async () => {
+      seed({ best: { pairs: 20, 'pairs@hard': 30, 'pairs@easy': 12, 'schulte@easy': 10 } })
+      const wrapper = await mountProfile()
+      expect(stat(wrapper, 'games tried')).toBe('2 / 15')
+    })
+
+    it('counts a game played only on hard as tried', async () => {
+      seed({ best: { 'nback@hard': 80 } })
+      const wrapper = await mountProfile()
+      expect(stat(wrapper, 'games tried')).toBe('1 / 15')
+    })
   })
 })

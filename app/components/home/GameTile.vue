@@ -38,14 +38,16 @@
   </NuxtLink>
 </template>
 <script setup lang="ts">
+import copy from '~/data/copy.json'
 import type { GameDef, TileSize } from '~~/shared/types/game'
 const props = defineProps<{ game: GameDef; size: TileSize }>()
 const { tintVars } = useGames()
 const { progress } = useProgress()
 const bestText = computed(() => {
-  const b = progress.value.best[props.game.id]
-  return b != null
-    ? `Best ${b} ${props.game.unit} · ${props.game.bands[bandIndex(props.game, b)]!.label}`
-    : `${props.game.category} · not played yet`
+  const top = topBest(props.game, progress.value.best)
+  if (!top) return `${props.game.category} · not played yet`
+  const { game, score } = top
+  const level = game.difficulty ? ` · ${copy.difficulty[game.difficulty]}` : ''
+  return `Best ${score} ${game.unit} · ${game.bands[bandIndex(game, score)]!.label}${level}`
 })
 </script>

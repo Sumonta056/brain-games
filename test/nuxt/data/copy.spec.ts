@@ -24,8 +24,20 @@ function strings(value: unknown): string[] {
 }
 
 describe('copy.json contract', () => {
-  it('has exactly the six copy groups', () => {
-    expect(Object.keys(copy).sort()).toEqual(['affirmations', 'avatars', 'greetings', 'loading', 'moods', 'praise'])
+  it('has exactly the seven copy groups', () => {
+    expect(Object.keys(copy).sort()).toEqual([
+      'affirmations',
+      'avatars',
+      'difficulty',
+      'greetings',
+      'loading',
+      'moods',
+      'praise'
+    ])
+  })
+
+  it('names the difficulty group and the three difficulties', () => {
+    expect(copy.difficulty).toEqual({ label: 'Difficulty', easy: 'Easy', medium: 'Medium', hard: 'Hard' })
   })
 
   it('has a non-empty loading line', () => {

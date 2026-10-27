@@ -71,7 +71,7 @@
     "steps": [
       "Tap a card to flip it.",
       "Tap another card. If they match, they stay open.",
-      "Find all 8 pairs in as few moves as you can."
+      "Find all the pairs in as few moves as you can."
     ],
     "demo": [
       {
@@ -121,7 +121,93 @@
     ],
     "science": "8 moves is perfect (only possible with luck). Most relaxed players finish in roughly 14–22 moves. This is a Brain Games guide, not a clinical norm.",
     "tip": "Say what you see out loud in your head, “sun, top left”. Naming helps memory.",
-    "icon": "pairs"
+    "icon": "pairs",
+    "content": {
+      "emojis": ["🌻", "🐝", "🍀", "🌙", "🐢", "🍓", "🦋", "⭐", "🍄", "🐞", "🌈", "🍋"]
+    },
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "pairs": 6
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "21+",
+            "label": "Exploring",
+            "message": "You found them all. Next time, try to remember each card you flip."
+          },
+          {
+            "at": 20,
+            "range": "15–20",
+            "label": "Steady",
+            "message": "A relaxed, solid game."
+          },
+          {
+            "at": 14,
+            "range": "10–14",
+            "label": "Good memory",
+            "message": "You’re remembering positions well."
+          },
+          {
+            "at": 9,
+            "range": "7–9",
+            "label": "Excellent",
+            "message": "Very few wasted moves. Great spatial memory."
+          },
+          {
+            "at": 6,
+            "range": "6",
+            "label": "Perfect",
+            "message": "Not a single wasted move."
+          }
+        ],
+        "science": "Easy uses 6 pairs. 6 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "pairs": 8
+        }
+      },
+      "hard": {
+        "settings": {
+          "pairs": 10
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "36+",
+            "label": "Exploring",
+            "message": "You found them all. Ten pairs is a big board, so well done."
+          },
+          {
+            "at": 35,
+            "range": "26–35",
+            "label": "Steady",
+            "message": "A calm, solid game on a big board."
+          },
+          {
+            "at": 25,
+            "range": "18–25",
+            "label": "Good memory",
+            "message": "You’re holding a lot of positions in mind."
+          },
+          {
+            "at": 17,
+            "range": "11–17",
+            "label": "Excellent",
+            "message": "Very few wasted moves on a hard board."
+          },
+          {
+            "at": 10,
+            "range": "10",
+            "label": "Perfect",
+            "message": "Not a single wasted move."
+          }
+        ],
+        "science": "Hard uses 10 pairs. 10 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+      }
+    }
   },
   {
     "id": "odd",
@@ -399,7 +485,7 @@
     "steps": [
       "You get a letter, like S.",
       "Type a word starting with it and press Enter.",
-      "3+ letters, no repeats. 60 seconds."
+      "Real words, 3+ letters, no repeats. 60 seconds."
     ],
     "demo": [
       {
@@ -449,7 +535,10 @@
     ],
     "science": "In the standard spoken letter-fluency test (F, A, S), adults average around 14–15 words per letter per minute. Typing is slower than speaking, so typed scores run lower.",
     "tip": "Think in themes: s-foods, s-animals, s-verbs.",
-    "icon": "words"
+    "icon": "words",
+    "content": {
+      "letters": ["A", "B", "C", "D", "E", "F", "G", "H", "L", "M", "N", "P", "R", "S", "T", "W"]
+    }
   },
   {
     "id": "category",
@@ -507,7 +596,27 @@
     ],
     "science": "In spoken “name animals in 60 seconds” tests, younger adults usually say about 20. Typing slows things, so 13+ typed is very good.",
     "tip": "Use sub-groups: farm animals, then sea animals, then birds.",
-    "icon": "category"
+    "icon": "category",
+    "content": {
+      "categories": [
+        "Fruits",
+        "Countries",
+        "Animals",
+        "Things in a kitchen",
+        "Jobs",
+        "Sports",
+        "Vegetables",
+        "Cities",
+        "Things that are round",
+        "Musical instruments",
+        "Things in an office",
+        "Foods you love",
+        "Things that fly",
+        "Colours",
+        "Flowers",
+        "Things at the beach"
+      ]
+    }
   },
   {
     "id": "backward",
@@ -565,7 +674,16 @@
     ],
     "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
     "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
-    "icon": "backward"
+    "icon": "backward",
+    "content": {
+      "pools": [
+        ["cat", "sun", "book", "tree", "fish", "lamp"],
+        ["plant", "house", "river", "stone", "chair", "bread"],
+        ["garden", "pencil", "bridge", "silver", "market", "rocket"],
+        ["blanket", "kitchen", "captain", "library", "diamond", "machine"],
+        ["umbrella", "hospital", "elephant", "sunshine", "computer", "mountain"]
+      ]
+    }
   },
   {
     "id": "digits",
@@ -695,18 +813,18 @@
     "id": "nback",
     "order": 12,
     "component": "TwoBack",
-    "name": "2-back",
+    "name": "N-back",
     "category": "Memory",
     "level": "Hard",
     "size": "wide",
-    "blurb": "Spot a letter that matches the one two steps ago.",
+    "blurb": "Spot a letter that matches the one a few steps ago.",
     "trains": "Working memory updating",
     "durationSec": null,
     "unit": "% accuracy",
     "lowerIsBetter": false,
     "steps": [
       "Letters appear one by one.",
-      "If a letter matches the one 2 steps back, tap Match.",
+      "If a letter matches the one N steps back, tap Match. N is 1, 2 or 3.",
       "Otherwise do nothing. 24 letters."
     ],
     "demo": [
@@ -720,7 +838,7 @@
       },
       {
         "scene": "<div class=\"mk ok\">K → B → K<small>Match!</small></div>",
-        "caption": "Same as 2 back → tap"
+        "caption": "On Medium: same as 2 back → tap"
       }
     ],
     "bands": [
@@ -750,8 +868,83 @@
       }
     ],
     "science": "N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.",
-    "tip": "Whisper the last two letters to yourself on each step.",
-    "icon": "nback"
+    "tip": "Whisper the last few letters to yourself on each step.",
+    "icon": "nback",
+    "content": {
+      "letters": ["B", "C", "D", "F", "G", "H", "J", "K", "L"],
+      "hint": "Tap Match (or Space) when it’s the same as the letter {n} back"
+    },
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "n": 1
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "under 75",
+            "label": "Learning",
+            "message": "Everyone starts here. Watch for a letter that repeats."
+          },
+          {
+            "at": 75,
+            "range": "75–84",
+            "label": "Getting it",
+            "message": "You’re keeping track."
+          },
+          {
+            "at": 85,
+            "range": "85–94",
+            "label": "Strong",
+            "message": "Solid attention."
+          },
+          {
+            "at": 95,
+            "range": "95+",
+            "label": "Excellent",
+            "message": "Very sharp."
+          }
+        ],
+        "science": "Easy is 1-back: tap when the letter matches the one just before it. These bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {
+          "n": 2
+        }
+      },
+      "hard": {
+        "settings": {
+          "n": 3
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "under 70",
+            "label": "Learning",
+            "message": "3-back is very hard. Everyone starts here."
+          },
+          {
+            "at": 70,
+            "range": "70–79",
+            "label": "Getting it",
+            "message": "You’re keeping three letters in mind."
+          },
+          {
+            "at": 80,
+            "range": "80–89",
+            "label": "Strong",
+            "message": "Strong working memory."
+          },
+          {
+            "at": 90,
+            "range": "90+",
+            "label": "Excellent",
+            "message": "Very sharp."
+          }
+        ],
+        "science": "Hard is 3-back: tap when the letter matches the one 3 steps ago. Research reports lower scores on 3-back than on 2-back. These bands are a Brain Games guide."
+      }
+    }
   },
   {
     "id": "stroop",
@@ -813,7 +1006,27 @@
     ],
     "science": "The Stroop effect: reading is so automatic that naming ink colour is slower when the word conflicts. It’s a classic test of attention control.",
     "tip": "Blur your eyes slightly so the word is harder to read.",
-    "icon": "stroop"
+    "icon": "stroop",
+    "content": {
+      "colours": [
+        {
+          "name": "Red",
+          "token": "stroop-red"
+        },
+        {
+          "name": "Blue",
+          "token": "stroop-blue"
+        },
+        {
+          "name": "Green",
+          "token": "stroop-green"
+        },
+        {
+          "name": "Yellow",
+          "token": "stroop-yellow"
+        }
+      ]
+    }
   },
   {
     "id": "schulte",
@@ -823,12 +1036,16 @@
     "category": "Focus",
     "level": "Easy",
     "size": "tall",
-    "blurb": "Find 1 to 25 in a scrambled grid.",
+    "blurb": "Find the numbers in order in a scrambled grid.",
     "trains": "Visual search and peripheral vision",
     "durationSec": null,
     "unit": "seconds",
     "lowerIsBetter": true,
-    "steps": ["A 5×5 grid of numbers appears.", "Tap 1, then 2, then 3… up to 25.", "Keep your eyes near the centre."],
+    "steps": [
+      "A grid of numbers appears.",
+      "Tap 1, then 2, then 3… up to the last number.",
+      "Keep your eyes near the centre."
+    ],
     "demo": [
       {
         "scene": "<div class=\"mk\">7 1 18<br>4 12 9</div>",
@@ -877,7 +1094,90 @@
     ],
     "science": "Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.",
     "tip": "Look at the centre and let numbers find you in your side vision.",
-    "icon": "schulte"
+    "icon": "schulte",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "size": 4
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "30+ s",
+            "label": "Warming up",
+            "message": "Take your time. Speed comes naturally."
+          },
+          {
+            "at": 30,
+            "range": "20–30 s",
+            "label": "Steady",
+            "message": "A relaxed, normal pace."
+          },
+          {
+            "at": 20,
+            "range": "13–20 s",
+            "label": "Good",
+            "message": "A nice, even scan."
+          },
+          {
+            "at": 13,
+            "range": "8–13 s",
+            "label": "Sharp",
+            "message": "Fast visual search."
+          },
+          {
+            "at": 8,
+            "range": "under 8 s",
+            "label": "Excellent",
+            "message": "Very quick scanning."
+          }
+        ],
+        "science": "Easy uses a 4×4 grid of 1 to 16. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {
+          "size": 5
+        }
+      },
+      "hard": {
+        "settings": {
+          "size": 6
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "65+ s",
+            "label": "Warming up",
+            "message": "A big grid. Take your time."
+          },
+          {
+            "at": 65,
+            "range": "45–65 s",
+            "label": "Steady",
+            "message": "A relaxed pace on a big grid."
+          },
+          {
+            "at": 45,
+            "range": "30–45 s",
+            "label": "Good",
+            "message": "A strong scan across 36 numbers."
+          },
+          {
+            "at": 30,
+            "range": "18–30 s",
+            "label": "Sharp",
+            "message": "Fast visual search."
+          },
+          {
+            "at": 18,
+            "range": "under 18 s",
+            "label": "Excellent",
+            "message": "Excellent scanning on a big grid."
+          }
+        ],
+        "science": "Hard uses a 6×6 grid of 1 to 36. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+      }
+    }
   },
   {
     "id": "hand",
@@ -933,6 +1233,22 @@
     ],
     "science": "Doing familiar things in an unfamiliar way adds novelty and attention to routine tasks. Expect it to feel awkward, that’s the point.",
     "tip": "Start with low-stakes tasks like scrolling your phone.",
-    "icon": "hand"
+    "icon": "hand",
+    "content": {
+      "tasks": [
+        "Brush your teeth",
+        "Write your name and today’s date on paper",
+        "Scroll your phone for 5 minutes",
+        "Eat one meal with a spoon",
+        "Comb your hair",
+        "Use the computer mouse for 10 minutes",
+        "Open every door you pass today",
+        "Pour a glass of water",
+        "Draw a house, a tree and a sun",
+        "Type a short message",
+        "Stir your tea or coffee",
+        "Carry your bag"
+      ]
+    }
   }
 ]

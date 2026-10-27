@@ -2,18 +2,18 @@
   "id": "nback",
   "order": 12,
   "component": "TwoBack",
-  "name": "2-back",
+  "name": "N-back",
   "category": "Memory",
   "level": "Hard",
   "size": "wide",
-  "blurb": "Spot a letter that matches the one two steps ago.",
+  "blurb": "Spot a letter that matches the one a few steps ago.",
   "trains": "Working memory updating",
   "durationSec": null,
   "unit": "% accuracy",
   "lowerIsBetter": false,
   "steps": [
     "Letters appear one by one.",
-    "If a letter matches the one 2 steps back, tap Match.",
+    "If a letter matches the one N steps back, tap Match. N is 1, 2 or 3.",
     "Otherwise do nothing. 24 letters."
   ],
   "demo": [
@@ -27,7 +27,7 @@
     },
     {
       "scene": "<div class=\"mk ok\">K → B → K<small>Match!</small></div>",
-      "caption": "Same as 2 back → tap"
+      "caption": "On Medium: same as 2 back → tap"
     }
   ],
   "bands": [
@@ -57,9 +57,81 @@
     }
   ],
   "science": "N-back is one of the most studied working-memory tasks in research. Healthy adults usually land around 75–90% on 2-back once they understand it.",
-  "tip": "Whisper the last two letters to yourself on each step.",
+  "tip": "Whisper the last few letters to yourself on each step.",
   "icon": "nback",
   "content": {
-    "letters": ["B", "C", "D", "F", "G", "H", "J", "K", "L"]
+    "letters": ["B", "C", "D", "F", "G", "H", "J", "K", "L"],
+    "hint": "Tap Match (or Space) when it’s the same as the letter {n} back"
+  },
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "n": 1
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "under 75",
+          "label": "Learning",
+          "message": "Everyone starts here. Watch for a letter that repeats."
+        },
+        {
+          "at": 75,
+          "range": "75–84",
+          "label": "Getting it",
+          "message": "You’re keeping track."
+        },
+        {
+          "at": 85,
+          "range": "85–94",
+          "label": "Strong",
+          "message": "Solid attention."
+        },
+        {
+          "at": 95,
+          "range": "95+",
+          "label": "Excellent",
+          "message": "Very sharp."
+        }
+      ],
+      "science": "Easy is 1-back: tap when the letter matches the one just before it. These bands are a Brain Games guide."
+    },
+    "medium": {
+      "settings": {
+        "n": 2
+      }
+    },
+    "hard": {
+      "settings": {
+        "n": 3
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "under 70",
+          "label": "Learning",
+          "message": "3-back is very hard. Everyone starts here."
+        },
+        {
+          "at": 70,
+          "range": "70–79",
+          "label": "Getting it",
+          "message": "You’re keeping three letters in mind."
+        },
+        {
+          "at": 80,
+          "range": "80–89",
+          "label": "Strong",
+          "message": "Strong working memory."
+        },
+        {
+          "at": 90,
+          "range": "90+",
+          "label": "Excellent",
+          "message": "Very sharp."
+        }
+      ],
+      "science": "Hard is 3-back: tap when the letter matches the one 3 steps ago. Research reports lower scores on 3-back than on 2-back. These bands are a Brain Games guide."
+    }
   }
 }

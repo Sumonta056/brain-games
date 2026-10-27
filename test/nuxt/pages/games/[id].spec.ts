@@ -11,7 +11,7 @@ describe('pages/games/[id]', () => {
     expect(wrapper.find('[data-testid="game-page"]').exists()).toBe(true)
     expect(wrapper.get('h1').text()).toBe('Mental math')
     expect(wrapper.text()).toContain('Ready?')
-    await vi.waitFor(() => expect(document.title).toBe('Mental math — Brain Games'))
+    await vi.waitFor(() => expect(document.title).toBe('Mental math | Brain Games'))
   })
 
   it('throws a 404 for an unknown id', async () => {

@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="hud">
-      <span>{{ want <= 25 ? `Find ${want}` : 'Done' }}</span
+      <span>{{ want <= total ? `Find ${want}` : 'Done' }}</span
       ><span>{{ time }}</span>
     </div>
-    <div class="board max-w-[460px] grid-cols-5">
+    <div class="board max-w-[460px]" :class="cols[size]" data-testid="board" :data-cols="size">
       <button
         v-for="num in nums"
         :key="num"
@@ -20,11 +20,14 @@
 </template>
 <script setup lang="ts">
 import type { GameDef } from '~~/shared/types/game'
-defineProps<{ game: GameDef }>()
+const props = defineProps<{ game: GameDef }>()
 const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later, every } = useTimeouts()
-const nums = shuffle(Array.from({ length: 25 }, (_, i) => i + 1))
+const size = setting(props.game, 'size')
+const total = size * size
+const cols: Record<number, string> = { 4: 'grid-cols-4', 5: 'grid-cols-5', 6: 'grid-cols-6' }
+const nums = shuffle(Array.from({ length: total }, (_, i) => i + 1))
 const want = ref(1)
 const miss = ref<number | null>(null)
 const time = ref('0.0 s')
@@ -32,7 +35,7 @@ const t0 = performance.now()
 const elapsed = () => ((performance.now() - t0) / 1000).toFixed(1)
 
 function tap(num: number) {
-  if (want.value > 25) return
+  if (want.value > total) return
   if (num !== want.value) {
     miss.value = num
     later(() => {
@@ -41,10 +44,10 @@ function tap(num: number) {
     return
   }
   want.value++
-  if (want.value === 13) cheer('Halfway!')
-  if (want.value > 25) later(() => emit('finish', Number(elapsed())), 400)
+  if (want.value === Math.ceil(total / 2)) cheer('Halfway!')
+  if (want.value > total) later(() => emit('finish', Number(elapsed())), 400)
 }
 every(() => {
-  if (want.value <= 25) time.value = `${elapsed()} s`
+  if (want.value <= total) time.value = `${elapsed()} s`
 }, 100)
 </script>

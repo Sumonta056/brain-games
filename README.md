@@ -76,7 +76,7 @@ Open the site and play. Your progress stays on your device.
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/games/digits.png" alt="Digit span"><br><b>Digit span</b><br><sub>Memory · Remember a growing string of numbers.</sub></td>
-    <td align="center"><img src="docs/screenshots/games/nback.png" alt="2-back"><br><b>2-back</b><br><sub>Memory · Spot a letter that matches the one two steps ago.</sub></td>
+    <td align="center"><img src="docs/screenshots/games/nback.png" alt="N-back"><br><b>N-back</b><br><sub>Memory · Spot a letter that matches the one a few steps ago.</sub></td>
     <td align="center"><img src="docs/screenshots/games/sequence.png" alt="Sequence memory"><br><b>Sequence memory</b><br><sub>Memory · Repeat the pattern of lit squares.</sub></td>
   </tr>
   <tr>

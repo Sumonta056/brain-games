@@ -3,15 +3,20 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import MemoryPairs from '~/components/games/MemoryPairs.vue'
 import pairs from '~/data/games/pairs.json'
+import type { DOMWrapper } from '@vue/test-utils'
 import type { GameDef } from '~~/shared/types/game'
 import { seeded } from '~/utils/random'
+import { resolvedGame } from '../../fixtures'
 
-const emojis = ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍒']
-const pairsGame = { ...pairs, content: { emojis } } as GameDef
+const emojis = ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍒', '🥝', '🍑', '🥥', '🍍']
+const baseGame = { ...pairs, content: { emojis } } as GameDef
+const pairsGame = resolvedGame(baseGame, 'medium', { pairs: 8 })
+const easyGame = resolvedGame(baseGame, 'easy', { pairs: 6 })
+const hardGame = resolvedGame(baseGame, 'hard', { pairs: 10 })
 
 type Wrapper = Awaited<ReturnType<typeof mountSuspended>>
 
-const cards = (w: Wrapper) => w.findAll('[data-testid="card"]')
+const cards = (w: Wrapper): DOMWrapper<Element>[] => w.findAll('[data-testid="card"]')
 
 async function flip(w: Wrapper, i: number) {
   await cards(w)[i]!.trigger('click')
@@ -21,7 +26,8 @@ async function flip(w: Wrapper, i: number) {
 async function learnDeck(w: Wrapper) {
   const faces: string[] = []
   let lucky = 0
-  for (let i = 0; i < 16; i += 2) {
+  const total = cards(w).length
+  for (let i = 0; i < total; i += 2) {
     const a = await flip(w, i)
     const b = await flip(w, i + 1)
     faces.push(a, b)
@@ -70,10 +76,15 @@ describe('MemoryPairs', () => {
     expect(wrapper.text()).toContain('Moves 0')
   })
 
-  it('deals each content emoji exactly twice', async () => {
+  it('deals 8 different content emojis, each exactly twice', async () => {
     const wrapper = await mountSuspended(MemoryPairs, { props: { game: pairsGame } })
     const { faces } = await learnDeck(wrapper)
-    expect([...faces].sort()).toEqual([...emojis, ...emojis].sort())
+    const distinct = new Set(faces)
+    expect(distinct.size).toBe(8)
+    distinct.forEach(e => {
+      expect(emojis).toContain(e)
+      expect(faces.filter(f => f === e)).toHaveLength(2)
+    })
   })
 
   it('counts a move for each pair of flips', async () => {
@@ -173,5 +184,59 @@ describe('MemoryPairs', () => {
     await flip(wrapper, j)
     wrapper.unmount()
     expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it.each([
+    [easyGame, 4],
+    [pairsGame, 4],
+    [hardGame, 5]
+  ] as [GameDef, number][])('lays the board out in the right number of columns', async (game, cols) => {
+    const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+    expect(wrapper.get('[data-testid="board"]').attributes('data-cols')).toBe(String(cols))
+  })
+
+  describe.each([
+    ['easy', easyGame, 6],
+    ['hard', hardGame, 10]
+  ] as [string, GameDef, number][])('on %s', (_, game, n) => {
+    it(`deals ${2 * n} face-down cards for ${n} pairs`, async () => {
+      const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+      expect(cards(wrapper)).toHaveLength(2 * n)
+      cards(wrapper).forEach(c => expect(c.attributes('data-state')).toBe('down'))
+      expect(wrapper.text()).toContain(`Find all ${n} pairs`)
+      expect(wrapper.text()).not.toContain('Find all 8 pairs')
+    })
+
+    it(`deals ${n} different content emojis, each exactly twice`, async () => {
+      const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+      const { faces } = await learnDeck(wrapper)
+      expect(faces).toHaveLength(2 * n)
+      const distinct = new Set(faces)
+      expect(distinct.size).toBe(n)
+      distinct.forEach(e => {
+        expect(emojis).toContain(e)
+        expect(faces.filter(f => f === e)).toHaveLength(2)
+      })
+    })
+
+    it(`finishes once with the move count after all ${n} pairs are found`, async () => {
+      const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+      const { faces, lucky } = await learnDeck(wrapper)
+      await finishFromKnown(wrapper, faces)
+      const moves = n + (n - lucky)
+      await vi.advanceTimersByTimeAsync(700)
+      expect(wrapper.emitted('finish')).toEqual([[moves]])
+    })
+
+    it(`scores a perfect game as ${n} moves`, async () => {
+      const first = await mountSuspended(MemoryPairs, { props: { game } })
+      const { faces } = await learnDeck(first)
+      first.unmount()
+      vi.spyOn(Math, 'random').mockImplementation(seeded(42))
+      const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+      await finishFromKnown(wrapper, faces)
+      await vi.advanceTimersByTimeAsync(700)
+      expect(wrapper.emitted('finish')).toEqual([[n]])
+    })
   })
 })

@@ -59,10 +59,12 @@ export function useProgress() {
   /** Record a finished game. Returns what the result screen needs. */
   function record(game: GameDef, score: number) {
     const p = state.value
-    const prev = p.best[game.id]
+    const key = bestKey(game)
+    const prev = p.best[key]
     const isPB = prev == null || (game.lowerIsBetter ? score < prev : score > prev)
-    if (isPB) p.best[game.id] = score
-    p.hist.unshift({ id: game.id, s: score, d: todayKey(), t: Date.now() })
+    if (isPB) p.best[key] = score
+    const l = game.difficulty && game.difficulty !== 'medium' ? game.difficulty : undefined
+    p.hist.unshift({ id: game.id, s: score, d: todayKey(), t: Date.now(), ...(l && { l }) })
     p.hist = p.hist.slice(0, 60)
     if (!p.days.includes(todayKey())) p.days.push(todayKey())
     p.days = p.days.slice(-120)

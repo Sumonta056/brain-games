@@ -103,7 +103,7 @@
 <script setup lang="ts">
 import type { Category } from '~~/shared/types/game'
 import copy from '~/data/copy.json'
-useHead({ title: 'Your profile — Brain Games' })
+useHead({ title: 'Your profile | Brain Games' })
 const { progress, streak, level, reset } = useProgress()
 const { games, categories, byId, tintVars } = useGames()
 const week = computed(() =>
@@ -119,25 +119,27 @@ const week = computed(() =>
 )
 const skills = computed(() =>
   (Object.keys(categories) as Category[]).map(cat => {
-    const gs = games.filter(g => g.category === cat && progress.value.best[g.id] != null)
-    const pct = gs.length
+    const tops = games.filter(g => g.category === cat).flatMap(g => topBest(g, progress.value.best) ?? [])
+    const pct = tops.length
       ? Math.round(
-          (gs.reduce((a, g) => a + (bandIndex(g, progress.value.best[g.id]!) + 1) / g.bands.length, 0) / gs.length) *
+          (tops.reduce((a, { game, score }) => a + (bandIndex(game, score) + 1) / game.bands.length, 0) / tops.length) *
             100
         )
       : 0
-    return { cat, pct, played: gs.length > 0 }
+    return { cat, pct, played: tops.length > 0 }
   })
 )
 const h2 = 'mx-0 mt-0 mb-3 font-display text-[21px] leading-[normal] font-bold'
+const tried = computed(() => new Set(Object.keys(progress.value.best).map(k => k.split('@')[0])).size)
 const stats = computed(() => [
   { label: 'day streak', value: `🔥 ${streak.value}`, bg: 'bg-peach-bg' },
   { label: 'games played', value: progress.value.hist.length, bg: 'bg-lilac-bg' },
-  { label: 'games tried', value: `${Object.keys(progress.value.best).length} / ${games.length}`, bg: 'bg-mint-bg' }
+  { label: 'games tried', value: `${tried.value} / ${games.length}`, bg: 'bg-mint-bg' }
 ])
 const recent = computed(() =>
   progress.value.hist.slice(0, 10).flatMap(x => {
-    const g = byId(x.id)
+    const base = byId(x.id)
+    const g = base && withDifficulty(base, x.l ?? 'medium')
     return g ? [{ ...x, game: g, band: g.bands[bandIndex(g, x.s)]!.label }] : []
   })
 )

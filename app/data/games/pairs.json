@@ -14,7 +14,7 @@
   "steps": [
     "Tap a card to flip it.",
     "Tap another card. If they match, they stay open.",
-    "Find all 8 pairs in as few moves as you can."
+    "Find all the pairs in as few moves as you can."
   ],
   "demo": [
     {
@@ -66,6 +66,89 @@
   "tip": "Say what you see out loud in your head, “sun, top left”. Naming helps memory.",
   "icon": "pairs",
   "content": {
-    "emojis": ["🌻", "🐝", "🍀", "🌙", "🐢", "🍓", "🦋", "⭐"]
+    "emojis": ["🌻", "🐝", "🍀", "🌙", "🐢", "🍓", "🦋", "⭐", "🍄", "🐞", "🌈", "🍋"]
+  },
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "pairs": 6
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "21+",
+          "label": "Exploring",
+          "message": "You found them all. Next time, try to remember each card you flip."
+        },
+        {
+          "at": 20,
+          "range": "15–20",
+          "label": "Steady",
+          "message": "A relaxed, solid game."
+        },
+        {
+          "at": 14,
+          "range": "10–14",
+          "label": "Good memory",
+          "message": "You’re remembering positions well."
+        },
+        {
+          "at": 9,
+          "range": "7–9",
+          "label": "Excellent",
+          "message": "Very few wasted moves. Great spatial memory."
+        },
+        {
+          "at": 6,
+          "range": "6",
+          "label": "Perfect",
+          "message": "Not a single wasted move."
+        }
+      ],
+      "science": "Easy uses 6 pairs. 6 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+    },
+    "medium": {
+      "settings": {
+        "pairs": 8
+      }
+    },
+    "hard": {
+      "settings": {
+        "pairs": 10
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "36+",
+          "label": "Exploring",
+          "message": "You found them all. Ten pairs is a big board, so well done."
+        },
+        {
+          "at": 35,
+          "range": "26–35",
+          "label": "Steady",
+          "message": "A calm, solid game on a big board."
+        },
+        {
+          "at": 25,
+          "range": "18–25",
+          "label": "Good memory",
+          "message": "You’re holding a lot of positions in mind."
+        },
+        {
+          "at": 17,
+          "range": "11–17",
+          "label": "Excellent",
+          "message": "Very few wasted moves on a hard board."
+        },
+        {
+          "at": 10,
+          "range": "10",
+          "label": "Perfect",
+          "message": "Not a single wasted move."
+        }
+      ],
+      "science": "Hard uses 10 pairs. 10 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+    }
   }
 }

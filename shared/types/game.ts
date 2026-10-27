@@ -1,6 +1,7 @@
 export type Category = 'Calm' | 'Speed' | 'Words' | 'Memory' | 'Focus' | 'Body'
 export type Level = 'Easy' | 'Medium' | 'Hard'
 export type TileSize = 'normal' | 'wide' | 'tall' | 'big'
+export type Difficulty = 'easy' | 'medium' | 'hard'
 
 /** One score band. `at` is the minimum score (or the maximum when lowerIsBetter). null = no limit (Infinity). */
 export interface Band {
@@ -30,6 +31,15 @@ export interface GameDef {
   tip: string
   icon: string
   content?: GameContent
+  difficulties?: Record<Difficulty, DifficultyDef>
+  difficulty?: Difficulty
+  settings?: Record<string, number>
+}
+
+export interface DifficultyDef {
+  settings: Record<string, number>
+  bands?: Band[]
+  science?: string
 }
 
 export interface GameContent {
@@ -39,6 +49,7 @@ export interface GameContent {
   pools?: string[][]
   colours?: { name: string; token: string }[]
   tasks?: string[]
+  hint?: string
 }
 
 export interface CategoryDef {
@@ -51,6 +62,7 @@ export interface HistoryEntry {
   s: number
   d: string
   t: number
+  l?: Difficulty
 }
 export interface Progress {
   name: string
@@ -60,4 +72,5 @@ export interface Progress {
   days: string[]
   xp: number
   theme: 'auto' | 'light' | 'dark'
+  diff?: Record<string, Difficulty>
 }

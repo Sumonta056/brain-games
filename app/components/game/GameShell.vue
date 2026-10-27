@@ -21,7 +21,8 @@
         <div>
           <h1 class="m-0 font-display text-[26px] leading-none font-extrabold max-md:text-[21px]">{{ game.name }}</h1>
           <small class="text-muted max-md:hidden"
-            >{{ game.category }} · {{ game.level }} · trains {{ game.trains.toLowerCase() }}</small
+            >{{ game.category }} · {{ played.difficulty ? copy.difficulty[played.difficulty] : game.level }} · trains
+            {{ game.trains.toLowerCase() }}</small
           >
         </div>
         <div class="ml-auto text-right text-[13px] text-muted" data-testid="pb">
@@ -41,22 +42,22 @@
           {{ c.text }}
         </div>
         <div class="mx-auto w-full max-w-[760px]">
-          <ReadyScreen v-if="phase === 'ready'" :game="game" @start="start" />
+          <ReadyScreen v-if="phase === 'ready'" v-model:difficulty="difficulty" :game="played" @start="start" />
           <Suspense v-else-if="phase === 'playing'">
-            <component :is="gameComponent" :key="round" :game="game" @finish="finish" />
+            <component :is="gameComponent" :key="round" :game="played" @finish="finish" />
             <template #fallback>
               <p class="text-center text-muted" data-testid="game-loading">{{ copy.loading }}</p>
             </template>
           </Suspense>
-          <ResultScreen v-else :game="game" :score="score" :result="result!" @again="start" />
+          <ResultScreen v-else :game="played" :score="score" :result="result!" @again="start" />
         </div>
       </div>
     </section>
-    <GameSidebar :game="game" :here="here" />
+    <GameSidebar :game="played" :here="here" />
   </div>
 </template>
 <script setup lang="ts">
-import type { GameDef } from '~~/shared/types/game'
+import type { Difficulty, GameDef } from '~~/shared/types/game'
 import { gameComponents } from '~/components/games/registry'
 import copy from '~/data/copy.json'
 const props = defineProps<{ game: GameDef }>()
@@ -69,12 +70,22 @@ const phase = ref<Phase>('ready')
 const round = ref(0)
 const score = ref(0)
 const result = ref<ReturnType<typeof record>>()
-const best = computed(() => progress.value.best[props.game.id])
+const difficulty = computed<Difficulty>({
+  get: () => {
+    const d = progress.value.diff?.[props.game.id]
+    return d && DIFFICULTIES.includes(d) ? d : 'medium'
+  },
+  set: d => {
+    progress.value.diff = { ...progress.value.diff, [props.game.id]: d }
+  }
+})
+const played = computed(() => withDifficulty(props.game, difficulty.value))
+const best = computed(() => progress.value.best[bestKey(played.value)])
 const here = computed(() =>
   phase.value === 'result' && result.value
     ? result.value.band
     : best.value != null
-      ? bandIndex(props.game, best.value)
+      ? bandIndex(played.value, best.value)
       : -1
 )
 const gameComponent = computed(() => gameComponents[props.game.component] ?? gameComponents.ComingSoon)
@@ -85,7 +96,7 @@ function start() {
 }
 function finish(s: number) {
   score.value = s
-  result.value = record(props.game, s)
+  result.value = record(played.value, s)
   phase.value = 'result'
 }
 </script>

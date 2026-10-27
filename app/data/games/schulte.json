@@ -6,12 +6,16 @@
   "category": "Focus",
   "level": "Easy",
   "size": "tall",
-  "blurb": "Find 1 to 25 in a scrambled grid.",
+  "blurb": "Find the numbers in order in a scrambled grid.",
   "trains": "Visual search and peripheral vision",
   "durationSec": null,
   "unit": "seconds",
   "lowerIsBetter": true,
-  "steps": ["A 5×5 grid of numbers appears.", "Tap 1, then 2, then 3… up to 25.", "Keep your eyes near the centre."],
+  "steps": [
+    "A grid of numbers appears.",
+    "Tap 1, then 2, then 3… up to the last number.",
+    "Keep your eyes near the centre."
+  ],
   "demo": [
     {
       "scene": "<div class=\"mk\">7 1 18<br>4 12 9</div>",
@@ -60,5 +64,88 @@
   ],
   "science": "Reference guides for adults put about 20 seconds at a moderate level and under 10 as excellent, usually on paper. Tapping on screen adds a little time.",
   "tip": "Look at the centre and let numbers find you in your side vision.",
-  "icon": "schulte"
+  "icon": "schulte",
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "size": 4
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "30+ s",
+          "label": "Warming up",
+          "message": "Take your time. Speed comes naturally."
+        },
+        {
+          "at": 30,
+          "range": "20–30 s",
+          "label": "Steady",
+          "message": "A relaxed, normal pace."
+        },
+        {
+          "at": 20,
+          "range": "13–20 s",
+          "label": "Good",
+          "message": "A nice, even scan."
+        },
+        {
+          "at": 13,
+          "range": "8–13 s",
+          "label": "Sharp",
+          "message": "Fast visual search."
+        },
+        {
+          "at": 8,
+          "range": "under 8 s",
+          "label": "Excellent",
+          "message": "Very quick scanning."
+        }
+      ],
+      "science": "Easy uses a 4×4 grid of 1 to 16. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+    },
+    "medium": {
+      "settings": {
+        "size": 5
+      }
+    },
+    "hard": {
+      "settings": {
+        "size": 6
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "65+ s",
+          "label": "Warming up",
+          "message": "A big grid. Take your time."
+        },
+        {
+          "at": 65,
+          "range": "45–65 s",
+          "label": "Steady",
+          "message": "A relaxed pace on a big grid."
+        },
+        {
+          "at": 45,
+          "range": "30–45 s",
+          "label": "Good",
+          "message": "A strong scan across 36 numbers."
+        },
+        {
+          "at": 30,
+          "range": "18–30 s",
+          "label": "Sharp",
+          "message": "Fast visual search."
+        },
+        {
+          "at": 18,
+          "range": "under 18 s",
+          "label": "Excellent",
+          "message": "Excellent scanning on a big grid."
+        }
+      ],
+      "science": "Hard uses a 6×6 grid of 1 to 36. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+    }
+  }
 }

@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   typescript: { strict: true },
   app: {
     head: {
-      title: 'Brain Games — relax and sharpen your mind',
+      title: 'Brain Games | Relax and sharpen your mind',
       htmlAttrs: { lang: 'en' },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },

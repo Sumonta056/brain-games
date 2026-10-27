@@ -9,6 +9,6 @@ describe('pages/index', () => {
     expect(wrapper.text()).toContain('Pick a game')
     expect(wrapper.findAll('a[href="/games/math"]').length).toBeGreaterThan(0)
     expect(wrapper.get('footer').text()).toContain('Scores live only in this browser.')
-    await vi.waitFor(() => expect(document.title).toBe('Brain Games — relax and sharpen your mind'))
+    await vi.waitFor(() => expect(document.title).toBe('Brain Games | Relax and sharpen your mind'))
   })
 })

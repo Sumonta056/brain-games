@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { clearNuxtState } from '#imports'
 import { useProgress } from '~/composables/useProgress'
-import { mathGame, reactionGame } from '../fixtures'
+import { mathGame, reactionGame, tieredAs } from '../fixtures'
 
 const KEY = 'bgarden'
 
@@ -93,6 +93,106 @@ describe('useProgress', () => {
       expect(progress.value.days).toHaveLength(120)
       expect(progress.value.days.filter(d => d === '2026-05-10')).toHaveLength(1)
       expect(progress.value.days.at(-1)).toBe('2026-05-10')
+    })
+  })
+
+  describe('record with a difficulty (functional-requirements §3.1)', () => {
+    it('keeps the medium best under the plain game id', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('medium'), 9)
+      expect(progress.value.best.tiered).toBe(9)
+      expect(Object.keys(progress.value.best)).toEqual(['tiered'])
+    })
+
+    it('stores the easy and hard bests under id@easy and id@hard', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('easy'), 14)
+      record(tieredAs('hard'), 5)
+      expect(progress.value.best).toEqual({ 'tiered@easy': 14, 'tiered@hard': 5 })
+    })
+
+    it('compares a score only with the best of the same difficulty', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('hard'), 30)
+      expect(record(tieredAs('medium'), 5)).toMatchObject({ prev: null, isPB: true })
+      expect(record(tieredAs('hard'), 12)).toMatchObject({ prev: 30, isPB: false })
+      expect(record(tieredAs('easy'), 2)).toMatchObject({ prev: null, isPB: true })
+      expect(progress.value.best).toEqual({ 'tiered@hard': 30, tiered: 5, 'tiered@easy': 2 })
+    })
+
+    it('gives the 5 XP bonus only for beating the best of the same difficulty', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('hard'), 3)
+      record(tieredAs('medium'), 9)
+      expect(progress.value.xp).toBe(20)
+      record(tieredAs('hard'), 4)
+      expect(progress.value.xp).toBe(35)
+    })
+
+    it('returns the band from the bands of the difficulty', () => {
+      const { record } = fresh()
+      expect(record(tieredAs('hard'), 9).band).toBe(2)
+      expect(record(tieredAs('easy'), 9).band).toBe(0)
+      expect(record(tieredAs('medium'), 9).band).toBe(1)
+    })
+
+    it('stores easy and hard in the history entry as l', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('easy'), 1)
+      record(tieredAs('hard'), 2)
+      expect(progress.value.hist[0]).toMatchObject({ id: 'tiered', s: 2, l: 'hard' })
+      expect(progress.value.hist[1]).toMatchObject({ id: 'tiered', s: 1, l: 'easy' })
+    })
+
+    it('keeps the plain game id in the history entry', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('hard'), 2)
+      expect(progress.value.hist[0]!.id).toBe('tiered')
+    })
+
+    it('marks a medium history entry as medium or leaves l out', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('medium'), 4)
+      expect('l' in progress.value.hist[0]!).toBe(false)
+    })
+
+    it('leaves l out for a game without difficulties', () => {
+      const { record, progress } = fresh()
+      record(mathGame, 4)
+      expect(progress.value.hist[0]!.l).toBeUndefined()
+    })
+
+    it('does not store the chosen difficulty when recording', () => {
+      const { record, progress } = fresh()
+      record(tieredAs('hard'), 4)
+      expect(progress.value.diff?.tiered).toBeUndefined()
+    })
+
+    it('persists the difficulty best to the bgarden key', async () => {
+      const { record } = fresh()
+      record(tieredAs('hard'), 7)
+      await nextTick()
+      const saved = JSON.parse(localStorage.getItem(KEY)!)
+      expect(saved.best['tiered@hard']).toBe(7)
+      expect(saved.hist[0].l).toBe('hard')
+    })
+
+    it('loads old stored progress that has no diff and no l', () => {
+      localStorage.setItem(
+        KEY,
+        JSON.stringify({ best: { math: 12 }, hist: [{ id: 'math', s: 12, d: '2026-05-09', t: 1 }], xp: 10 })
+      )
+      const { progress, record } = fresh()
+      expect(progress.value.best.math).toBe(12)
+      expect(progress.value.hist[0]!.l).toBeUndefined()
+      expect(record(mathGame, 14)).toMatchObject({ prev: 12, isPB: true })
+    })
+
+    it('loads stored difficulty choices and bests', () => {
+      localStorage.setItem(KEY, JSON.stringify({ best: { 'pairs@hard': 30 }, diff: { pairs: 'hard' } }))
+      const { progress } = fresh()
+      expect(progress.value.diff).toEqual({ pairs: 'hard' })
+      expect(progress.value.best['pairs@hard']).toBe(30)
     })
   })
 

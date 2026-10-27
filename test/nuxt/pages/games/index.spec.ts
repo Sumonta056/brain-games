@@ -9,6 +9,6 @@ describe('pages/games/index', () => {
     const links = wrapper.findAll('a[href^="/games/"]').map(a => a.attributes('href'))
     expect(new Set(links).size).toBe(15)
     expect(links).toContain('/games/math')
-    await vi.waitFor(() => expect(document.title).toBe('All games — Brain Games'))
+    await vi.waitFor(() => expect(document.title).toBe('All games | Brain Games'))
   })
 })

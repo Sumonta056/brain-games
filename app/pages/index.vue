@@ -11,5 +11,5 @@
   </div>
 </template>
 <script setup lang="ts">
-useHead({ title: 'Brain Games — relax and sharpen your mind' })
+useHead({ title: 'Brain Games | Relax and sharpen your mind' })
 </script>

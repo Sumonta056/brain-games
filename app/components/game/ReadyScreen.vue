@@ -10,6 +10,28 @@
         Ready?
       </h2>
       <p class="mx-0 mt-0 mb-5 text-muted max-md:mb-3.5">{{ game.blurb }} Watch the demo, then jump in.</p>
+      <div
+        v-if="game.difficulties"
+        ref="group"
+        class="mb-4 flex flex-wrap gap-2"
+        role="radiogroup"
+        :aria-label="copy.difficulty.label"
+        data-testid="difficulty"
+      >
+        <button
+          v-for="d in DIFFICULTIES"
+          :key="d"
+          type="button"
+          role="radio"
+          class="min-h-11 cursor-pointer rounded-pill border border-line bg-surface px-4 text-[14px] font-semibold text-muted aria-checked:border-ink aria-checked:bg-ink aria-checked:text-bg"
+          :aria-checked="d === difficulty"
+          :tabindex="d === difficulty ? 0 : -1"
+          @click="$emit('update:difficulty', d)"
+          @keydown="move"
+        >
+          {{ copy.difficulty[d] }}
+        </button>
+      </div>
       <button ref="btn" class="go" @click="$emit('start')">Start ▸</button>
       <div class="mt-3 text-[13px] text-muted max-md:hidden">
         or press
@@ -41,11 +63,22 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { GameDef } from '~~/shared/types/game'
-const props = defineProps<{ game: GameDef }>()
-const emit = defineEmits<{ start: [] }>()
+import type { Difficulty, GameDef } from '~~/shared/types/game'
+import copy from '~/data/copy.json'
+const props = withDefaults(defineProps<{ game: GameDef; difficulty?: Difficulty }>(), { difficulty: 'medium' })
+const emit = defineEmits<{ start: []; 'update:difficulty': [difficulty: Difficulty] }>()
 const frame = ref(0)
 const btn = ref<HTMLButtonElement>()
+const group = ref<HTMLElement>()
+function move(e: KeyboardEvent) {
+  const step =
+    e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0
+  if (!step) return
+  e.preventDefault()
+  const i = DIFFICULTIES.indexOf(props.difficulty)
+  emit('update:difficulty', DIFFICULTIES[(i + step + DIFFICULTIES.length) % DIFFICULTIES.length]!)
+  nextTick(() => group.value?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus())
+}
 let t: ReturnType<typeof setInterval>
 const onKey = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {

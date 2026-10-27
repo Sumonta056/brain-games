@@ -3,7 +3,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import type { TileSize } from '~~/shared/types/game'
 import GameTile from '~/components/home/GameTile.vue'
-import { iconNames, mathGame, reactionGame } from '../../fixtures'
+import { iconNames, mathGame, reactionGame, tieredGame } from '../../fixtures'
 
 const mounted: { unmount: () => void }[] = []
 
@@ -57,6 +57,19 @@ describe('GameTile', () => {
     const w = await tile()
     expect(w.text()).toContain('Best 12 solved · Sharp')
     expect(w.text()).not.toContain('not played yet')
+  })
+
+  it('shows the best of the hardest difficulty played, with its bands and name', async () => {
+    localStorage.setItem('bgarden', JSON.stringify({ best: { tiered: 12, 'tiered@hard': 9 } }))
+    const w = await tile('normal', tieredGame)
+    expect(w.text()).toContain('Best 9 solved · Hard star · Hard')
+    expect(w.text()).not.toContain('not played yet')
+  })
+
+  it('counts a game played only on easy as played', async () => {
+    localStorage.setItem('bgarden', JSON.stringify({ best: { 'tiered@easy': 12 } }))
+    const w = await tile('normal', tieredGame)
+    expect(w.text()).toContain('Best 12 solved · Easy steady · Easy')
   })
 
   it('uses the lower-is-better band for reaction time', async () => {

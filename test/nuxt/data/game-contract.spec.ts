@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import type { GameDef } from '~~/shared/types/game'
+import type { Band, GameDef } from '~~/shared/types/game'
 import categories from '~/data/categories.json'
 import { gameComponents } from '~/components/games/registry'
 
@@ -27,6 +27,25 @@ type Content = Record<string, unknown>
 const contentOf = (id: string) => (games.find(g => g.game.id === id)?.game as GameDef & { content?: Content })?.content
 const isText = (v: unknown) => typeof v === 'string' && v.trim() !== ''
 const isTextList = (v: unknown, min = 1) => Array.isArray(v) && v.length >= min && v.every(isText)
+
+function expectOrderedBands(bands: Band[], lowerIsBetter: boolean) {
+  expect(bands.length).toBeGreaterThanOrEqual(2)
+  const at = bands.map(b => b.at)
+  if (lowerIsBetter) {
+    expect(at[0]).toBeNull()
+    const rest = at.slice(1) as number[]
+    rest.forEach((v, i) => i && expect(v).toBeLessThan(rest[i - 1]!))
+  } else {
+    expect(at[0]).toBe(0)
+    at.forEach((v, i) => i && expect(v).toBeGreaterThan(at[i - 1]!))
+  }
+  bands.forEach(b => expect(b.label.trim()).not.toBe(''))
+}
+
+type DifficultyBlock = { settings?: Record<string, unknown>; bands?: Band[]; science?: string }
+type WithDifficulties = GameDef & { difficulties?: Record<string, DifficultyBlock> }
+const tiered = games.filter(g => (g.game as WithDifficulties).difficulties)
+const gameById = (id: string) => games.find(g => g.game.id === id)!.game as WithDifficulties
 
 const LEVELS = ['Easy', 'Medium', 'Hard']
 const SIZES = ['normal', 'wide', 'tall', 'big']
@@ -66,17 +85,7 @@ describe('game JSON contract (functional-requirements §4)', () => {
     })
 
     it('orders bands from lowest to highest performance', () => {
-      expect(game.bands.length).toBeGreaterThanOrEqual(2)
-      const at = game.bands.map(b => b.at)
-      if (game.lowerIsBetter) {
-        expect(at[0]).toBeNull()
-        const rest = at.slice(1) as number[]
-        rest.forEach((v, i) => i && expect(v).toBeLessThan(rest[i - 1]!))
-      } else {
-        expect(at[0]).toBe(0)
-        at.forEach((v, i) => i && expect(v).toBeGreaterThan(at[i - 1]!))
-      }
-      game.bands.forEach(b => expect(b.label.trim()).not.toBe(''))
+      expectOrderedBands(game.bands, game.lowerIsBetter)
     })
 
     it('names its icon file by the game id', () => {
@@ -140,11 +149,11 @@ describe('game JSON contract (functional-requirements §4)', () => {
 })
 
 describe('game content (functional-requirements §4 content table)', () => {
-  it('pairs has 8 distinct emojis', () => {
+  it('pairs has at least 12 distinct emojis, enough for 10 pairs on hard', () => {
     const emojis = contentOf('pairs')?.emojis as string[]
     expect(isTextList(emojis)).toBe(true)
-    expect(emojis).toHaveLength(8)
-    expect(new Set(emojis).size).toBe(8)
+    expect(emojis.length).toBeGreaterThanOrEqual(12)
+    expect(new Set(emojis).size).toBe(emojis.length)
   })
 
   it('words has distinct single capital start letters', () => {
@@ -224,5 +233,69 @@ describe('game content (functional-requirements §4 content table)', () => {
 
   it('hand has at least 4 tasks', () => {
     expect(isTextList(contentOf('hand')?.tasks, 4)).toBe(true)
+  })
+})
+
+describe('game difficulties (functional-requirements §3.1 and §4)', () => {
+  it.each([
+    ['pairs', 'pairs', [6, 8, 10]],
+    ['schulte', 'size', [4, 5, 6]],
+    ['nback', 'n', [1, 2, 3]]
+  ] as const)('%s has easy, medium and hard %s settings', (id, key, values) => {
+    const d = gameById(id).difficulties
+    expect(d, `${id}.difficulties`).toBeDefined()
+    expect(d!.easy?.settings?.[key]).toBe(values[0])
+    expect(d!.medium?.settings?.[key]).toBe(values[1])
+    expect(d!.hard?.settings?.[key]).toBe(values[2])
+  })
+
+  it.each(['reaction', 'breath', 'hand'])('%s has no difficulties', id => {
+    expect(gameById(id).difficulties).toBeUndefined()
+  })
+
+  it('names the nback game N-back', () => {
+    expect(gameById('nback').name).toBe('N-back')
+  })
+
+  it('has at least the three required games with difficulties', () => {
+    expect(tiered.map(g => g.game.id)).toEqual(expect.arrayContaining(['pairs', 'schulte', 'nback']))
+  })
+
+  describe.each(tiered)('$file difficulties', ({ game }) => {
+    const d = (game as WithDifficulties).difficulties!
+
+    it('has exactly easy, medium and hard', () => {
+      expect(Object.keys(d).sort()).toEqual(['easy', 'hard', 'medium'])
+    })
+
+    it('gives each difficulty non-empty numeric settings', () => {
+      for (const key of ['easy', 'medium', 'hard']) {
+        const settings = d[key]!.settings
+        expect(settings, key).toBeDefined()
+        expect(Object.keys(settings!).length, key).toBeGreaterThan(0)
+        Object.values(settings!).forEach(v => expect(typeof v, key).toBe('number'))
+      }
+    })
+
+    it('uses the same setting names in every difficulty', () => {
+      const names = Object.keys(d.medium!.settings!).sort()
+      expect(Object.keys(d.easy!.settings!).sort()).toEqual(names)
+      expect(Object.keys(d.hard!.settings!).sort()).toEqual(names)
+    })
+
+    it('keeps medium on the top-level bands and science', () => {
+      expect(d.medium!.bands).toBeUndefined()
+      expect(d.medium!.science).toBeUndefined()
+    })
+
+    it.each(['easy', 'hard'])('orders the %s bands like the top-level bands', key => {
+      expect(d[key]!.bands, `${key}.bands`).toBeDefined()
+      expectOrderedBands(d[key]!.bands!, game.lowerIsBetter)
+    })
+
+    it.each(['easy', 'hard'])('says the %s bands are a Brain Games guide', key => {
+      expect(isText(d[key]!.science)).toBe(true)
+      expect(d[key]!.science).toContain('Brain Games guide')
+    })
   })
 })
