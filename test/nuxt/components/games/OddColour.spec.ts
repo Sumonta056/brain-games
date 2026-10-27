@@ -6,8 +6,11 @@ import OddColour from '~/components/games/OddColour.vue'
 import odd from '~/data/games/odd.json'
 import type { GameDef } from '~~/shared/types/game'
 import { seeded } from '~/utils/random'
+import { resolvedGame } from '../../fixtures'
 
-const oddGame = odd as GameDef
+const oddGame = resolvedGame(odd as GameDef, 'medium', { start: 0, deltaStep: 0.8 })
+const easyGame = resolvedGame(odd as GameDef, 'easy', { start: 0, deltaStep: 0.4 })
+const hardGame = resolvedGame(odd as GameDef, 'hard', { start: 3, deltaStep: 1.2 })
 
 type Wrapper = VueWrapper
 
@@ -26,6 +29,20 @@ async function solve(w: Wrapper, times: number) {
 
 function sizeFor(level: number) {
   return Math.min(7, 2 + Math.floor(level / 3)) ** 2
+}
+
+function scoreOf(w: Wrapper) {
+  return Number(w.text().match(/Score (\d+)/)![1])
+}
+
+function lightness(w: Wrapper, i: number) {
+  const m = (tiles(w)[i]!.attributes('style') ?? '').match(/hsl\(0,? 45%,? ([\d.]+)%\)/)
+  return m ? Number(m[1]) : NaN
+}
+
+async function deltaAt(w: Wrapper, level: number) {
+  await solve(w, level - scoreOf(w))
+  return lightness(w, 0) - lightness(w, 1)
 }
 
 describe('OddColour', () => {
@@ -109,5 +126,62 @@ describe('OddColour', () => {
     expect(lightness(0) - lightness(1)).toBe(22)
     await solve(wrapper, 25)
     expect(lightness(0) - lightness(1)).toBe(3)
+  })
+
+  it('starts a hard game on a 3×3 grid with the score at 0', async () => {
+    const wrapper = await mountSuspended(OddColour, { props: { game: hardGame } })
+    expect(tiles(wrapper)).toHaveLength(9)
+    expect(scoreOf(wrapper)).toBe(0)
+  })
+
+  it('grows the hard grid from start 3 plus the level', async () => {
+    const wrapper = await mountSuspended(OddColour, { props: { game: hardGame } })
+    for (const level of [2, 3, 5, 6, 9, 12, 15]) {
+      await solve(wrapper, level - scoreOf(wrapper))
+      expect(tiles(wrapper)).toHaveLength(sizeFor(3 + level))
+    }
+    expect(tiles(wrapper)).toHaveLength(49)
+  })
+
+  it('grows the easy grid every 3 levels from 2×2', async () => {
+    const wrapper = await mountSuspended(OddColour, { props: { game: easyGame } })
+    expect(tiles(wrapper)).toHaveLength(4)
+    for (const level of [2, 3, 6, 15]) {
+      await solve(wrapper, level - scoreOf(wrapper))
+      expect(tiles(wrapper)).toHaveLength(sizeFor(level))
+    }
+  })
+
+  it('shrinks the easy colour delta by 0.4 per level down to 3', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    const wrapper = await mountSuspended(OddColour, { props: { game: easyGame } })
+    expect(await deltaAt(wrapper, 0)).toBeCloseTo(22, 5)
+    expect(await deltaAt(wrapper, 10)).toBeCloseTo(18, 5)
+    expect(await deltaAt(wrapper, 45)).toBeCloseTo(4, 5)
+    expect(await deltaAt(wrapper, 48)).toBeCloseTo(3, 5)
+  })
+
+  it('shrinks the medium colour delta by 0.8 per level', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    const wrapper = await mountSuspended(OddColour, { props: { game: oddGame } })
+    expect(await deltaAt(wrapper, 10)).toBeCloseTo(14, 5)
+    expect(await deltaAt(wrapper, 20)).toBeCloseTo(6, 5)
+  })
+
+  it('starts the hard colour delta at 18.4 and shrinks it by 1.2 per level down to 3', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    const wrapper = await mountSuspended(OddColour, { props: { game: hardGame } })
+    expect(await deltaAt(wrapper, 0)).toBeCloseTo(18.4, 5)
+    expect(await deltaAt(wrapper, 5)).toBeCloseTo(12.4, 5)
+    expect(await deltaAt(wrapper, 12)).toBeCloseTo(4, 5)
+    expect(await deltaAt(wrapper, 13)).toBeCloseTo(3, 5)
+  })
+
+  it('finishes a hard game with the levels cleared in this run, not counting the start', async () => {
+    const wrapper = await mountSuspended(OddColour, { props: { game: hardGame } })
+    await solve(wrapper, 4)
+    expect(scoreOf(wrapper)).toBe(4)
+    await vi.advanceTimersByTimeAsync((hardGame.durationSec ?? 0) * 1000 + 200)
+    expect(wrapper.emitted('finish')).toEqual([[4]])
   })
 })

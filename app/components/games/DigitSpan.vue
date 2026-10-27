@@ -20,12 +20,13 @@
 </template>
 <script setup lang="ts">
 import type { GameDef } from '~~/shared/types/game'
-defineProps<{ game: GameDef }>()
+const props = defineProps<{ game: GameDef }>()
 const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later } = useTimeouts()
-const len = ref(3)
-const shownLen = ref(3)
+const stepMs = setting(props.game, 'stepMs')
+const len = ref(setting(props.game, 'start'))
+const shownLen = ref(len.value)
 const best = ref(0)
 const shown = ref('')
 const answer = ref('')
@@ -45,8 +46,8 @@ function play() {
   fb.value = 'Watch…'
   shown.value = ''
   ;[...seq].forEach((d, i) => {
-    later(() => (shown.value = d), i * 900)
-    later(() => (shown.value = ''), i * 900 + 650)
+    later(() => (shown.value = d), i * stepMs)
+    later(() => (shown.value = ''), i * stepMs + stepMs - 250)
   })
   later(
     async () => {
@@ -56,7 +57,7 @@ function play() {
       await nextTick()
       inp.value?.focus()
     },
-    len.value * 900 + 200
+    len.value * stepMs + 200
   )
 }
 function onEnter() {

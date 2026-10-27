@@ -5,11 +5,16 @@ import { clearNuxtState } from '#imports'
 import type { GameDef } from '~~/shared/types/game'
 import BackwardSpelling from '~/components/games/BackwardSpelling.vue'
 import backward from '~/data/games/backward.json'
+import { resolvedGame, type Tier } from '../../fixtures'
 
 type BackwardGame = GameDef & { content: { pools: string[][] } }
-const backwardGame = backward as unknown as BackwardGame
 const POOLS = [['cat'], ['plant'], ['garden'], ['blanket'], ['umbrella']]
-const fixedGame: BackwardGame = { ...backwardGame, content: { pools: POOLS } }
+const tiered = (game: GameDef, d: Tier, minPool: number, maxPool: number) =>
+  resolvedGame(game, d, { minPool, maxPool }) as unknown as BackwardGame
+const backwardGame = tiered(backward as unknown as GameDef, 'medium', 0, 4)
+const withPools = (d: Tier, minPool: number, maxPool: number) =>
+  tiered({ ...(backward as unknown as GameDef), content: { pools: POOLS } } as GameDef, d, minPool, maxPool)
+const fixedGame = withPools('medium', 0, 4)
 
 async function mountWith(game: BackwardGame = fixedGame) {
   return mountSuspended(BackwardSpelling, { props: { game } })
@@ -114,6 +119,40 @@ describe('BackwardSpelling', () => {
     const seen: string[] = []
     for (let r = 0; r < 8; r++) seen.push(await playRound(wrapper, true))
     expect(seen).toEqual(['cat', 'cat', 'plant', 'plant', 'garden', 'blanket', 'blanket', 'umbrella'])
+  })
+
+  it('uses pools 0 to 2 on easy, never the two longest', async () => {
+    const wrapper = await mountWith(withPools('easy', 0, 2))
+    const seen: string[] = []
+    for (let r = 0; r < 8; r++) seen.push(await playRound(wrapper, true))
+    expect(seen).toEqual(['cat', 'cat', 'cat', 'plant', 'plant', 'plant', 'garden', 'garden'])
+    expect(seen).not.toContain('blanket')
+    expect(seen).not.toContain('umbrella')
+  })
+
+  it('uses pools 2 to 4 on hard, never the two shortest', async () => {
+    const wrapper = await mountWith(withPools('hard', 2, 4))
+    const seen: string[] = []
+    for (let r = 0; r < 8; r++) seen.push(await playRound(wrapper, true))
+    expect(seen).toEqual(['garden', 'garden', 'garden', 'blanket', 'blanket', 'blanket', 'umbrella', 'umbrella'])
+    expect(seen).not.toContain('cat')
+    expect(seen).not.toContain('plant')
+  })
+
+  it('reads the pool range from the minPool and maxPool settings', async () => {
+    const wrapper = await mountWith(withPools('medium', 1, 1))
+    const seen: string[] = []
+    for (let r = 0; r < 8; r++) seen.push(await playRound(wrapper, true))
+    expect(seen).toEqual(Array(8).fill('plant'))
+  })
+
+  it('keeps the show time at 1800ms plus 220ms per letter on hard', async () => {
+    const wrapper = await mountWith(withPools('hard', 2, 4))
+    expect(shown(wrapper)).toBe('GARDEN')
+    await advance(showMs('garden') - 1)
+    expect(shown(wrapper)).toBe('GARDEN')
+    await advance(1)
+    expect(shown(wrapper)).toBe('• • •')
   })
 
   it('finishes once with the number right after 8 rounds', async () => {

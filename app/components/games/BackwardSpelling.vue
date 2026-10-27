@@ -24,6 +24,8 @@ const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later } = useTimeouts()
 const pools = gameContent(props.game, 'pools')
+const minPool = setting(props.game, 'minPool')
+const maxPool = setting(props.game, 'maxPool')
 const round = ref(0)
 const shownRound = ref(1)
 const score = ref(0)
@@ -41,7 +43,7 @@ function next() {
     return
   }
   shownRound.value = round.value + 1
-  word = pick(pools[Math.min(4, Math.floor((round.value * 5) / 8))]!)
+  word = pick(pools[minPool + Math.floor((round.value * (maxPool - minPool + 1)) / 8)]!)
   shown.value = word.toUpperCase()
   answer.value = ''
   locked.value = true

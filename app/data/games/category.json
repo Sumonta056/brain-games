@@ -11,7 +11,11 @@
   "durationSec": 60,
   "unit": "items",
   "lowerIsBetter": false,
-  "steps": ["You get a category, like Fruits.", "Type an item and press Enter.", "No repeats. 60 seconds."],
+  "steps": [
+    "You get a category, like Fruits.",
+    "Type an item and press Enter.",
+    "No repeats. Until the timer runs out."
+  ],
   "demo": [
     {
       "scene": "<div class=\"mk\">Fruits</div>",
@@ -74,5 +78,72 @@
       "Flowers",
       "Things at the beach"
     ]
+  },
+  "difficulties": {
+    "easy": {
+      "settings": {},
+      "durationSec": 90,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–11",
+          "label": "Warming up",
+          "message": "Some categories are much harder than others."
+        },
+        {
+          "at": 12,
+          "range": "12–18",
+          "label": "Steady",
+          "message": "A good typed score."
+        },
+        {
+          "at": 19,
+          "range": "19–26",
+          "label": "Fluent",
+          "message": "Strong memory search."
+        },
+        {
+          "at": 27,
+          "range": "27+",
+          "label": "Encyclopaedia",
+          "message": "Excellent."
+        }
+      ],
+      "science": "Easy gives 90 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
+    },
+    "medium": {
+      "settings": {}
+    },
+    "hard": {
+      "settings": {},
+      "durationSec": 40,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–4",
+          "label": "Warming up",
+          "message": "Forty seconds is short. Every item counts."
+        },
+        {
+          "at": 5,
+          "range": "5–8",
+          "label": "Steady",
+          "message": "A good typed score."
+        },
+        {
+          "at": 9,
+          "range": "9–11",
+          "label": "Fluent",
+          "message": "Strong memory search."
+        },
+        {
+          "at": 12,
+          "range": "12+",
+          "label": "Encyclopaedia",
+          "message": "Excellent."
+        }
+      ],
+      "science": "Hard gives 40 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
+    }
   }
 }

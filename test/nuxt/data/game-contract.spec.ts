@@ -42,7 +42,7 @@ function expectOrderedBands(bands: Band[], lowerIsBetter: boolean) {
   bands.forEach(b => expect(b.label.trim()).not.toBe(''))
 }
 
-type DifficultyBlock = { settings?: Record<string, unknown>; bands?: Band[]; science?: string }
+type DifficultyBlock = { settings?: Record<string, unknown>; durationSec?: number; bands?: Band[]; science?: string }
 type WithDifficulties = GameDef & { difficulties?: Record<string, DifficultyBlock> }
 const tiered = games.filter(g => (g.game as WithDifficulties).difficulties)
 const gameById = (id: string) => games.find(g => g.game.id === id)!.game as WithDifficulties
@@ -240,13 +240,35 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
   it.each([
     ['pairs', 'pairs', [6, 8, 10]],
     ['schulte', 'size', [4, 5, 6]],
-    ['nback', 'n', [1, 2, 3]]
+    ['nback', 'n', [1, 2, 3]],
+    ['odd', 'start', [0, 0, 3]],
+    ['odd', 'deltaStep', [0.4, 0.8, 1.2]],
+    ['math', 'minLevel', [0, 0, 2]],
+    ['math', 'maxLevel', [0, 3, 3]],
+    ['backward', 'minPool', [0, 0, 2]],
+    ['backward', 'maxPool', [2, 4, 4]],
+    ['digits', 'start', [3, 3, 5]],
+    ['digits', 'stepMs', [1100, 900, 700]],
+    ['sequence', 'stepMs', [800, 650, 450]]
   ] as const)('%s has easy, medium and hard %s settings', (id, key, values) => {
     const d = gameById(id).difficulties
     expect(d, `${id}.difficulties`).toBeDefined()
     expect(d!.easy?.settings?.[key]).toBe(values[0])
     expect(d!.medium?.settings?.[key]).toBe(values[1])
     expect(d!.hard?.settings?.[key]).toBe(values[2])
+  })
+
+  it.each([
+    ['serial7', 90, 60, 40],
+    ['words', 90, 60, 40],
+    ['category', 90, 60, 40],
+    ['stroop', 90, 45, 30]
+  ] as const)('%s gives easy %is, medium %is and hard %is', (id, easy, medium, hard) => {
+    const game = gameById(id)
+    expect(game.difficulties?.easy?.durationSec).toBe(easy)
+    expect(game.durationSec).toBe(medium)
+    expect(game.difficulties?.medium?.durationSec).toBeUndefined()
+    expect(game.difficulties?.hard?.durationSec).toBe(hard)
   })
 
   it.each(['reaction', 'breath', 'hand'])('%s has no difficulties', id => {
@@ -257,8 +279,13 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
     expect(gameById('nback').name).toBe('N-back')
   })
 
-  it('has at least the three required games with difficulties', () => {
-    expect(tiered.map(g => g.game.id)).toEqual(expect.arrayContaining(['pairs', 'schulte', 'nback']))
+  it('gives every game except reaction, breath and hand difficulties', () => {
+    expect(tiered.map(g => g.game.id).sort()).toEqual(
+      games
+        .map(g => g.game.id)
+        .filter(id => !['reaction', 'breath', 'hand'].includes(id))
+        .sort()
+    )
   })
 
   describe.each(tiered)('$file difficulties', ({ game }) => {
@@ -268,12 +295,18 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
       expect(Object.keys(d).sort()).toEqual(['easy', 'hard', 'medium'])
     })
 
-    it('gives each difficulty non-empty numeric settings', () => {
+    it('gives each difficulty numeric settings', () => {
       for (const key of ['easy', 'medium', 'hard']) {
         const settings = d[key]!.settings
         expect(settings, key).toBeDefined()
-        expect(Object.keys(settings!).length, key).toBeGreaterThan(0)
         Object.values(settings!).forEach(v => expect(typeof v, key).toBe('number'))
+      }
+    })
+
+    it('gives easy and hard a time limit only in a timed game', () => {
+      for (const key of ['easy', 'hard']) {
+        if (game.durationSec === null) expect(d[key]!.durationSec, key).toBeUndefined()
+        else if (d[key]!.durationSec !== undefined) expect(d[key]!.durationSec, key).toBeGreaterThan(0)
       }
     })
 

@@ -17,10 +17,12 @@ const n = ref(0)
 const answer = ref('')
 const question = ref('')
 let cur = 0
+const minLevel = setting(props.game, 'minLevel')
+const maxLevel = setting(props.game, 'maxLevel')
 const inp = ref<HTMLInputElement>()
 
 function next() {
-  const lvl = Math.min(3, Math.floor(n.value / 5))
+  const lvl = Math.min(maxLevel, minLevel + Math.floor(n.value / 5))
   const op = pick(lvl ? ['+', '−', '×'] : ['+', '−'])
   let a: number, b: number
   if (op === '×') {

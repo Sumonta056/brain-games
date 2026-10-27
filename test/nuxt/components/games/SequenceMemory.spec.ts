@@ -5,8 +5,10 @@ import SequenceMemory from '~/components/games/SequenceMemory.vue'
 import sequence from '~/data/games/sequence.json'
 import type { GameDef } from '~~/shared/types/game'
 import { seeded } from '~/utils/random'
+import { resolvedGame } from '../../fixtures'
 
-const sequenceGame = sequence as GameDef
+const sequenceGame = resolvedGame(sequence as GameDef, 'medium', { stepMs: 650 })
+const tiered = (d: 'easy' | 'hard', stepMs: number) => resolvedGame(sequence as GameDef, d, { stepMs })
 
 type Wrapper = Awaited<ReturnType<typeof mountSuspended>>
 
@@ -14,17 +16,17 @@ const square = (w: Wrapper, i: number) => w.get(`[aria-label="Square ${i + 1}"]`
 const litSquares = (w: Wrapper) =>
   Array.from({ length: 9 }, (_, i) => i).filter(i => square(w, i).attributes('data-state') === 'on')
 
-async function watchLevel(w: Wrapper, len: number) {
+async function watchLevel(w: Wrapper, len: number, stepMs = 650) {
   const seq: number[] = []
   let t = 0
   for (let i = 0; i < len; i++) {
-    await vi.advanceTimersByTimeAsync(i * 650 + 500 - t)
-    t = i * 650 + 500
+    await vi.advanceTimersByTimeAsync(i * stepMs + 500 - t)
+    t = i * stepMs + 500
     const lit = litSquares(w)
     expect(lit).toHaveLength(1)
     seq.push(lit[0]!)
   }
-  await vi.advanceTimersByTimeAsync(len * 650 + 550 - t)
+  await vi.advanceTimersByTimeAsync(len * stepMs + 550 - t)
   return seq
 }
 
@@ -32,10 +34,12 @@ async function repeat(w: Wrapper, seq: number[]) {
   for (const k of seq) await square(w, k).trigger('click')
 }
 
-async function clearLevels(w: Wrapper, levels: number) {
+const len1InputAt = (stepMs: number) => stepMs + 550
+
+async function clearLevels(w: Wrapper, levels: number, stepMs = 650) {
   let seq: number[] = []
   for (let len = 1; len <= levels; len++) {
-    seq = await watchLevel(w, len)
+    seq = await watchLevel(w, len, stepMs)
     await repeat(w, seq)
     await vi.advanceTimersByTimeAsync(700)
   }
@@ -147,5 +151,64 @@ describe('SequenceMemory', () => {
     await square(wrapper, seq[0]!).trigger('click')
     wrapper.unmount()
     expect(vi.getTimerCount()).toBe(0)
+  })
+
+  describe.each([
+    ['easy', 800],
+    ['hard', 450]
+  ] as const)('%s difficulty with stepMs %i', (d, stepMs) => {
+    it(`lights each step of a 2-step pattern at i×${stepMs}+500ms for ${stepMs - 200}ms`, async () => {
+      const wrapper = await mountSuspended(SequenceMemory, { props: { game: tiered(d, stepMs) } })
+      await vi.advanceTimersByTimeAsync(500)
+      const first = litSquares(wrapper)
+      expect(first).toHaveLength(1)
+      await vi.advanceTimersByTimeAsync(len1InputAt(stepMs) - 500)
+      await repeat(wrapper, first)
+      await vi.advanceTimersByTimeAsync(700)
+      expect(wrapper.text()).toContain('Level 2')
+      const on0 = 500
+      const off0 = on0 + stepMs - 200
+      const on1 = stepMs + 500
+      const off1 = on1 + stepMs - 200
+      await vi.advanceTimersByTimeAsync(on0 - 1)
+      expect(litSquares(wrapper)).toEqual([])
+      await vi.advanceTimersByTimeAsync(1)
+      expect(litSquares(wrapper)).toEqual(first)
+      await vi.advanceTimersByTimeAsync(off0 - on0 - 1)
+      expect(litSquares(wrapper)).toEqual(first)
+      await vi.advanceTimersByTimeAsync(1)
+      expect(litSquares(wrapper)).toEqual([])
+      await vi.advanceTimersByTimeAsync(on1 - off0 - 1)
+      expect(litSquares(wrapper)).toEqual([])
+      await vi.advanceTimersByTimeAsync(1)
+      expect(litSquares(wrapper)).toHaveLength(1)
+      await vi.advanceTimersByTimeAsync(off1 - on1 - 1)
+      expect(litSquares(wrapper)).toHaveLength(1)
+      await vi.advanceTimersByTimeAsync(1)
+      expect(litSquares(wrapper)).toEqual([])
+    })
+
+    it(`ignores a tap just before length×${stepMs}+550ms and accepts one right at it`, async () => {
+      const wrapper = await mountSuspended(SequenceMemory, { props: { game: tiered(d, stepMs) } })
+      await vi.advanceTimersByTimeAsync(500)
+      const [shown] = litSquares(wrapper)
+      await vi.advanceTimersByTimeAsync(len1InputAt(stepMs) - 500 - 1)
+      expect(wrapper.text()).not.toContain('Your turn')
+      await square(wrapper, shown!).trigger('click')
+      expect(wrapper.text()).toContain('Score 0')
+      await vi.advanceTimersByTimeAsync(1)
+      expect(wrapper.text()).toContain('Your turn')
+      await square(wrapper, shown!).trigger('click')
+      expect(wrapper.text()).toContain('Score 1')
+    })
+
+    it('scores the full levels cleared, the same as medium', async () => {
+      const wrapper = await mountSuspended(SequenceMemory, { props: { game: tiered(d, stepMs) } })
+      await clearLevels(wrapper, 2, stepMs)
+      const seq = await watchLevel(wrapper, 3, stepMs)
+      await square(wrapper, (seq[0]! + 1) % 9).trigger('click')
+      await vi.advanceTimersByTimeAsync(1000)
+      expect(wrapper.emitted('finish')).toEqual([[2]])
+    })
   })
 })

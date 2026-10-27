@@ -55,6 +55,39 @@
   "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
   "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
   "icon": "backward",
+  "difficulties": {
+    "easy": {
+      "settings": { "minPool": 0, "maxPool": 2 },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–4",
+          "label": "Warming up",
+          "message": "Short words are a gentle start. Picture the word written in front of you."
+        },
+        { "at": 5, "range": "5–6", "label": "Steady", "message": "Solid working memory." },
+        { "at": 7, "range": "7", "label": "Sharp", "message": "Strong mental imagery." },
+        { "at": 8, "range": "8", "label": "Perfect", "message": "Flawless." }
+      ],
+      "science": "Easy uses only the three shortest word groups (3 to 6 letters), so the bar is higher. These bands are a Brain Games guide, not a clinical norm."
+    },
+    "medium": { "settings": { "minPool": 0, "maxPool": 4 } },
+    "hard": {
+      "settings": { "minPool": 2, "maxPool": 4 },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–2",
+          "label": "Warming up",
+          "message": "Long words are tough. Picture the word written in front of you."
+        },
+        { "at": 3, "range": "3–4", "label": "Steady", "message": "Solid working memory on long words." },
+        { "at": 5, "range": "5–7", "label": "Sharp", "message": "Strong mental imagery." },
+        { "at": 8, "range": "8", "label": "Perfect", "message": "Flawless, even on the longest words." }
+      ],
+      "science": "Hard uses only the three longest word groups (6 to 8 letters), so the bar is lower. These bands are a Brain Games guide, not a clinical norm."
+    }
+  },
   "content": {
     "pools": [
       ["cat", "sun", "book", "tree", "fish", "lamp"],

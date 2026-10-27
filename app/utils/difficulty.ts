@@ -10,6 +10,7 @@ export function withDifficulty(game: GameDef, difficulty: Difficulty): GameDef {
     bands: def.bands ?? game.bands,
     science: def.science ?? game.science,
     settings: def.settings,
+    durationSec: def.durationSec ?? game.durationSec,
     difficulty
   }
 }

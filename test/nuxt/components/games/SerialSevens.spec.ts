@@ -110,6 +110,14 @@ describe('SerialSevens', () => {
     expect(cheers.value).toHaveLength(1)
   })
 
+  it('uses game.durationSec for the time limit', async () => {
+    const wrapper = await mountSuspended(SerialSevens, { props: { game: { ...serialGame, durationSec: 90 } } })
+    vi.advanceTimersByTime(89_000)
+    expect(wrapper.emitted('finish')).toBeUndefined()
+    vi.advanceTimersByTime(1200)
+    expect(wrapper.emitted('finish')).toEqual([[0]])
+  })
+
   it('finishes once with the number of correct steps after the game duration', async () => {
     const wrapper = await mountGame()
     await stepRight(wrapper, 2)

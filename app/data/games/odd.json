@@ -58,5 +58,79 @@
   ],
   "science": "Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.",
   "tip": "Let your eyes soften and look at the whole grid. The odd tile often “pops”.",
-  "icon": "odd"
+  "icon": "odd",
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "start": 0,
+        "deltaStep": 0.4
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–9",
+          "label": "Warming up",
+          "message": "Your eyes are tuning in. Relax your gaze instead of hunting tile by tile."
+        },
+        {
+          "at": 10,
+          "range": "10–19",
+          "label": "Good eye",
+          "message": "Nice colour sense."
+        },
+        {
+          "at": 20,
+          "range": "20–29",
+          "label": "Sharp eye",
+          "message": "You’re spotting small differences."
+        },
+        {
+          "at": 30,
+          "range": "30+",
+          "label": "Eagle eye",
+          "message": "That’s exceptional colour perception."
+        }
+      ],
+      "science": "Easy keeps the shade differences bigger for longer. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+    },
+    "medium": {
+      "settings": {
+        "start": 0,
+        "deltaStep": 0.8
+      }
+    },
+    "hard": {
+      "settings": {
+        "start": 3,
+        "deltaStep": 1.2
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–5",
+          "label": "Warming up",
+          "message": "Hard starts on a bigger grid with closer shades. Soften your gaze and let the odd tile pop."
+        },
+        {
+          "at": 6,
+          "range": "6–11",
+          "label": "Good eye",
+          "message": "Nice colour sense on a tricky board."
+        },
+        {
+          "at": 12,
+          "range": "12–17",
+          "label": "Sharp eye",
+          "message": "You’re spotting very small differences."
+        },
+        {
+          "at": 18,
+          "range": "18+",
+          "label": "Eagle eye",
+          "message": "That’s exceptional colour perception."
+        }
+      ],
+      "science": "Hard starts on a bigger grid and the shades get close much faster. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+    }
+  }
 }

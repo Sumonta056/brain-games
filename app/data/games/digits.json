@@ -58,5 +58,79 @@
   ],
   "science": "The classic figure is 7 ± 2 digits. A large community sample averaged about 6.5 digits forward. With chunking practice, people have reached spans of 20+.",
   "tip": "Chunk like a phone number: 729-48 is easier than 7-2-9-4-8.",
-  "icon": "digits"
+  "icon": "digits",
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "start": 3,
+        "stepMs": 1100
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–5",
+          "label": "Warming up",
+          "message": "Distractions hit this test hard. Try a quiet moment."
+        },
+        {
+          "at": 6,
+          "range": "6–7",
+          "label": "Typical",
+          "message": "Right around the adult average."
+        },
+        {
+          "at": 8,
+          "range": "8–9",
+          "label": "Strong",
+          "message": "Above average short-term memory."
+        },
+        {
+          "at": 10,
+          "range": "10+",
+          "label": "Exceptional",
+          "message": "You’re probably chunking. Great strategy."
+        }
+      ],
+      "science": "Easy starts at 3 digits and shows each one more slowly, about 1.1 seconds apart. The bands sit a little higher than Medium. They are a Brain Games guide, not a clinical norm."
+    },
+    "medium": {
+      "settings": {
+        "start": 3,
+        "stepMs": 900
+      }
+    },
+    "hard": {
+      "settings": {
+        "start": 5,
+        "stepMs": 700
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0",
+          "label": "Warming up",
+          "message": "Fast digits are tough. Try a quiet moment and go again."
+        },
+        {
+          "at": 5,
+          "range": "5",
+          "label": "Typical",
+          "message": "A solid result at this quick pace."
+        },
+        {
+          "at": 6,
+          "range": "6–7",
+          "label": "Strong",
+          "message": "Above average at a fast pace."
+        },
+        {
+          "at": 8,
+          "range": "8+",
+          "label": "Exceptional",
+          "message": "You’re probably chunking. Great strategy."
+        }
+      ],
+      "science": "Hard starts at 5 digits and shows each one faster, about 0.7 seconds apart, so a score is either 0 or 5 and up. The bands sit a little lower than Medium. They are a Brain Games guide, not a clinical norm."
+    }
+  }
 }

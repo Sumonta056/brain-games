@@ -17,6 +17,22 @@ describe('utils/difficulty', () => {
   })
 
   describe('withDifficulty', () => {
+    it('takes durationSec from the difficulty, else keeps the top-level one', () => {
+      const timed: TieredGame = {
+        ...tieredGame,
+        durationSec: 60,
+        difficulties: {
+          ...tieredGame.difficulties!,
+          easy: { ...tieredGame.difficulties!.easy, durationSec: 90 },
+          hard: { ...tieredGame.difficulties!.hard, durationSec: 30 }
+        }
+      }
+      expect(withDifficulty(timed, 'easy').durationSec).toBe(90)
+      expect(withDifficulty(timed, 'medium').durationSec).toBe(60)
+      expect(withDifficulty(timed, 'hard').durationSec).toBe(30)
+      expect(withDifficulty(tieredGame, 'hard').durationSec).toBe(tieredGame.durationSec)
+    })
+
     it('uses the easy bands, science and settings for easy', () => {
       const g = withDifficulty(tieredGame, 'easy') as TieredGame
       expect(g.bands).toEqual(easyBands)

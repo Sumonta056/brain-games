@@ -269,7 +269,81 @@
     ],
     "science": "Colour-difference sensitivity varies with screen brightness and lighting, so compare yourself on the same device.",
     "tip": "Let your eyes soften and look at the whole grid. The odd tile often “pops”.",
-    "icon": "odd"
+    "icon": "odd",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "start": 0,
+          "deltaStep": 0.4
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–9",
+            "label": "Warming up",
+            "message": "Your eyes are tuning in. Relax your gaze instead of hunting tile by tile."
+          },
+          {
+            "at": 10,
+            "range": "10–19",
+            "label": "Good eye",
+            "message": "Nice colour sense."
+          },
+          {
+            "at": 20,
+            "range": "20–29",
+            "label": "Sharp eye",
+            "message": "You’re spotting small differences."
+          },
+          {
+            "at": 30,
+            "range": "30+",
+            "label": "Eagle eye",
+            "message": "That’s exceptional colour perception."
+          }
+        ],
+        "science": "Easy keeps the shade differences bigger for longer. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "start": 0,
+          "deltaStep": 0.8
+        }
+      },
+      "hard": {
+        "settings": {
+          "start": 3,
+          "deltaStep": 1.2
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–5",
+            "label": "Warming up",
+            "message": "Hard starts on a bigger grid with closer shades. Soften your gaze and let the odd tile pop."
+          },
+          {
+            "at": 6,
+            "range": "6–11",
+            "label": "Good eye",
+            "message": "Nice colour sense on a tricky board."
+          },
+          {
+            "at": 12,
+            "range": "12–17",
+            "label": "Sharp eye",
+            "message": "You’re spotting very small differences."
+          },
+          {
+            "at": 18,
+            "range": "18+",
+            "label": "Eagle eye",
+            "message": "That’s exceptional colour perception."
+          }
+        ],
+        "science": "Hard starts on a bigger grid and the shades get close much faster. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+      }
+    }
   },
   {
     "id": "math",
@@ -279,7 +353,7 @@
     "category": "Speed",
     "level": "Medium",
     "size": "big",
-    "blurb": "Sums that get harder the faster you go.",
+    "blurb": "Quick sums against the clock.",
     "trains": "Processing speed and working memory",
     "durationSec": 60,
     "unit": "solved",
@@ -287,7 +361,7 @@
     "steps": [
       "A sum appears, like 23 + 18.",
       "Type the answer. It moves on the moment you’re right.",
-      "Every 5 correct answers, sums get harder. 60 seconds."
+      "Sums get harder as you go, up to the level you chose. 60 seconds."
     ],
     "demo": [
       {
@@ -337,7 +411,93 @@
     ],
     "science": "There’s no standard clinical norm for this exact game, so these bands are a Brain Games guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.",
     "tip": "Break sums apart: 47 + 38 is 47 + 40 − 2.",
-    "icon": "math"
+    "icon": "math",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "minLevel": 0,
+          "maxLevel": 0
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–7",
+            "label": "Warming up",
+            "message": "Your brain is switching gears. Scores usually jump after 2–3 tries."
+          },
+          {
+            "at": 8,
+            "range": "8–13",
+            "label": "Steady",
+            "message": "A calm, comfortable pace with small numbers. Keep going."
+          },
+          {
+            "at": 14,
+            "range": "14–20",
+            "label": "Sharp",
+            "message": "Quick and accurate. Your everyday arithmetic is well practised."
+          },
+          {
+            "at": 21,
+            "range": "21–29",
+            "label": "Quick",
+            "message": "Under 3 seconds per answer. Impressive."
+          },
+          {
+            "at": 30,
+            "range": "30+",
+            "label": "Lightning",
+            "message": "Calculator-level speed."
+          }
+        ],
+        "science": "Easy keeps every sum to adding and subtracting small numbers, with no multiplying. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "minLevel": 0,
+          "maxLevel": 3
+        }
+      },
+      "hard": {
+        "settings": {
+          "minLevel": 2,
+          "maxLevel": 3
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–3",
+            "label": "Warming up",
+            "message": "Big numbers and times tables from the start. Give it a few tries."
+          },
+          {
+            "at": 4,
+            "range": "4–7",
+            "label": "Steady",
+            "message": "A solid pace on tough sums. Nicely done."
+          },
+          {
+            "at": 8,
+            "range": "8–12",
+            "label": "Sharp",
+            "message": "Quicker than most players on big numbers. Your arithmetic is strong."
+          },
+          {
+            "at": 13,
+            "range": "13–18",
+            "label": "Quick",
+            "message": "Under 5 seconds per answer on hard sums. Impressive."
+          },
+          {
+            "at": 19,
+            "range": "19+",
+            "label": "Lightning",
+            "message": "Calculator-level speed on the hard setting."
+          }
+        ],
+        "science": "Hard starts with big numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+      }
+    }
   },
   {
     "id": "serial7",
@@ -355,7 +515,7 @@
     "steps": [
       "You get a start number, like 143.",
       "Type the number 7 less (136) and press Enter.",
-      "Keep going from your answer. 60 seconds."
+      "Keep going from your answer until the timer runs out."
     ],
     "demo": [
       {
@@ -399,7 +559,74 @@
     ],
     "science": "Doctors use 5 serial sevens from 100 as a quick attention check, and healthy adults nearly always get all 5. These speed bands are a Brain Games guide.",
     "tip": "Subtract 10, then add 3. Many people find it easier.",
-    "icon": "serial7"
+    "icon": "serial7",
+    "difficulties": {
+      "easy": {
+        "settings": {},
+        "durationSec": 90,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–8",
+            "label": "Warming up",
+            "message": "Holding a number while subtracting is genuinely hard. It gets easier fast."
+          },
+          {
+            "at": 9,
+            "range": "9–15",
+            "label": "Steady",
+            "message": "A calm, accurate pace."
+          },
+          {
+            "at": 16,
+            "range": "16–24",
+            "label": "Sharp",
+            "message": "Strong concentration."
+          },
+          {
+            "at": 25,
+            "range": "25+",
+            "label": "Excellent",
+            "message": "Very fast and fluent."
+          }
+        ],
+        "science": "Easy gives 90 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {}
+      },
+      "hard": {
+        "settings": {},
+        "durationSec": 40,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–3",
+            "label": "Warming up",
+            "message": "Forty seconds goes fast. Every step counts."
+          },
+          {
+            "at": 4,
+            "range": "4–6",
+            "label": "Steady",
+            "message": "A calm, accurate pace under time pressure."
+          },
+          {
+            "at": 7,
+            "range": "7–10",
+            "label": "Sharp",
+            "message": "Strong concentration."
+          },
+          {
+            "at": 11,
+            "range": "11+",
+            "label": "Excellent",
+            "message": "Very fast and fluent."
+          }
+        ],
+        "science": "Hard gives 40 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
+      }
+    }
   },
   {
     "id": "reaction",
@@ -485,7 +712,7 @@
     "steps": [
       "You get a letter, like S.",
       "Type a word starting with it and press Enter.",
-      "Real words, 3+ letters, no repeats. 60 seconds."
+      "Real words, 3+ letters, no repeats. Until the timer runs out."
     ],
     "demo": [
       {
@@ -538,6 +765,85 @@
     "icon": "words",
     "content": {
       "letters": ["A", "B", "C", "D", "E", "F", "G", "H", "L", "M", "N", "P", "R", "S", "T", "W"]
+    },
+    "difficulties": {
+      "easy": {
+        "settings": {},
+        "durationSec": 90,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–8",
+            "label": "Warming up",
+            "message": "Tricky letters slow everyone down."
+          },
+          {
+            "at": 9,
+            "range": "9–14",
+            "label": "Steady",
+            "message": "A good typed score."
+          },
+          {
+            "at": 15,
+            "range": "15–20",
+            "label": "Fluent",
+            "message": "Strong word retrieval."
+          },
+          {
+            "at": 21,
+            "range": "21–27",
+            "label": "Very fluent",
+            "message": "Lots of words, all typed."
+          },
+          {
+            "at": 28,
+            "range": "28+",
+            "label": "Wordsmith",
+            "message": "Outstanding."
+          }
+        ],
+        "science": "Easy gives 90 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {}
+      },
+      "hard": {
+        "settings": {},
+        "durationSec": 40,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–3",
+            "label": "Warming up",
+            "message": "Forty seconds is short. Every word counts."
+          },
+          {
+            "at": 4,
+            "range": "4–6",
+            "label": "Steady",
+            "message": "A good typed score."
+          },
+          {
+            "at": 7,
+            "range": "7–8",
+            "label": "Fluent",
+            "message": "Strong word retrieval."
+          },
+          {
+            "at": 9,
+            "range": "9–12",
+            "label": "Very fluent",
+            "message": "Quick and steady under time pressure."
+          },
+          {
+            "at": 13,
+            "range": "13+",
+            "label": "Wordsmith",
+            "message": "Outstanding."
+          }
+        ],
+        "science": "Hard gives 40 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+      }
     }
   },
   {
@@ -553,7 +859,11 @@
     "durationSec": 60,
     "unit": "items",
     "lowerIsBetter": false,
-    "steps": ["You get a category, like Fruits.", "Type an item and press Enter.", "No repeats. 60 seconds."],
+    "steps": [
+      "You get a category, like Fruits.",
+      "Type an item and press Enter.",
+      "No repeats. Until the timer runs out."
+    ],
     "demo": [
       {
         "scene": "<div class=\"mk\">Fruits</div>",
@@ -616,6 +926,73 @@
         "Flowers",
         "Things at the beach"
       ]
+    },
+    "difficulties": {
+      "easy": {
+        "settings": {},
+        "durationSec": 90,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–11",
+            "label": "Warming up",
+            "message": "Some categories are much harder than others."
+          },
+          {
+            "at": 12,
+            "range": "12–18",
+            "label": "Steady",
+            "message": "A good typed score."
+          },
+          {
+            "at": 19,
+            "range": "19–26",
+            "label": "Fluent",
+            "message": "Strong memory search."
+          },
+          {
+            "at": 27,
+            "range": "27+",
+            "label": "Encyclopaedia",
+            "message": "Excellent."
+          }
+        ],
+        "science": "Easy gives 90 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {}
+      },
+      "hard": {
+        "settings": {},
+        "durationSec": 40,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–4",
+            "label": "Warming up",
+            "message": "Forty seconds is short. Every item counts."
+          },
+          {
+            "at": 5,
+            "range": "5–8",
+            "label": "Steady",
+            "message": "A good typed score."
+          },
+          {
+            "at": 9,
+            "range": "9–11",
+            "label": "Fluent",
+            "message": "Strong memory search."
+          },
+          {
+            "at": 12,
+            "range": "12+",
+            "label": "Encyclopaedia",
+            "message": "Excellent."
+          }
+        ],
+        "science": "Hard gives 40 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
+      }
     }
   },
   {
@@ -675,6 +1052,80 @@
     "science": "Spelling “WORLD” backwards is part of common memory screening. Holding and flipping letters uses the same working memory as backward digit span.",
     "tip": "Split long words: “ele-phant” → reverse each half, then swap.",
     "icon": "backward",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "minPool": 0,
+          "maxPool": 2
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–4",
+            "label": "Warming up",
+            "message": "Short words are a gentle start. Picture the word written in front of you."
+          },
+          {
+            "at": 5,
+            "range": "5–6",
+            "label": "Steady",
+            "message": "Solid working memory."
+          },
+          {
+            "at": 7,
+            "range": "7",
+            "label": "Sharp",
+            "message": "Strong mental imagery."
+          },
+          {
+            "at": 8,
+            "range": "8",
+            "label": "Perfect",
+            "message": "Flawless."
+          }
+        ],
+        "science": "Easy uses only the three shortest word groups (3 to 6 letters), so the bar is higher. These bands are a Brain Games guide, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "minPool": 0,
+          "maxPool": 4
+        }
+      },
+      "hard": {
+        "settings": {
+          "minPool": 2,
+          "maxPool": 4
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–2",
+            "label": "Warming up",
+            "message": "Long words are tough. Picture the word written in front of you."
+          },
+          {
+            "at": 3,
+            "range": "3–4",
+            "label": "Steady",
+            "message": "Solid working memory on long words."
+          },
+          {
+            "at": 5,
+            "range": "5–7",
+            "label": "Sharp",
+            "message": "Strong mental imagery."
+          },
+          {
+            "at": 8,
+            "range": "8",
+            "label": "Perfect",
+            "message": "Flawless, even on the longest words."
+          }
+        ],
+        "science": "Hard uses only the three longest word groups (6 to 8 letters), so the bar is lower. These bands are a Brain Games guide, not a clinical norm."
+      }
+    },
     "content": {
       "pools": [
         ["cat", "sun", "book", "tree", "fish", "lamp"],
@@ -745,7 +1196,81 @@
     ],
     "science": "The classic figure is 7 ± 2 digits. A large community sample averaged about 6.5 digits forward. With chunking practice, people have reached spans of 20+.",
     "tip": "Chunk like a phone number: 729-48 is easier than 7-2-9-4-8.",
-    "icon": "digits"
+    "icon": "digits",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "start": 3,
+          "stepMs": 1100
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–5",
+            "label": "Warming up",
+            "message": "Distractions hit this test hard. Try a quiet moment."
+          },
+          {
+            "at": 6,
+            "range": "6–7",
+            "label": "Typical",
+            "message": "Right around the adult average."
+          },
+          {
+            "at": 8,
+            "range": "8–9",
+            "label": "Strong",
+            "message": "Above average short-term memory."
+          },
+          {
+            "at": 10,
+            "range": "10+",
+            "label": "Exceptional",
+            "message": "You’re probably chunking. Great strategy."
+          }
+        ],
+        "science": "Easy starts at 3 digits and shows each one more slowly, about 1.1 seconds apart. The bands sit a little higher than Medium. They are a Brain Games guide, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "start": 3,
+          "stepMs": 900
+        }
+      },
+      "hard": {
+        "settings": {
+          "start": 5,
+          "stepMs": 700
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0",
+            "label": "Warming up",
+            "message": "Fast digits are tough. Try a quiet moment and go again."
+          },
+          {
+            "at": 5,
+            "range": "5",
+            "label": "Typical",
+            "message": "A solid result at this quick pace."
+          },
+          {
+            "at": 6,
+            "range": "6–7",
+            "label": "Strong",
+            "message": "Above average at a fast pace."
+          },
+          {
+            "at": 8,
+            "range": "8+",
+            "label": "Exceptional",
+            "message": "You’re probably chunking. Great strategy."
+          }
+        ],
+        "science": "Hard starts at 5 digits and shows each one faster, about 0.7 seconds apart, so a score is either 0 or 5 and up. The bands sit a little lower than Medium. They are a Brain Games guide, not a clinical norm."
+      }
+    }
   },
   {
     "id": "sequence",
@@ -807,7 +1332,78 @@
     ],
     "science": "Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.",
     "tip": "Trace the path as a shape: “L-shape, then corner.”",
-    "icon": "sequence"
+    "icon": "sequence",
+    "difficulties": {
+      "easy": {
+        "settings": {
+          "stepMs": 800
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–5",
+            "label": "Warming up",
+            "message": "Spatial memory warms up quickly."
+          },
+          {
+            "at": 6,
+            "range": "6–8",
+            "label": "Typical",
+            "message": "Visual spans usually sit 1–2 below number spans."
+          },
+          {
+            "at": 9,
+            "range": "9–11",
+            "label": "Strong",
+            "message": "Very good spatial memory."
+          },
+          {
+            "at": 12,
+            "range": "12+",
+            "label": "Exceptional",
+            "message": "Outstanding."
+          }
+        ],
+        "science": "Easy shows each square for 600 ms, one every 800 ms, so the pattern is slower to follow. These bands are a Brain Games guide, not a clinical norm."
+      },
+      "medium": {
+        "settings": {
+          "stepMs": 650
+        }
+      },
+      "hard": {
+        "settings": {
+          "stepMs": 450
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–3",
+            "label": "Warming up",
+            "message": "Fast patterns take a little practice. You’re getting there."
+          },
+          {
+            "at": 4,
+            "range": "4–6",
+            "label": "Typical",
+            "message": "Keeping up with quick flashes is a real skill."
+          },
+          {
+            "at": 7,
+            "range": "7–9",
+            "label": "Strong",
+            "message": "Very good spatial memory at speed."
+          },
+          {
+            "at": 10,
+            "range": "10+",
+            "label": "Exceptional",
+            "message": "Outstanding at this pace."
+          }
+        ],
+        "science": "Hard shows each square for 250 ms, one every 450 ms, so the pattern flashes by quickly. These bands are a Brain Games guide, not a clinical norm."
+      }
+    }
   },
   {
     "id": "nback",
@@ -962,7 +1558,7 @@
     "steps": [
       "A colour word appears in a different ink.",
       "Tap the INK colour, not the word.",
-      "Wrong taps cost a point. 45 seconds."
+      "Wrong taps cost a point. Until the timer runs out."
     ],
     "demo": [
       {
@@ -1026,6 +1622,73 @@
           "token": "stroop-yellow"
         }
       ]
+    },
+    "difficulties": {
+      "easy": {
+        "settings": {},
+        "durationSec": 90,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–31",
+            "label": "Warming up",
+            "message": "Your reading brain is strong. It’s hard to ignore words."
+          },
+          {
+            "at": 32,
+            "range": "32–51",
+            "label": "Steady",
+            "message": "Good control."
+          },
+          {
+            "at": 52,
+            "range": "52–71",
+            "label": "Focused",
+            "message": "Strong attention control."
+          },
+          {
+            "at": 72,
+            "range": "72+",
+            "label": "Laser",
+            "message": "Excellent."
+          }
+        ],
+        "science": "Easy gives 90 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
+      },
+      "medium": {
+        "settings": {}
+      },
+      "hard": {
+        "settings": {},
+        "durationSec": 30,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–10",
+            "label": "Warming up",
+            "message": "Thirty seconds is short. Stay with the ink."
+          },
+          {
+            "at": 11,
+            "range": "11–16",
+            "label": "Steady",
+            "message": "Good control."
+          },
+          {
+            "at": 17,
+            "range": "17–23",
+            "label": "Focused",
+            "message": "Strong attention control."
+          },
+          {
+            "at": 24,
+            "range": "24+",
+            "label": "Laser",
+            "message": "Excellent."
+          }
+        ],
+        "science": "Hard gives 30 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
+      }
     }
   },
   {

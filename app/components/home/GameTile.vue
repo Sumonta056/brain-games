@@ -16,10 +16,8 @@
       <span
         class="grid size-11 flex-none place-items-center rounded-icon bg-surface group-data-[size=big]:size-[60px] group-data-[size=big]:rounded-btn [&_svg]:size-[30px] group-data-[size=big]:[&_svg]:size-[42px]"
         data-testid="tile-icon"
-        ><GameIcon :game="game" /></span
-      ><span class="rounded-pill bg-surface px-2.5 py-0.5 text-[12px] font-semibold text-tint-fg">{{
-        game.level
-      }}</span>
+        ><GameIcon :game="game"
+      /></span>
     </div>
     <span
       class="mt-auto font-display text-[20px] leading-[1.1] font-bold group-data-[size=big]:text-[34px] max-md:text-[18px] max-md:group-data-[size=big]:text-[28px]"

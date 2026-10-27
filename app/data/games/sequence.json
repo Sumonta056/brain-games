@@ -58,5 +58,76 @@
   ],
   "science": "Visuospatial span is usually 1–2 items shorter than digit span. This game lets squares repeat, which is a bit harder than the clinical Corsi test.",
   "tip": "Trace the path as a shape: “L-shape, then corner.”",
-  "icon": "sequence"
+  "icon": "sequence",
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "stepMs": 800
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–5",
+          "label": "Warming up",
+          "message": "Spatial memory warms up quickly."
+        },
+        {
+          "at": 6,
+          "range": "6–8",
+          "label": "Typical",
+          "message": "Visual spans usually sit 1–2 below number spans."
+        },
+        {
+          "at": 9,
+          "range": "9–11",
+          "label": "Strong",
+          "message": "Very good spatial memory."
+        },
+        {
+          "at": 12,
+          "range": "12+",
+          "label": "Exceptional",
+          "message": "Outstanding."
+        }
+      ],
+      "science": "Easy shows each square for 600 ms, one every 800 ms, so the pattern is slower to follow. These bands are a Brain Games guide, not a clinical norm."
+    },
+    "medium": {
+      "settings": {
+        "stepMs": 650
+      }
+    },
+    "hard": {
+      "settings": {
+        "stepMs": 450
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–3",
+          "label": "Warming up",
+          "message": "Fast patterns take a little practice. You’re getting there."
+        },
+        {
+          "at": 4,
+          "range": "4–6",
+          "label": "Typical",
+          "message": "Keeping up with quick flashes is a real skill."
+        },
+        {
+          "at": 7,
+          "range": "7–9",
+          "label": "Strong",
+          "message": "Very good spatial memory at speed."
+        },
+        {
+          "at": 10,
+          "range": "10+",
+          "label": "Exceptional",
+          "message": "Outstanding at this pace."
+        }
+      ],
+      "science": "Hard shows each square for 250 ms, one every 450 ms, so the pattern flashes by quickly. These bands are a Brain Games guide, not a clinical norm."
+    }
+  }
 }

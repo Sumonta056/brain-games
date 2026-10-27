@@ -96,6 +96,16 @@ describe('CategoryChallenge', () => {
     expect(cheers.value).toHaveLength(1)
   })
 
+  it('uses game.durationSec for the time limit', async () => {
+    const wrapper = await mountSuspended(CategoryChallenge, {
+      props: { game: { ...withCategories(['Fruits']), durationSec: 90 } }
+    })
+    vi.advanceTimersByTime(89_000)
+    expect(wrapper.emitted('finish')).toBeUndefined()
+    vi.advanceTimersByTime(1200)
+    expect(wrapper.emitted('finish')).toEqual([[0]])
+  })
+
   it('finishes once with the item count after the game duration', async () => {
     const wrapper = await mountWith()
     for (const w of ['pear', 'a', 'plum', 'pear']) await enter(wrapper, w)

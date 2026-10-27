@@ -6,7 +6,7 @@
   "category": "Speed",
   "level": "Medium",
   "size": "big",
-  "blurb": "Sums that get harder the faster you go.",
+  "blurb": "Quick sums against the clock.",
   "trains": "Processing speed and working memory",
   "durationSec": 60,
   "unit": "solved",
@@ -14,7 +14,7 @@
   "steps": [
     "A sum appears, like 23 + 18.",
     "Type the answer. It moves on the moment you’re right.",
-    "Every 5 correct answers, sums get harder. 60 seconds."
+    "Sums get harder as you go, up to the level you chose. 60 seconds."
   ],
   "demo": [
     {
@@ -64,5 +64,91 @@
   ],
   "science": "There’s no standard clinical norm for this exact game, so these bands are a Brain Games guide based on seconds per answer. Speed comes from fact recall (knowing 7 × 8 instantly) plus holding numbers in working memory.",
   "tip": "Break sums apart: 47 + 38 is 47 + 40 − 2.",
-  "icon": "math"
+  "icon": "math",
+  "difficulties": {
+    "easy": {
+      "settings": {
+        "minLevel": 0,
+        "maxLevel": 0
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–7",
+          "label": "Warming up",
+          "message": "Your brain is switching gears. Scores usually jump after 2–3 tries."
+        },
+        {
+          "at": 8,
+          "range": "8–13",
+          "label": "Steady",
+          "message": "A calm, comfortable pace with small numbers. Keep going."
+        },
+        {
+          "at": 14,
+          "range": "14–20",
+          "label": "Sharp",
+          "message": "Quick and accurate. Your everyday arithmetic is well practised."
+        },
+        {
+          "at": 21,
+          "range": "21–29",
+          "label": "Quick",
+          "message": "Under 3 seconds per answer. Impressive."
+        },
+        {
+          "at": 30,
+          "range": "30+",
+          "label": "Lightning",
+          "message": "Calculator-level speed."
+        }
+      ],
+      "science": "Easy keeps every sum to adding and subtracting small numbers, with no multiplying. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+    },
+    "medium": {
+      "settings": {
+        "minLevel": 0,
+        "maxLevel": 3
+      }
+    },
+    "hard": {
+      "settings": {
+        "minLevel": 2,
+        "maxLevel": 3
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–3",
+          "label": "Warming up",
+          "message": "Big numbers and times tables from the start. Give it a few tries."
+        },
+        {
+          "at": 4,
+          "range": "4–7",
+          "label": "Steady",
+          "message": "A solid pace on tough sums. Nicely done."
+        },
+        {
+          "at": 8,
+          "range": "8–12",
+          "label": "Sharp",
+          "message": "Quicker than most players on big numbers. Your arithmetic is strong."
+        },
+        {
+          "at": 13,
+          "range": "13–18",
+          "label": "Quick",
+          "message": "Under 5 seconds per answer on hard sums. Impressive."
+        },
+        {
+          "at": 19,
+          "range": "19+",
+          "label": "Lightning",
+          "message": "Calculator-level speed on the hard setting."
+        }
+      ],
+      "science": "Hard starts with big numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+    }
+  }
 }

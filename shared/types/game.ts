@@ -38,6 +38,7 @@ export interface GameDef {
 
 export interface DifficultyDef {
   settings: Record<string, number>
+  durationSec?: number
   bands?: Band[]
   science?: string
 }

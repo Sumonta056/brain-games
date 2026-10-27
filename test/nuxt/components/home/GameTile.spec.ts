@@ -31,11 +31,11 @@ describe('GameTile', () => {
     expect(a.attributes('aria-label')).toBe(`${mathGame.name}: ${mathGame.blurb}`)
   })
 
-  it('shows the name, blurb and level', async () => {
+  it('shows the name and blurb but no fixed level', async () => {
     const w = await tile()
     expect(w.text()).toContain(mathGame.name)
     expect(w.text()).toContain(mathGame.blurb)
-    expect(w.text()).toContain(mathGame.level)
+    expect(w.findAll('span').filter(s => ['Easy', 'Medium', 'Hard'].includes(s.text().trim()))).toEqual([])
   })
 
   it('shows the game icon as the badge and as the faded background', async () => {

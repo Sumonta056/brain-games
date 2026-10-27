@@ -5,8 +5,11 @@ import DigitSpan from '~/components/games/DigitSpan.vue'
 import { useCheer } from '~/composables/useCheer'
 import type { GameDef } from '~~/shared/types/game'
 import digits from '~/data/games/digits.json'
+import { resolvedGame } from '../../fixtures'
 
-const digitsGame = digits as GameDef
+const digitsGame = resolvedGame(digits as GameDef, 'medium', { start: 3, stepMs: 900 })
+const easyGame = resolvedGame(digits as GameDef, 'easy', { start: 3, stepMs: 1100 })
+const hardGame = resolvedGame(digits as GameDef, 'hard', { start: 5, stepMs: 700 })
 
 type Wrapper = Awaited<ReturnType<typeof mountSuspended>>
 
@@ -14,15 +17,36 @@ const display = (w: Wrapper) => w.get('[data-testid="digit"]').text().trim()
 const input = (w: Wrapper) => w.get('input[aria-label="Digits"]')
 const feedback = (w: Wrapper) => w.get('[data-testid="feedback"]').text().trim()
 
-async function watchRound(w: Wrapper, len: number) {
+async function watchRound(w: Wrapper, len: number, stepMs = 900) {
   let seq = ''
   await vi.advanceTimersByTimeAsync(100)
   for (let i = 0; i < len; i++) {
-    if (i > 0) await vi.advanceTimersByTimeAsync(900)
+    if (i > 0) await vi.advanceTimersByTimeAsync(stepMs)
     seq += display(w)
   }
-  await vi.advanceTimersByTimeAsync(1000)
+  await vi.advanceTimersByTimeAsync(stepMs + 100)
   return seq
+}
+
+async function expectTiming(w: Wrapper, len: number, stepMs: number) {
+  const hold = stepMs - 250
+  for (let i = 0; i < len; i++) {
+    await vi.advanceTimersByTimeAsync(i === 0 ? 0 : stepMs - hold)
+    expect(display(w)).toMatch(/^\d$/)
+    await vi.advanceTimersByTimeAsync(hold - 1)
+    expect(display(w)).toMatch(/^\d$/)
+    await vi.advanceTimersByTimeAsync(1)
+    expect(display(w)).toBe('')
+  }
+}
+
+async function expectUnlockAt(w: Wrapper, len: number, stepMs: number) {
+  await vi.advanceTimersByTimeAsync(len * stepMs + 199)
+  expect(input(w).attributes('disabled')).toBeDefined()
+  await vi.advanceTimersByTimeAsync(1)
+  expect(input(w).attributes('disabled')).toBeUndefined()
+  expect(display(w)).toBe('?')
+  expect(feedback(w)).toBe(`Type all ${len} digits`)
 }
 
 async function answer(w: Wrapper, value: string) {
@@ -176,5 +200,73 @@ describe('DigitSpan', () => {
     expect(wrapper.text()).toContain('Length 3')
     await vi.advanceTimersByTimeAsync(1000)
     expect(wrapper.text()).toContain('Length 4')
+  })
+
+  describe('difficulty settings', () => {
+    it('starts hard at length 5 and shows 5 digits', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: hardGame } })
+      expect(wrapper.text()).toContain('Length 5')
+      const seq = await watchRound(wrapper, 5, 700)
+      expect(seq).toMatch(/^\d{5}$/)
+      expect(feedback(wrapper)).toBe('Type all 5 digits')
+    })
+
+    it('shows each hard digit for 450ms, one every 700ms', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: hardGame } })
+      await expectTiming(wrapper, 5, 700)
+    })
+
+    it('unlocks the hard input at 5*700+200ms', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: hardGame } })
+      await expectUnlockAt(wrapper, 5, 700)
+    })
+
+    it('starts easy at length 3 and shows 3 digits', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: easyGame } })
+      expect(wrapper.text()).toContain('Length 3')
+      const seq = await watchRound(wrapper, 3, 1100)
+      expect(seq).toMatch(/^\d{3}$/)
+      expect(feedback(wrapper)).toBe('Type all 3 digits')
+    })
+
+    it('shows each easy digit for 850ms, one every 1100ms', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: easyGame } })
+      await expectTiming(wrapper, 3, 1100)
+    })
+
+    it('unlocks the easy input at 3*1100+200ms', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: easyGame } })
+      await expectUnlockAt(wrapper, 3, 1100)
+    })
+
+    it('unlocks the medium input at 3*900+200ms', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: digitsGame } })
+      await expectUnlockAt(wrapper, 3, 900)
+    })
+
+    it('adds one digit after a hard success and scores the span', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: hardGame } })
+      await answer(wrapper, await watchRound(wrapper, 5, 700))
+      expect(wrapper.text()).toContain('Score 5')
+      await vi.advanceTimersByTimeAsync(1000)
+      expect(wrapper.text()).toContain('Length 6')
+      expect(await watchRound(wrapper, 6, 700)).toMatch(/^\d{6}$/)
+      expect(feedback(wrapper)).toBe('Type all 6 digits')
+    })
+
+    it('finishes hard with 0 when the first length fails twice', async () => {
+      const wrapper = await mountSuspended(DigitSpan, { props: { game: hardGame } })
+      const first = await watchRound(wrapper, 5, 700)
+      expect(feedback(wrapper)).toBe('Type all 5 digits')
+      await answer(wrapper, wrongOf(first))
+      expect(feedback(wrapper)).toBe(`It was ${first}. One more try at this length.`)
+      await vi.advanceTimersByTimeAsync(1700)
+      expect(wrapper.text()).toContain('Length 5')
+      const second = await watchRound(wrapper, 5, 700)
+      await answer(wrapper, wrongOf(second))
+      expect(feedback(wrapper)).toBe(`It was ${second}`)
+      await vi.advanceTimersByTimeAsync(1500)
+      expect(wrapper.emitted('finish')).toEqual([[0]])
+    })
   })
 })

@@ -14,7 +14,7 @@
   "steps": [
     "You get a letter, like S.",
     "Type a word starting with it and press Enter.",
-    "Real words, 3+ letters, no repeats. 60 seconds."
+    "Real words, 3+ letters, no repeats. Until the timer runs out."
   ],
   "demo": [
     {
@@ -67,5 +67,84 @@
   "icon": "words",
   "content": {
     "letters": ["A", "B", "C", "D", "E", "F", "G", "H", "L", "M", "N", "P", "R", "S", "T", "W"]
+  },
+  "difficulties": {
+    "easy": {
+      "settings": {},
+      "durationSec": 90,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–8",
+          "label": "Warming up",
+          "message": "Tricky letters slow everyone down."
+        },
+        {
+          "at": 9,
+          "range": "9–14",
+          "label": "Steady",
+          "message": "A good typed score."
+        },
+        {
+          "at": 15,
+          "range": "15–20",
+          "label": "Fluent",
+          "message": "Strong word retrieval."
+        },
+        {
+          "at": 21,
+          "range": "21–27",
+          "label": "Very fluent",
+          "message": "Lots of words, all typed."
+        },
+        {
+          "at": 28,
+          "range": "28+",
+          "label": "Wordsmith",
+          "message": "Outstanding."
+        }
+      ],
+      "science": "Easy gives 90 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+    },
+    "medium": {
+      "settings": {}
+    },
+    "hard": {
+      "settings": {},
+      "durationSec": 40,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–3",
+          "label": "Warming up",
+          "message": "Forty seconds is short. Every word counts."
+        },
+        {
+          "at": 4,
+          "range": "4–6",
+          "label": "Steady",
+          "message": "A good typed score."
+        },
+        {
+          "at": 7,
+          "range": "7–8",
+          "label": "Fluent",
+          "message": "Strong word retrieval."
+        },
+        {
+          "at": 9,
+          "range": "9–12",
+          "label": "Very fluent",
+          "message": "Quick and steady under time pressure."
+        },
+        {
+          "at": 13,
+          "range": "13+",
+          "label": "Wordsmith",
+          "message": "Outstanding."
+        }
+      ],
+      "science": "Hard gives 40 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+    }
   }
 }

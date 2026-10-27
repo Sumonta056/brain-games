@@ -14,7 +14,7 @@
   "steps": [
     "A colour word appears in a different ink.",
     "Tap the INK colour, not the word.",
-    "Wrong taps cost a point. 45 seconds."
+    "Wrong taps cost a point. Until the timer runs out."
   ],
   "demo": [
     {
@@ -78,5 +78,72 @@
         "token": "stroop-yellow"
       }
     ]
+  },
+  "difficulties": {
+    "easy": {
+      "settings": {},
+      "durationSec": 90,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–31",
+          "label": "Warming up",
+          "message": "Your reading brain is strong. It’s hard to ignore words."
+        },
+        {
+          "at": 32,
+          "range": "32–51",
+          "label": "Steady",
+          "message": "Good control."
+        },
+        {
+          "at": 52,
+          "range": "52–71",
+          "label": "Focused",
+          "message": "Strong attention control."
+        },
+        {
+          "at": 72,
+          "range": "72+",
+          "label": "Laser",
+          "message": "Excellent."
+        }
+      ],
+      "science": "Easy gives 90 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
+    },
+    "medium": {
+      "settings": {}
+    },
+    "hard": {
+      "settings": {},
+      "durationSec": 30,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–10",
+          "label": "Warming up",
+          "message": "Thirty seconds is short. Stay with the ink."
+        },
+        {
+          "at": 11,
+          "range": "11–16",
+          "label": "Steady",
+          "message": "Good control."
+        },
+        {
+          "at": 17,
+          "range": "17–23",
+          "label": "Focused",
+          "message": "Strong attention control."
+        },
+        {
+          "at": 24,
+          "range": "24+",
+          "label": "Laser",
+          "message": "Excellent."
+        }
+      ],
+      "science": "Hard gives 30 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
+    }
   }
 }

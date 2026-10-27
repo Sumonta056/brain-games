@@ -20,10 +20,11 @@
 </template>
 <script setup lang="ts">
 import type { GameDef } from '~~/shared/types/game'
-defineProps<{ game: GameDef }>()
+const props = defineProps<{ game: GameDef }>()
 const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later } = useTimeouts()
+const step = setting(props.game, 'stepMs')
 const seq = ref<number[]>([])
 const lit = ref(new Set<number>())
 const missAt = ref<number | null>(null)
@@ -44,15 +45,15 @@ function level() {
   input = false
   fb.value = 'Watch…'
   seq.value.forEach((k, i) => {
-    later(() => light(k, true), i * 650 + 500)
-    later(() => light(k, false), i * 650 + 950)
+    later(() => light(k, true), i * step + 500)
+    later(() => light(k, false), i * step + 500 + (step - 200))
   })
   later(
     () => {
       input = true
       fb.value = 'Your turn'
     },
-    seq.value.length * 650 + 550
+    seq.value.length * step + 550
   )
 }
 function tap(i: number) {
