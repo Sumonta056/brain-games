@@ -82,11 +82,34 @@ describe('WordSprint', () => {
     expect(itemTexts(wrapper)).toEqual([])
   })
 
-  it('accepts apostrophes and hyphens as letters', async () => {
+  it('accepts a contraction with an apostrophe', async () => {
+    const wrapper = await mountWith()
+    await enter(wrapper, "shan't")
+    expect(itemTexts(wrapper)).toEqual(["shan't"])
+  })
+
+  it('gives no point for a hyphenated word', async () => {
     const wrapper = await mountWith()
     await enter(wrapper, 'sister-in-law')
-    await enter(wrapper, "shan't")
-    expect(itemTexts(wrapper)).toEqual(["shan't", 'sister-in-law'])
+    expect(feedback(wrapper).text()).toBe('I do not know that one yet. Try another')
+    expect(itemTexts(wrapper)).toEqual([])
+  })
+
+  it('gives no point for a word it does not know', async () => {
+    const wrapper = await mountWith()
+    await enter(wrapper, 'sxqz')
+    expect(feedback(wrapper).text()).toBe('I do not know that one yet. Try another')
+    expect(feedback(wrapper).attributes('data-state')).toBe('error')
+    expect(itemTexts(wrapper)).toEqual([])
+    expect(wrapper.get('[data-testid="score"]').text()).toMatch(/\b0\b/)
+  })
+
+  it('accepts a real word after an unknown one', async () => {
+    const wrapper = await mountWith()
+    await enter(wrapper, 'sxqz')
+    await enter(wrapper, 'smiled')
+    expect(itemTexts(wrapper)).toEqual(['smiled'])
+    expect(feedback(wrapper).attributes('data-state')).toBe('ok')
   })
 
   it('asks for 3 letters or more', async () => {

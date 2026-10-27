@@ -53,5 +53,6 @@
     }
   ],
   "avatars": ["🦉", "🐼", "🦊", "🐢", "🐬", "🌻", "🐝", "🌙", "⭐", "🍀"],
+  "loading": "Getting ready…",
   "praise": ["Nice!", "Great!", "On a roll!", "Lovely", "Smooth", "Keep going", "Yes!", "Brain on fire 🔥"]
 }

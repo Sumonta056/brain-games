@@ -208,3 +208,5 @@ Planned: accounts and cloud sync, leaderboards, more languages (Bangla), and PWA
 ## License
 
 MIT © 2026 Sumonta Saha Mridul
+
+The Word sprint word lists come from [SCOWL](http://wordlist.aspell.net/), Copyright 2000-2016 by Kevin Atkinson. The full notice is in `public/licenses/scowl.txt`.

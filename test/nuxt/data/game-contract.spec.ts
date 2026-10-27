@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { GameDef } from '~~/shared/types/game'
 import categories from '~/data/categories.json'
@@ -14,6 +14,13 @@ const iconFiles = import.meta.glob<string>('~/assets/icons/games/*.svg', {
 const iconFile = (name: string) =>
   Object.entries(iconFiles).find(([path]) => path.endsWith(`/icons/games/${name}.svg`))?.[1]
 const tokensCss = readFileSync(resolve(process.cwd(), 'app/assets/css/tokens.css'), 'utf8')
+const wordlistPath = (letter: string) => resolve(process.cwd(), `app/data/wordlists/${letter}.txt`)
+const wordlistLines = (letter: string) =>
+  existsSync(wordlistPath(letter))
+    ? readFileSync(wordlistPath(letter), 'utf8')
+        .split('\n')
+        .filter(w => w !== '')
+    : []
 const games = Object.entries(modules).map(([path, game]) => ({ file: path.split('/').pop()!, game }))
 
 type Content = Record<string, unknown>
@@ -145,6 +152,32 @@ describe('game content (functional-requirements §4 content table)', () => {
     expect(isTextList(letters)).toBe(true)
     letters.forEach(l => expect(l).toMatch(/^[A-Z]$/))
     expect(new Set(letters).size).toBe(letters.length)
+  })
+
+  it('has a word list for every words start letter', () => {
+    const letters = contentOf('words')?.letters as string[]
+    letters.forEach(l => {
+      const file = wordlistPath(l.toLowerCase())
+      expect(existsSync(file), file).toBe(true)
+      expect(wordlistLines(l.toLowerCase()).length, file).toBeGreaterThan(0)
+    })
+  })
+
+  it.each([...'abcdefghijklmnopqrstuvwxyz'])('word list %s.txt holds lowercase words starting with %s', letter => {
+    const file = wordlistPath(letter)
+    expect(existsSync(file), file).toBe(true)
+    const lines = wordlistLines(letter)
+    expect(lines.length).toBeGreaterThan(0)
+    expect(lines.filter(w => !/^[a-z']+$/.test(w))).toEqual([])
+    expect(lines.filter(w => !w.startsWith(letter))).toEqual([])
+  })
+
+  it('ships the word list copyright notice', () => {
+    for (const path of ['app/data/wordlists/COPYRIGHT', 'public/licenses/scowl.txt']) {
+      const file = resolve(process.cwd(), path)
+      expect(existsSync(file), path).toBe(true)
+      expect(readFileSync(file, 'utf8').trim(), path).not.toBe('')
+    }
   })
 
   it('category has distinct non-empty categories', () => {

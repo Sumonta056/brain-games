@@ -24,8 +24,13 @@ function strings(value: unknown): string[] {
 }
 
 describe('copy.json contract', () => {
-  it('has exactly the five copy groups', () => {
-    expect(Object.keys(copy).sort()).toEqual(['affirmations', 'avatars', 'greetings', 'moods', 'praise'])
+  it('has exactly the six copy groups', () => {
+    expect(Object.keys(copy).sort()).toEqual(['affirmations', 'avatars', 'greetings', 'loading', 'moods', 'praise'])
+  })
+
+  it('has a non-empty loading line', () => {
+    expect((copy as { loading?: unknown }).loading).toEqual(expect.any(String))
+    expect(String((copy as { loading?: unknown }).loading).trim()).not.toBe('')
   })
 
   it('has greetings sorted by hour, ending before 24, with text', () => {

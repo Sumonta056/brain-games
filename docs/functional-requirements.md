@@ -46,7 +46,7 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 - **Play panel header:** back button, game icon, name, "Category · Level · trains …", and your best score.
 - **Play panel stage**, in three states:
   1. **Ready:** "Ready?", the blurb, a big Start button (Enter also starts), and an auto-looping 3-frame demo (2.2s per frame).
-  2. **Playing:** the game component. Floating "cheer" messages (Nice!, On a roll!…) appear on milestones.
+  2. **Playing:** the game component. While the game's code or data loads, the stage shows the `loading` line from `copy.json` ("Getting ready…"). Floating "cheer" messages (Nice!, On a roll!…) appear on milestones.
   3. **Result:** emoji by band, a big gradient score, the unit, the band label and message, and personal-best messaging (confetti on a new PB). Buttons: Play again (focused, Enter replays) and More games.
 - **Sidebar**, always visible:
   - How to play (numbered steps)
@@ -108,7 +108,9 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 | stroop   | `{ colours: { name: string, token: string }[4] }` (`token` is a colour token in `tokens.css`, e.g. `stroop-red`) |
 | hand     | `{ tasks: string[] }` (at least 4)                                                                               |
 
-Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars` and `praise`. Components never hard-code it.
+**Word list (words):** `app/data/wordlists/<letter>.txt` holds one lowercase word per line for each letter a–z. `npm run wordlists` builds the files from `wordlist-english` (SCOWL size 60, American, British and Canadian spellings) plus a fixed list of common contractions. It leaves out every word that matches the local client-data guard patterns (`CLIENT_GUARD_PATTERNS`, or `~/.config/git/client-data-patterns` when that file exists), because the commit guard blocks those words. Word sprint loads only its letter's file, and its countdown starts after the file loads. A word is real when it is in the list. The list has no hyphenated words, so a hyphenated word gets no point. An unknown word gets no point and the message "I do not know that one yet. Try another". If the file fails to load, the game still plays and counts every word that passes the other rules. The SCOWL copyright notice ships in `app/data/wordlists/COPYRIGHT` and on the site at `/licenses/scowl.txt`.
+
+Shared copy that is not about one game lives in `app/data/copy.json`: `greetings` (hour limits 5, 12, 17, 24), `affirmations`, `moods` (the §2.2 mood → games table), `avatars`, `praise` and `loading` (the line the game page shows while a game loads). Components never hard-code it.
 
 ## 5. The 15 games (behaviour)
 
@@ -120,7 +122,7 @@ Shared copy that is not about one game lives in `app/data/copy.json`: `greetings
 | math     | Mental math        | +/− (then ×) sums; auto-advance on correct answer; difficulty up every 5; 60s                            | solved                      |
 | serial7  | Serial sevens      | Start 100–199, subtract 7, Enter; wrong answers show the correct one and continue; restarts below 7; 60s | steps                       |
 | reaction | Reaction time      | Random 1.2–3.8s wait, then green; tapping early restarts the round; 5 rounds                             | avg ms (lower better)       |
-| words    | Word sprint        | Random letter; words of 3+ letters starting with it, no repeats; 60s                                     | words                       |
+| words    | Word sprint        | Random letter; real words of 3+ letters starting with it, no repeats; 60s (see the word list rule below) | words                       |
 | category | Category challenge | Random category; items with no repeats; 60s                                                              | items                       |
 | backward | Backward spelling  | Word shown for 1.8s + 0.22s per letter, then hidden; type it reversed; 8 rounds, longer words            | out of 8                    |
 | digits   | Digit span         | Digits shown 0.9s each; starts at 3; +1 per success; 2 misses in a row ends                              | longest span                |

@@ -42,7 +42,12 @@
         </div>
         <div class="mx-auto w-full max-w-[760px]">
           <ReadyScreen v-if="phase === 'ready'" :game="game" @start="start" />
-          <component :is="gameComponent" v-else-if="phase === 'playing'" :key="round" :game="game" @finish="finish" />
+          <Suspense v-else-if="phase === 'playing'">
+            <component :is="gameComponent" :key="round" :game="game" @finish="finish" />
+            <template #fallback>
+              <p class="text-center text-muted" data-testid="game-loading">{{ copy.loading }}</p>
+            </template>
+          </Suspense>
           <ResultScreen v-else :game="game" :score="score" :result="result!" @again="start" />
         </div>
       </div>
@@ -53,6 +58,7 @@
 <script setup lang="ts">
 import type { GameDef } from '~~/shared/types/game'
 import { gameComponents } from '~/components/games/registry'
+import copy from '~/data/copy.json'
 const props = defineProps<{ game: GameDef }>()
 const { tintVars } = useGames()
 const { progress, record } = useProgress()

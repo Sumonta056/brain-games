@@ -16,7 +16,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "wordlists": "node scripts/build-wordlists.mjs"
   },
   "dependencies": {
     "nuxt": "^4.5.0",
@@ -41,7 +42,8 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~5.9.0",
     "vitest": "^5.0.5",
-    "vue-tsc": "^3.3.13"
+    "vue-tsc": "^3.3.13",
+    "wordlist-english": "^1.2.1"
   },
   "engines": {
     "node": ">=22.13"

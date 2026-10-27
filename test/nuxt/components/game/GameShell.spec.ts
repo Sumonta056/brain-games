@@ -4,6 +4,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { clearNuxtState } from '#imports'
 import GameShell from '~/components/game/GameShell.vue'
 import { useProgress } from '~/composables/useProgress'
+import copy from '~/data/copy.json'
 import { buttonNamed, iconNames, mathGame, reactionGame } from '../../fixtures'
 
 const stub = vi.hoisted(() => ({ score: 0 }))
@@ -23,6 +24,25 @@ vi.mock('~/components/games/MentalMath.vue', async () => {
 })
 
 vi.mock('~/utils/confetti', () => ({ confetti: vi.fn() }))
+
+const slow = vi.hoisted(() => ({ release: () => {} }))
+
+vi.mock('~/components/games/ReactionTime.vue', async () => {
+  const { defineComponent, h } = await import('vue')
+  return {
+    __esModule: true,
+    default: defineComponent({
+      props: { game: { type: Object, required: true } },
+      emits: ['finish'],
+      async setup() {
+        await new Promise<void>(r => {
+          slow.release = r
+        })
+        return () => h('p', { 'data-testid': 'slow-game' }, 'slow game')
+      }
+    })
+  }
+})
 
 const mounted: { unmount: () => void }[] = []
 
@@ -148,5 +168,22 @@ describe('GameShell', () => {
     const wrapper = await mountShell(reactionGame)
     expect(wrapper.text()).toContain('Lower is better.')
     expect(wrapper.find('[data-testid="bands"] [aria-current="true"]').exists()).toBe(false)
+  })
+
+  it('shows the loading line until a slow game is ready', async () => {
+    const wrapper = await mountShell(reactionGame)
+    await buttonNamed(wrapper, 'Start ▸').trigger('click')
+    await vi.waitFor(async () => {
+      await flushPromises()
+      expect(wrapper.find('[data-testid="game-loading"]').exists()).toBe(true)
+    })
+    expect(wrapper.get('[data-testid="game-loading"]').text()).toBe(copy.loading)
+    expect(wrapper.find('[data-testid="slow-game"]').exists()).toBe(false)
+    slow.release()
+    await vi.waitFor(async () => {
+      await flushPromises()
+      expect(wrapper.find('[data-testid="slow-game"]').exists()).toBe(true)
+    })
+    expect(wrapper.find('[data-testid="game-loading"]').exists()).toBe(false)
   })
 })
