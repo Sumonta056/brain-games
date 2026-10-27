@@ -35,7 +35,7 @@ describe('GameTile', () => {
     const w = await tile()
     expect(w.text()).toContain(mathGame.name)
     expect(w.text()).toContain(mathGame.blurb)
-    expect(w.findAll('span').filter(s => ['Easy', 'Medium', 'Hard'].includes(s.text().trim()))).toEqual([])
+    expect(w.findAll('span').filter(s => ['Easy', 'Medium', 'Hard', 'Beast'].includes(s.text().trim()))).toEqual([])
   })
 
   it('shows the game icon as the badge and as the faded background', async () => {

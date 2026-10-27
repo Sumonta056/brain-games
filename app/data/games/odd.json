@@ -131,6 +131,39 @@
         }
       ],
       "science": "Hard starts on a bigger grid and the shades get close much faster. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+    },
+    "beast": {
+      "settings": {
+        "start": 9,
+        "deltaStep": 1.6
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–3",
+          "label": "Warming up",
+          "message": "Beast opens on a big grid with shades that barely differ. Soften your gaze and let the odd tile pop."
+        },
+        {
+          "at": 4,
+          "range": "4–7",
+          "label": "Good eye",
+          "message": "Nice colour sense on a beastly board."
+        },
+        {
+          "at": 8,
+          "range": "8–11",
+          "label": "Sharp eye",
+          "message": "You’re spotting tiny differences."
+        },
+        {
+          "at": 12,
+          "range": "12+",
+          "label": "Eagle eye",
+          "message": "That’s beast-level colour perception."
+        }
+      ],
+      "science": "Beast starts on a 5×5 grid with small shade differences and keeps them close from the first round, so lower scores are normal. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
     }
   }
 }

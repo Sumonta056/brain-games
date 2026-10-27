@@ -36,8 +36,14 @@ describe('copy.json contract', () => {
     ])
   })
 
-  it('names the difficulty group and the three difficulties', () => {
-    expect(copy.difficulty).toEqual({ label: 'Difficulty', easy: 'Easy', medium: 'Medium', hard: 'Hard' })
+  it('names the difficulty group and the four difficulties', () => {
+    expect(copy.difficulty).toEqual({
+      label: 'Difficulty',
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard',
+      beast: 'Beast'
+    })
   })
 
   it('has a non-empty loading line', () => {

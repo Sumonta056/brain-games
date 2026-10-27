@@ -8,9 +8,10 @@ import type { GameDef } from '~~/shared/types/game'
 import { seeded } from '~/utils/random'
 import { resolvedGame } from '../../fixtures'
 
-const schulteGame = resolvedGame(schulte as GameDef, 'medium', { size: 5 })
-const easyGame = resolvedGame(schulte as GameDef, 'easy', { size: 4 })
-const hardGame = resolvedGame(schulte as GameDef, 'hard', { size: 6 })
+const schulteGame = resolvedGame(schulte as GameDef, 'medium', { size: 5, penaltySec: 0 })
+const easyGame = resolvedGame(schulte as GameDef, 'easy', { size: 4, penaltySec: 0 })
+const hardGame = resolvedGame(schulte as GameDef, 'hard', { size: 6, penaltySec: 0 })
+const beastGame = resolvedGame(schulte as GameDef, 'beast', { size: 6, penaltySec: 2 })
 
 type Wrapper = VueWrapper
 
@@ -161,6 +162,70 @@ describe('SchulteTable', () => {
       expect(wrapper.emitted('finish')).toBeUndefined()
       await vi.advanceTimersByTimeAsync(1)
       expect(wrapper.emitted('finish')).toEqual([[Number(((last * 400 + 400) / 1000).toFixed(1))]])
+    })
+  })
+
+  describe('on beast', () => {
+    it('does not add the penalty when a number already found is tapped again', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: beastGame } })
+      await vi.advanceTimersByTimeAsync(1000)
+      await cell(wrapper, 1).trigger('click')
+      await cell(wrapper, 1).trigger('click')
+      await vi.advanceTimersByTimeAsync(100)
+      expect(wrapper.text()).toContain('1.1 s')
+      expect(wrapper.text()).not.toContain('3.1 s')
+    })
+
+    it('lays out 36 shuffled numbers in 6 columns', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: beastGame } })
+      const numbers = cells(wrapper).map(b => Number(b.text().trim()))
+      expect([...numbers].sort((a, b) => a - b)).toEqual(Array.from({ length: 36 }, (_, i) => i + 1))
+      expect(wrapper.get('[data-testid="board"]').attributes('data-cols')).toBe('6')
+    })
+
+    it('adds 2 s per wrong tap to the finish score', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: beastGame } })
+      await cell(wrapper, 2).trigger('click')
+      await cell(wrapper, 3).trigger('click')
+      expect(wrapper.text()).toContain('Find 1')
+      await tapInOrder(wrapper, 1, 36, 400)
+      await vi.advanceTimersByTimeAsync(400)
+      expect(wrapper.emitted('finish')).toEqual([[18.8]])
+    })
+
+    it('makes the live timer jump by 2 s right after a wrong tap', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: beastGame } })
+      await vi.advanceTimersByTimeAsync(1000)
+      expect(wrapper.text()).toContain('1.0 s')
+      await cell(wrapper, 5).trigger('click')
+      await vi.advanceTimersByTimeAsync(100)
+      expect(wrapper.text()).toContain('3.1 s')
+    })
+
+    it('still flashes a wrong tap and keeps asking for the same number', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: beastGame } })
+      await cell(wrapper, 4).trigger('click')
+      expect(cell(wrapper, 4).attributes('data-state')).toBe('miss')
+      expect(wrapper.text()).toContain('Find 1')
+    })
+  })
+
+  describe('with no penalty', () => {
+    it('keeps the live timer unchanged after a wrong tap', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: schulteGame } })
+      await vi.advanceTimersByTimeAsync(1000)
+      await cell(wrapper, 5).trigger('click')
+      await vi.advanceTimersByTimeAsync(100)
+      expect(wrapper.text()).toContain('1.1 s')
+    })
+
+    it('finishes with the elapsed seconds only after wrong taps', async () => {
+      const wrapper = await mountSuspended(SchulteTable, { props: { game: schulteGame } })
+      await cell(wrapper, 2).trigger('click')
+      await cell(wrapper, 3).trigger('click')
+      await tapInOrder(wrapper, 1, 25, 400)
+      await vi.advanceTimersByTimeAsync(400)
+      expect(wrapper.emitted('finish')).toEqual([[10.4]])
     })
   })
 })

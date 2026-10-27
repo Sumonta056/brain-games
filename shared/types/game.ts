@@ -1,7 +1,7 @@
 export type Category = 'Calm' | 'Speed' | 'Words' | 'Memory' | 'Focus' | 'Body'
 export type Level = 'Easy' | 'Medium' | 'Hard'
 export type TileSize = 'normal' | 'wide' | 'tall' | 'big'
-export type Difficulty = 'easy' | 'medium' | 'hard'
+export type Difficulty = 'easy' | 'medium' | 'hard' | 'beast'
 
 /** One score band. `at` is the minimum score (or the maximum when lowerIsBetter). null = no limit (Infinity). */
 export interface Band {

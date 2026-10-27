@@ -128,7 +128,8 @@
     "difficulties": {
       "easy": {
         "settings": {
-          "pairs": 6
+          "pairs": 6,
+          "flipMs": 800
         },
         "bands": [
           {
@@ -166,12 +167,14 @@
       },
       "medium": {
         "settings": {
-          "pairs": 8
+          "pairs": 8,
+          "flipMs": 800
         }
       },
       "hard": {
         "settings": {
-          "pairs": 10
+          "pairs": 10,
+          "flipMs": 800
         },
         "bands": [
           {
@@ -206,6 +209,45 @@
           }
         ],
         "science": "Hard uses 10 pairs. 10 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "pairs": 12,
+          "flipMs": 500
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "43+",
+            "label": "Exploring",
+            "message": "You found them all. Twelve pairs on a fast board is a big effort."
+          },
+          {
+            "at": 42,
+            "range": "31–42",
+            "label": "Steady",
+            "message": "A calm, solid game on the biggest board."
+          },
+          {
+            "at": 30,
+            "range": "22–30",
+            "label": "Good memory",
+            "message": "You’re holding a lot of positions in mind."
+          },
+          {
+            "at": 21,
+            "range": "13–21",
+            "label": "Excellent",
+            "message": "Very few wasted moves, even with a quick flip-back."
+          },
+          {
+            "at": 12,
+            "range": "12",
+            "label": "Perfect",
+            "message": "Not a single wasted move."
+          }
+        ],
+        "science": "Beast uses 12 pairs and mismatched cards flip back faster (0.5 seconds instead of 0.8). 12 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
       }
     }
   },
@@ -342,6 +384,39 @@
           }
         ],
         "science": "Hard starts on a bigger grid and the shades get close much faster. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "start": 9,
+          "deltaStep": 1.6
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–3",
+            "label": "Warming up",
+            "message": "Beast opens on a big grid with shades that barely differ. Soften your gaze and let the odd tile pop."
+          },
+          {
+            "at": 4,
+            "range": "4–7",
+            "label": "Good eye",
+            "message": "Nice colour sense on a beastly board."
+          },
+          {
+            "at": 8,
+            "range": "8–11",
+            "label": "Sharp eye",
+            "message": "You’re spotting tiny differences."
+          },
+          {
+            "at": 12,
+            "range": "12+",
+            "label": "Eagle eye",
+            "message": "That’s beast-level colour perception."
+          }
+        ],
+        "science": "Beast starts on a 5×5 grid with small shade differences and keeps them close from the first round, so lower scores are normal. Colour-difference sensitivity varies with screen brightness and lighting, and these bands are a Brain Games guide, not a clinical norm."
       }
     }
   },
@@ -496,6 +571,45 @@
           }
         ],
         "science": "Hard starts with big numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "minLevel": 3,
+          "maxLevel": 3
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–2",
+            "label": "Warming up",
+            "message": "Beast throws the biggest numbers and times tables at you from the first sum. Give it a few tries."
+          },
+          {
+            "at": 3,
+            "range": "3–5",
+            "label": "Steady",
+            "message": "A solid pace on beastly sums. Nicely done."
+          },
+          {
+            "at": 6,
+            "range": "6–9",
+            "label": "Sharp",
+            "message": "Quicker than most players on the biggest numbers. Your arithmetic is strong."
+          },
+          {
+            "at": 10,
+            "range": "10–14",
+            "label": "Quick",
+            "message": "Under 4 seconds per answer on beast sums. Impressive."
+          },
+          {
+            "at": 15,
+            "range": "15+",
+            "label": "Lightning",
+            "message": "Calculator-level speed on the beast setting."
+          }
+        ],
+        "science": "Beast uses the biggest numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
       }
     }
   },
@@ -625,6 +739,37 @@
           }
         ],
         "science": "Hard gives 40 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {},
+        "durationSec": 25,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–1",
+            "label": "Warming up",
+            "message": "Twenty-five seconds goes very fast. Every step counts."
+          },
+          {
+            "at": 2,
+            "range": "2–3",
+            "label": "Steady",
+            "message": "A calm, accurate pace under heavy time pressure."
+          },
+          {
+            "at": 4,
+            "range": "4–6",
+            "label": "Sharp",
+            "message": "Strong concentration."
+          },
+          {
+            "at": 7,
+            "range": "7+",
+            "label": "Excellent",
+            "message": "Very fast and fluent."
+          }
+        ],
+        "science": "Beast gives 25 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
       }
     }
   },
@@ -843,6 +988,43 @@
           }
         ],
         "science": "Hard gives 40 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {},
+        "durationSec": 25,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–2",
+            "label": "Warming up",
+            "message": "Twenty-five seconds is a sprint. Every word counts."
+          },
+          {
+            "at": 3,
+            "range": "3",
+            "label": "Steady",
+            "message": "A good typed score for a Beast round."
+          },
+          {
+            "at": 4,
+            "range": "4–5",
+            "label": "Fluent",
+            "message": "Strong word retrieval, fast."
+          },
+          {
+            "at": 6,
+            "range": "6–7",
+            "label": "Very fluent",
+            "message": "Quick and steady under real pressure."
+          },
+          {
+            "at": 8,
+            "range": "8+",
+            "label": "Wordsmith",
+            "message": "Beast tamed. Outstanding."
+          }
+        ],
+        "science": "Beast gives 25 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
       }
     }
   },
@@ -992,6 +1174,37 @@
           }
         ],
         "science": "Hard gives 40 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {},
+        "durationSec": 25,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–2",
+            "label": "Warming up",
+            "message": "Twenty-five seconds is a sprint. Every item counts."
+          },
+          {
+            "at": 3,
+            "range": "3–5",
+            "label": "Steady",
+            "message": "A good typed score for a Beast round."
+          },
+          {
+            "at": 6,
+            "range": "6–7",
+            "label": "Fluent",
+            "message": "Strong memory search, fast."
+          },
+          {
+            "at": 8,
+            "range": "8+",
+            "label": "Encyclopaedia",
+            "message": "Beast tamed. Excellent."
+          }
+        ],
+        "science": "Beast gives 25 seconds. Spoken category-fluency norms are per minute, so these bands are a Brain Games guide."
       }
     }
   },
@@ -1056,7 +1269,9 @@
       "easy": {
         "settings": {
           "minPool": 0,
-          "maxPool": 2
+          "maxPool": 2,
+          "showMs": 1800,
+          "letterMs": 220
         },
         "bands": [
           {
@@ -1089,13 +1304,17 @@
       "medium": {
         "settings": {
           "minPool": 0,
-          "maxPool": 4
+          "maxPool": 4,
+          "showMs": 1800,
+          "letterMs": 220
         }
       },
       "hard": {
         "settings": {
           "minPool": 2,
-          "maxPool": 4
+          "maxPool": 4,
+          "showMs": 1800,
+          "letterMs": 220
         },
         "bands": [
           {
@@ -1124,6 +1343,41 @@
           }
         ],
         "science": "Hard uses only the three longest word groups (6 to 8 letters), so the bar is lower. These bands are a Brain Games guide, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "minPool": 4,
+          "maxPool": 4,
+          "showMs": 1000,
+          "letterMs": 150
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–1",
+            "label": "Warming up",
+            "message": "Beast words are a big stretch. Picture each word written in front of you."
+          },
+          {
+            "at": 2,
+            "range": "2–3",
+            "label": "Steady",
+            "message": "Holding 8-letter words that briefly is real work."
+          },
+          {
+            "at": 4,
+            "range": "4–7",
+            "label": "Sharp",
+            "message": "Strong mental imagery under pressure."
+          },
+          {
+            "at": 8,
+            "range": "8",
+            "label": "Perfect",
+            "message": "Flawless, even on the longest words at speed."
+          }
+        ],
+        "science": "Beast uses only the longest words (8 letters) and shows them for less time, so the bar is lower still. These bands are a Brain Games guide, not a clinical norm."
       }
     },
     "content": {
@@ -1269,6 +1523,39 @@
           }
         ],
         "science": "Hard starts at 5 digits and shows each one faster, about 0.7 seconds apart, so a score is either 0 or 5 and up. The bands sit a little lower than Medium. They are a Brain Games guide, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "start": 7,
+          "stepMs": 500
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0",
+            "label": "Warming up",
+            "message": "Beast digits are a big stretch. Take a breath and go again."
+          },
+          {
+            "at": 7,
+            "range": "7",
+            "label": "Typical",
+            "message": "A solid result at this pace and length."
+          },
+          {
+            "at": 8,
+            "range": "8–9",
+            "label": "Strong",
+            "message": "Impressive at a beast pace."
+          },
+          {
+            "at": 10,
+            "range": "10+",
+            "label": "Exceptional",
+            "message": "You’re probably chunking. Great strategy."
+          }
+        ],
+        "science": "Beast starts at 7 digits and shows each one faster, about 0.5 seconds apart, so a score is either 0 or 7 and up. The bands sit lower than Hard. They are a Brain Games guide, not a clinical norm."
       }
     }
   },
@@ -1402,6 +1689,38 @@
           }
         ],
         "science": "Hard shows each square for 250 ms, one every 450 ms, so the pattern flashes by quickly. These bands are a Brain Games guide, not a clinical norm."
+      },
+      "beast": {
+        "settings": {
+          "stepMs": 300
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–2",
+            "label": "Warming up",
+            "message": "Beast flashes are quick. A little practice goes a long way."
+          },
+          {
+            "at": 3,
+            "range": "3–5",
+            "label": "Typical",
+            "message": "Keeping up with beast speed is a real skill."
+          },
+          {
+            "at": 6,
+            "range": "6–8",
+            "label": "Strong",
+            "message": "Very good spatial memory at beast speed."
+          },
+          {
+            "at": 9,
+            "range": "9+",
+            "label": "Exceptional",
+            "message": "Beast tamed. Outstanding."
+          }
+        ],
+        "science": "Beast shows each square for 100 ms, one every 300 ms, so the pattern flashes by very quickly. These bands are a Brain Games guide, not a clinical norm."
       }
     }
   },
@@ -1420,7 +1739,7 @@
     "lowerIsBetter": false,
     "steps": [
       "Letters appear one by one.",
-      "If a letter matches the one N steps back, tap Match. N is 1, 2 or 3.",
+      "If a letter matches the one N steps back, tap Match. N is 1, 2, 3 or 4.",
       "Otherwise do nothing. 24 letters."
     ],
     "demo": [
@@ -1539,6 +1858,38 @@
           }
         ],
         "science": "Hard is 3-back: tap when the letter matches the one 3 steps ago. Research reports lower scores on 3-back than on 2-back. These bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {
+          "n": 4
+        },
+        "bands": [
+          {
+            "at": 0,
+            "range": "under 60",
+            "label": "Learning",
+            "message": "4-back is a beast. Everyone starts here."
+          },
+          {
+            "at": 60,
+            "range": "60–69",
+            "label": "Getting it",
+            "message": "You’re holding four letters in mind."
+          },
+          {
+            "at": 70,
+            "range": "70–79",
+            "label": "Strong",
+            "message": "Remarkable working memory."
+          },
+          {
+            "at": 80,
+            "range": "80+",
+            "label": "Excellent",
+            "message": "Beast tamed. Very sharp."
+          }
+        ],
+        "science": "Beast is 4-back: tap when the letter matches the one 4 steps ago. Each extra step back asks for more working memory than 3-back. These bands are a Brain Games guide."
       }
     }
   },
@@ -1688,6 +2039,37 @@
           }
         ],
         "science": "Hard gives 30 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {},
+        "durationSec": 25,
+        "bands": [
+          {
+            "at": 0,
+            "range": "0–8",
+            "label": "Warming up",
+            "message": "Twenty-five seconds is a sprint. Stay with the ink."
+          },
+          {
+            "at": 9,
+            "range": "9–13",
+            "label": "Steady",
+            "message": "Good control for a Beast round."
+          },
+          {
+            "at": 14,
+            "range": "14–19",
+            "label": "Focused",
+            "message": "Strong attention control, fast."
+          },
+          {
+            "at": 20,
+            "range": "20+",
+            "label": "Laser",
+            "message": "Beast tamed. Excellent."
+          }
+        ],
+        "science": "Beast gives 25 seconds. The Stroop effect is a classic test of attention control. These point bands are a Brain Games guide."
       }
     }
   },
@@ -1707,7 +2089,7 @@
     "steps": [
       "A grid of numbers appears.",
       "Tap 1, then 2, then 3… up to the last number.",
-      "Keep your eyes near the centre."
+      "Keep your eyes near the centre. On Beast, each wrong tap adds 2 seconds."
     ],
     "demo": [
       {
@@ -1761,7 +2143,8 @@
     "difficulties": {
       "easy": {
         "settings": {
-          "size": 4
+          "size": 4,
+          "penaltySec": 0
         },
         "bands": [
           {
@@ -1799,12 +2182,14 @@
       },
       "medium": {
         "settings": {
-          "size": 5
+          "size": 5,
+          "penaltySec": 0
         }
       },
       "hard": {
         "settings": {
-          "size": 6
+          "size": 6,
+          "penaltySec": 0
         },
         "bands": [
           {
@@ -1839,6 +2224,45 @@
           }
         ],
         "science": "Hard uses a 6×6 grid of 1 to 36. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+      },
+      "beast": {
+        "settings": {
+          "size": 6,
+          "penaltySec": 2
+        },
+        "bands": [
+          {
+            "at": null,
+            "range": "75+ s",
+            "label": "Warming up",
+            "message": "A big grid with a time cost. Take your time."
+          },
+          {
+            "at": 75,
+            "range": "50–75 s",
+            "label": "Steady",
+            "message": "A careful pace on a big grid."
+          },
+          {
+            "at": 50,
+            "range": "33–50 s",
+            "label": "Good",
+            "message": "A strong, accurate scan across 36 numbers."
+          },
+          {
+            "at": 33,
+            "range": "20–33 s",
+            "label": "Sharp",
+            "message": "Fast and accurate visual search."
+          },
+          {
+            "at": 20,
+            "range": "under 20 s",
+            "label": "Excellent",
+            "message": "Excellent scanning with very few slips."
+          }
+        ],
+        "science": "Beast uses a 6×6 grid of 1 to 36, and each wrong tap adds 2 seconds to your time. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
       }
     }
   },

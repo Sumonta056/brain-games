@@ -238,37 +238,43 @@ describe('game content (functional-requirements §4 content table)', () => {
 
 describe('game difficulties (functional-requirements §3.1 and §4)', () => {
   it.each([
-    ['pairs', 'pairs', [6, 8, 10]],
-    ['schulte', 'size', [4, 5, 6]],
-    ['nback', 'n', [1, 2, 3]],
-    ['odd', 'start', [0, 0, 3]],
-    ['odd', 'deltaStep', [0.4, 0.8, 1.2]],
-    ['math', 'minLevel', [0, 0, 2]],
-    ['math', 'maxLevel', [0, 3, 3]],
-    ['backward', 'minPool', [0, 0, 2]],
-    ['backward', 'maxPool', [2, 4, 4]],
-    ['digits', 'start', [3, 3, 5]],
-    ['digits', 'stepMs', [1100, 900, 700]],
-    ['sequence', 'stepMs', [800, 650, 450]]
-  ] as const)('%s has easy, medium and hard %s settings', (id, key, values) => {
+    ['pairs', 'pairs', [6, 8, 10, 12]],
+    ['pairs', 'flipMs', [800, 800, 800, 500]],
+    ['schulte', 'size', [4, 5, 6, 6]],
+    ['schulte', 'penaltySec', [0, 0, 0, 2]],
+    ['nback', 'n', [1, 2, 3, 4]],
+    ['odd', 'start', [0, 0, 3, 9]],
+    ['odd', 'deltaStep', [0.4, 0.8, 1.2, 1.6]],
+    ['math', 'minLevel', [0, 0, 2, 3]],
+    ['math', 'maxLevel', [0, 3, 3, 3]],
+    ['backward', 'minPool', [0, 0, 2, 4]],
+    ['backward', 'maxPool', [2, 4, 4, 4]],
+    ['backward', 'showMs', [1800, 1800, 1800, 1000]],
+    ['backward', 'letterMs', [220, 220, 220, 150]],
+    ['digits', 'start', [3, 3, 5, 7]],
+    ['digits', 'stepMs', [1100, 900, 700, 500]],
+    ['sequence', 'stepMs', [800, 650, 450, 300]]
+  ] as const)('%s has easy, medium, hard and beast %s settings', (id, key, values) => {
     const d = gameById(id).difficulties
     expect(d, `${id}.difficulties`).toBeDefined()
     expect(d!.easy?.settings?.[key]).toBe(values[0])
     expect(d!.medium?.settings?.[key]).toBe(values[1])
     expect(d!.hard?.settings?.[key]).toBe(values[2])
+    expect(d!.beast?.settings?.[key]).toBe(values[3])
   })
 
   it.each([
-    ['serial7', 90, 60, 40],
-    ['words', 90, 60, 40],
-    ['category', 90, 60, 40],
-    ['stroop', 90, 45, 30]
-  ] as const)('%s gives easy %is, medium %is and hard %is', (id, easy, medium, hard) => {
+    ['serial7', 90, 60, 40, 25],
+    ['words', 90, 60, 40, 25],
+    ['category', 90, 60, 40, 25],
+    ['stroop', 90, 45, 30, 25]
+  ] as const)('%s gives easy %is, medium %is, hard %is and beast %is', (id, easy, medium, hard, beast) => {
     const game = gameById(id)
     expect(game.difficulties?.easy?.durationSec).toBe(easy)
     expect(game.durationSec).toBe(medium)
     expect(game.difficulties?.medium?.durationSec).toBeUndefined()
     expect(game.difficulties?.hard?.durationSec).toBe(hard)
+    expect(game.difficulties?.beast?.durationSec).toBe(beast)
   })
 
   it.each(['reaction', 'breath', 'hand'])('%s has no difficulties', id => {
@@ -291,20 +297,20 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
   describe.each(tiered)('$file difficulties', ({ game }) => {
     const d = (game as WithDifficulties).difficulties!
 
-    it('has exactly easy, medium and hard', () => {
-      expect(Object.keys(d).sort()).toEqual(['easy', 'hard', 'medium'])
+    it('has exactly easy, medium, hard and beast', () => {
+      expect(Object.keys(d).sort()).toEqual(['beast', 'easy', 'hard', 'medium'])
     })
 
     it('gives each difficulty numeric settings', () => {
-      for (const key of ['easy', 'medium', 'hard']) {
+      for (const key of ['easy', 'medium', 'hard', 'beast']) {
         const settings = d[key]!.settings
         expect(settings, key).toBeDefined()
         Object.values(settings!).forEach(v => expect(typeof v, key).toBe('number'))
       }
     })
 
-    it('gives easy and hard a time limit only in a timed game', () => {
-      for (const key of ['easy', 'hard']) {
+    it('gives easy, hard and beast a time limit only in a timed game', () => {
+      for (const key of ['easy', 'hard', 'beast']) {
         if (game.durationSec === null) expect(d[key]!.durationSec, key).toBeUndefined()
         else if (d[key]!.durationSec !== undefined) expect(d[key]!.durationSec, key).toBeGreaterThan(0)
       }
@@ -314,6 +320,7 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
       const names = Object.keys(d.medium!.settings!).sort()
       expect(Object.keys(d.easy!.settings!).sort()).toEqual(names)
       expect(Object.keys(d.hard!.settings!).sort()).toEqual(names)
+      expect(Object.keys(d.beast!.settings!).sort()).toEqual(names)
     })
 
     it('keeps medium on the top-level bands and science', () => {
@@ -321,12 +328,12 @@ describe('game difficulties (functional-requirements §3.1 and §4)', () => {
       expect(d.medium!.science).toBeUndefined()
     })
 
-    it.each(['easy', 'hard'])('orders the %s bands like the top-level bands', key => {
+    it.each(['easy', 'hard', 'beast'])('orders the %s bands like the top-level bands', key => {
       expect(d[key]!.bands, `${key}.bands`).toBeDefined()
       expectOrderedBands(d[key]!.bands!, game.lowerIsBetter)
     })
 
-    it.each(['easy', 'hard'])('says the %s bands are a Brain Games guide', key => {
+    it.each(['easy', 'hard', 'beast'])('says the %s bands are a Brain Games guide', key => {
       expect(isText(d[key]!.science)).toBe(true)
       expect(d[key]!.science).toContain('Brain Games guide')
     })

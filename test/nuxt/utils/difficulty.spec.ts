@@ -5,6 +5,8 @@ import {
   easyScience,
   hardBands,
   hardScience,
+  beastBands,
+  beastScience,
   mathGame,
   reactionGame,
   tieredGame,
@@ -12,11 +14,19 @@ import {
 } from '../fixtures'
 
 describe('utils/difficulty', () => {
-  it('lists the three difficulties from easy to hard', () => {
-    expect([...DIFFICULTIES]).toEqual(['easy', 'medium', 'hard'])
+  it('lists the four difficulties from easy to beast', () => {
+    expect([...DIFFICULTIES]).toEqual(['easy', 'medium', 'hard', 'beast'])
   })
 
   describe('withDifficulty', () => {
+    it('uses beast bands, science and settings and keys the best as id@beast', () => {
+      const g = withDifficulty(tieredGame, 'beast')
+      expect(g.settings).toEqual({ n: 4 })
+      expect(g.bands).toEqual(beastBands)
+      expect(g.science).toBe(beastScience)
+      expect(bestKey(g)).toBe('tiered@beast')
+    })
+
     it('takes durationSec from the difficulty, else keeps the top-level one', () => {
       const timed: TieredGame = {
         ...tieredGame,
@@ -97,6 +107,11 @@ describe('utils/difficulty', () => {
   })
 
   describe('topBest', () => {
+    it('picks a beast best over every other difficulty', () => {
+      const top = topBest(tieredGame, { tiered: 12, 'tiered@hard': 5, 'tiered@beast': 1 })
+      expect(top).toMatchObject({ score: 1, game: { difficulty: 'beast' } })
+    })
+
     it('picks the best of the hardest difficulty played', () => {
       const top = topBest(tieredGame, { tiered: 12, 'tiered@hard': 5, 'tiered@easy': 30 })
       expect(top?.score).toBe(5)

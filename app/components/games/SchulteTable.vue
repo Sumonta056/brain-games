@@ -25,6 +25,7 @@ const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later, every } = useTimeouts()
 const size = setting(props.game, 'size')
+const penaltySec = setting(props.game, 'penaltySec')
 const total = size * size
 const cols: Record<number, string> = { 4: 'grid-cols-4', 5: 'grid-cols-5', 6: 'grid-cols-6' }
 const nums = shuffle(Array.from({ length: total }, (_, i) => i + 1))
@@ -32,12 +33,14 @@ const want = ref(1)
 const miss = ref<number | null>(null)
 const time = ref('0.0 s')
 const t0 = performance.now()
-const elapsed = () => ((performance.now() - t0) / 1000).toFixed(1)
+const penalties = ref(0)
+const elapsed = () => ((performance.now() - t0) / 1000 + penalties.value).toFixed(1)
 
 function tap(num: number) {
   if (want.value > total) return
   if (num !== want.value) {
     miss.value = num
+    if (num > want.value) penalties.value += penaltySec
     later(() => {
       if (miss.value === num) miss.value = null
     }, 250)

@@ -26,6 +26,8 @@ const { later } = useTimeouts()
 const pools = gameContent(props.game, 'pools')
 const minPool = setting(props.game, 'minPool')
 const maxPool = setting(props.game, 'maxPool')
+const showMs = setting(props.game, 'showMs')
+const letterMs = setting(props.game, 'letterMs')
 const round = ref(0)
 const shownRound = ref(1)
 const score = ref(0)
@@ -57,7 +59,7 @@ function next() {
       await nextTick()
       inp.value?.focus()
     },
-    1800 + word.length * 220
+    showMs + word.length * letterMs
   )
 }
 function onEnter() {

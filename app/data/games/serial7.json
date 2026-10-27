@@ -124,6 +124,37 @@
         }
       ],
       "science": "Hard gives 40 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
+    },
+    "beast": {
+      "settings": {},
+      "durationSec": 25,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–1",
+          "label": "Warming up",
+          "message": "Twenty-five seconds goes very fast. Every step counts."
+        },
+        {
+          "at": 2,
+          "range": "2–3",
+          "label": "Steady",
+          "message": "A calm, accurate pace under heavy time pressure."
+        },
+        {
+          "at": 4,
+          "range": "4–6",
+          "label": "Sharp",
+          "message": "Strong concentration."
+        },
+        {
+          "at": 7,
+          "range": "7+",
+          "label": "Excellent",
+          "message": "Very fast and fluent."
+        }
+      ],
+      "science": "Beast gives 25 seconds. Doctors use 5 serial sevens from 100 as a quick attention check. These speed bands are a Brain Games guide."
     }
   }
 }

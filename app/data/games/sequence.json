@@ -128,6 +128,38 @@
         }
       ],
       "science": "Hard shows each square for 250 ms, one every 450 ms, so the pattern flashes by quickly. These bands are a Brain Games guide, not a clinical norm."
+    },
+    "beast": {
+      "settings": {
+        "stepMs": 300
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–2",
+          "label": "Warming up",
+          "message": "Beast flashes are quick. A little practice goes a long way."
+        },
+        {
+          "at": 3,
+          "range": "3–5",
+          "label": "Typical",
+          "message": "Keeping up with beast speed is a real skill."
+        },
+        {
+          "at": 6,
+          "range": "6–8",
+          "label": "Strong",
+          "message": "Very good spatial memory at beast speed."
+        },
+        {
+          "at": 9,
+          "range": "9+",
+          "label": "Exceptional",
+          "message": "Beast tamed. Outstanding."
+        }
+      ],
+      "science": "Beast shows each square for 100 ms, one every 300 ms, so the pattern flashes by very quickly. These bands are a Brain Games guide, not a clinical norm."
     }
   }
 }

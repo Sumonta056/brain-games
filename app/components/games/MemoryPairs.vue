@@ -5,7 +5,7 @@
     </div>
     <div
       class="board max-w-[440px]"
-      :class="cols === 5 ? 'grid-cols-5' : 'grid-cols-4'"
+      :class="cols === 6 ? 'grid-cols-6' : cols === 5 ? 'grid-cols-5' : 'grid-cols-4'"
       data-testid="board"
       :data-cols="cols"
     >
@@ -31,7 +31,8 @@ const emit = defineEmits<{ finish: [score: number] }>()
 const { cheer } = useCheer()
 const { later } = useTimeouts()
 const pairs = setting(props.game, 'pairs')
-const cols = pairs > 8 ? 5 : 4
+const flipMs = setting(props.game, 'flipMs')
+const cols = pairs >= 12 ? 6 : pairs >= 10 ? 5 : 4
 const emojis = gameContent(props.game, 'emojis').slice(0, pairs)
 const cards = ref(shuffle([...emojis, ...emojis]).map(emoji => ({ emoji, state: 'down' as 'down' | 'up' | 'got' })))
 const moves = ref(0)
@@ -58,7 +59,7 @@ function flip(i: number) {
     later(() => {
       a.state = b.state = 'down'
       lock = false
-    }, 800)
+    }, flipMs)
   }
 }
 </script>

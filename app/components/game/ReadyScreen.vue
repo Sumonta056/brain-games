@@ -23,7 +23,7 @@
           :key="d"
           type="button"
           role="radio"
-          class="min-h-11 cursor-pointer rounded-pill border border-line bg-surface px-4 text-[14px] font-semibold text-muted aria-checked:border-ink aria-checked:bg-ink aria-checked:text-bg"
+          class="min-h-11 cursor-pointer rounded-pill border border-line bg-surface px-3 text-[14px] font-semibold text-muted aria-checked:border-ink aria-checked:bg-ink aria-checked:text-bg"
           :aria-checked="d === difficulty"
           :tabindex="d === difficulty ? 0 : -1"
           @click="$emit('update:difficulty', d)"

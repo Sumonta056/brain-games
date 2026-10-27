@@ -145,6 +145,43 @@
         }
       ],
       "science": "Hard gives 40 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
+    },
+    "beast": {
+      "settings": {},
+      "durationSec": 25,
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–2",
+          "label": "Warming up",
+          "message": "Twenty-five seconds is a sprint. Every word counts."
+        },
+        {
+          "at": 3,
+          "range": "3",
+          "label": "Steady",
+          "message": "A good typed score for a Beast round."
+        },
+        {
+          "at": 4,
+          "range": "4–5",
+          "label": "Fluent",
+          "message": "Strong word retrieval, fast."
+        },
+        {
+          "at": 6,
+          "range": "6–7",
+          "label": "Very fluent",
+          "message": "Quick and steady under real pressure."
+        },
+        {
+          "at": 8,
+          "range": "8+",
+          "label": "Wordsmith",
+          "message": "Beast tamed. Outstanding."
+        }
+      ],
+      "science": "Beast gives 25 seconds. Spoken letter-fluency norms are per minute, so these bands are a Brain Games guide."
     }
   }
 }

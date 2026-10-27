@@ -59,6 +59,7 @@
     "label": "Difficulty",
     "easy": "Easy",
     "medium": "Medium",
-    "hard": "Hard"
+    "hard": "Hard",
+    "beast": "Beast"
   }
 }

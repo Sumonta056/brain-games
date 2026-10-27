@@ -71,7 +71,8 @@
   "difficulties": {
     "easy": {
       "settings": {
-        "pairs": 6
+        "pairs": 6,
+        "flipMs": 800
       },
       "bands": [
         {
@@ -109,12 +110,14 @@
     },
     "medium": {
       "settings": {
-        "pairs": 8
+        "pairs": 8,
+        "flipMs": 800
       }
     },
     "hard": {
       "settings": {
-        "pairs": 10
+        "pairs": 10,
+        "flipMs": 800
       },
       "bands": [
         {
@@ -149,6 +152,45 @@
         }
       ],
       "science": "Hard uses 10 pairs. 10 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
+    },
+    "beast": {
+      "settings": {
+        "pairs": 12,
+        "flipMs": 500
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "43+",
+          "label": "Exploring",
+          "message": "You found them all. Twelve pairs on a fast board is a big effort."
+        },
+        {
+          "at": 42,
+          "range": "31–42",
+          "label": "Steady",
+          "message": "A calm, solid game on the biggest board."
+        },
+        {
+          "at": 30,
+          "range": "22–30",
+          "label": "Good memory",
+          "message": "You’re holding a lot of positions in mind."
+        },
+        {
+          "at": 21,
+          "range": "13–21",
+          "label": "Excellent",
+          "message": "Very few wasted moves, even with a quick flip-back."
+        },
+        {
+          "at": 12,
+          "range": "12",
+          "label": "Perfect",
+          "message": "Not a single wasted move."
+        }
+      ],
+      "science": "Beast uses 12 pairs and mismatched cards flip back faster (0.5 seconds instead of 0.8). 12 moves is perfect (only possible with luck). These bands are a Brain Games guide, not a clinical norm."
     }
   }
 }

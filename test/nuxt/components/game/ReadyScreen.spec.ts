@@ -80,10 +80,10 @@ describe('ReadyScreen', () => {
         .filter(r => r.attributes('aria-checked') === 'true')
         .map(r => r.text().trim())
 
-    it('shows a radio group with Easy, Medium and Hard for a game with difficulties', async () => {
+    it('shows a radio group with Easy, Medium, Hard and Beast for a game with difficulties', async () => {
       const wrapper = await mountReady(tieredGame, 'medium')
       expect(group(wrapper).attributes('role')).toBe('radiogroup')
-      expect(radios(wrapper).map(r => r.text().trim())).toEqual(['Easy', 'Medium', 'Hard'])
+      expect(radios(wrapper).map(r => r.text().trim())).toEqual(['Easy', 'Medium', 'Hard', 'Beast'])
       radios(wrapper).forEach(r => expect(r.element.tagName).toBe('BUTTON'))
     })
 
@@ -111,10 +111,12 @@ describe('ReadyScreen', () => {
     it.each([
       ['medium', 'ArrowRight', 'hard'],
       ['easy', 'ArrowRight', 'medium'],
-      ['hard', 'ArrowRight', 'easy'],
+      ['hard', 'ArrowRight', 'beast'],
+      ['beast', 'ArrowRight', 'easy'],
       ['medium', 'ArrowLeft', 'easy'],
       ['hard', 'ArrowLeft', 'medium'],
-      ['easy', 'ArrowLeft', 'hard']
+      ['beast', 'ArrowLeft', 'hard'],
+      ['easy', 'ArrowLeft', 'beast']
     ] as [Tier, string, Tier][])('moves from %s with %s to %s', async (from, key, to) => {
       const wrapper = await mountReady(tieredGame, from)
       const label = from[0]!.toUpperCase() + from.slice(1)
@@ -125,7 +127,7 @@ describe('ReadyScreen', () => {
 
     it('keeps only the checked radio in the tab order', async () => {
       const wrapper = await mountReady(tieredGame, 'hard')
-      expect(radios(wrapper).map(r => r.attributes('tabindex'))).toEqual(['-1', '-1', '0'])
+      expect(radios(wrapper).map(r => r.attributes('tabindex'))).toEqual(['-1', '-1', '0', '-1'])
     })
 
     it('moves focus to the newly checked radio after an arrow key', async () => {

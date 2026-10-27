@@ -14,7 +14,7 @@
   "steps": [
     "A grid of numbers appears.",
     "Tap 1, then 2, then 3… up to the last number.",
-    "Keep your eyes near the centre."
+    "Keep your eyes near the centre. On Beast, each wrong tap adds 2 seconds."
   ],
   "demo": [
     {
@@ -68,7 +68,8 @@
   "difficulties": {
     "easy": {
       "settings": {
-        "size": 4
+        "size": 4,
+        "penaltySec": 0
       },
       "bands": [
         {
@@ -106,12 +107,14 @@
     },
     "medium": {
       "settings": {
-        "size": 5
+        "size": 5,
+        "penaltySec": 0
       }
     },
     "hard": {
       "settings": {
-        "size": 6
+        "size": 6,
+        "penaltySec": 0
       },
       "bands": [
         {
@@ -146,6 +149,45 @@
         }
       ],
       "science": "Hard uses a 6×6 grid of 1 to 36. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
+    },
+    "beast": {
+      "settings": {
+        "size": 6,
+        "penaltySec": 2
+      },
+      "bands": [
+        {
+          "at": null,
+          "range": "75+ s",
+          "label": "Warming up",
+          "message": "A big grid with a time cost. Take your time."
+        },
+        {
+          "at": 75,
+          "range": "50–75 s",
+          "label": "Steady",
+          "message": "A careful pace on a big grid."
+        },
+        {
+          "at": 50,
+          "range": "33–50 s",
+          "label": "Good",
+          "message": "A strong, accurate scan across 36 numbers."
+        },
+        {
+          "at": 33,
+          "range": "20–33 s",
+          "label": "Sharp",
+          "message": "Fast and accurate visual search."
+        },
+        {
+          "at": 20,
+          "range": "under 20 s",
+          "label": "Excellent",
+          "message": "Excellent scanning with very few slips."
+        }
+      ],
+      "science": "Beast uses a 6×6 grid of 1 to 36, and each wrong tap adds 2 seconds to your time. Published guides cover the 5×5 table only, so these bands are a Brain Games guide."
     }
   }
 }

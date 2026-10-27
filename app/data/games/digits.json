@@ -131,6 +131,39 @@
         }
       ],
       "science": "Hard starts at 5 digits and shows each one faster, about 0.7 seconds apart, so a score is either 0 or 5 and up. The bands sit a little lower than Medium. They are a Brain Games guide, not a clinical norm."
+    },
+    "beast": {
+      "settings": {
+        "start": 7,
+        "stepMs": 500
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0",
+          "label": "Warming up",
+          "message": "Beast digits are a big stretch. Take a breath and go again."
+        },
+        {
+          "at": 7,
+          "range": "7",
+          "label": "Typical",
+          "message": "A solid result at this pace and length."
+        },
+        {
+          "at": 8,
+          "range": "8–9",
+          "label": "Strong",
+          "message": "Impressive at a beast pace."
+        },
+        {
+          "at": 10,
+          "range": "10+",
+          "label": "Exceptional",
+          "message": "You’re probably chunking. Great strategy."
+        }
+      ],
+      "science": "Beast starts at 7 digits and shows each one faster, about 0.5 seconds apart, so a score is either 0 or 7 and up. The bands sit lower than Hard. They are a Brain Games guide, not a clinical norm."
     }
   }
 }

@@ -9,7 +9,8 @@ import { resolvedGame } from '../../fixtures'
 
 type NbackGame = GameDef & { content: { letters: string[] } }
 const nbackGame = resolvedGame(nback as unknown as GameDef, 'medium', { n: 2 }) as NbackGame
-const atN = (n: number) => resolvedGame(nback as unknown as GameDef, n === 1 ? 'easy' : 'hard', { n }) as NbackGame
+const atN = (n: number) =>
+  resolvedGame(nback as unknown as GameDef, n === 1 ? 'easy' : n === 4 ? 'beast' : 'hard', { n }) as NbackGame
 
 const N = 24
 const STEP = 2400
@@ -220,7 +221,7 @@ describe('TwoBack', () => {
     expect(wrapper.emitted('finish')).toBeUndefined()
   })
 
-  describe.each([1, 3])('with n = %i', n => {
+  describe.each([1, 3, 4])('with n = %i', n => {
     const game = atN(n)
 
     it.each([7, 42, 99])(`scores 100 when exactly the ${n}-back matches are pressed (seed %i)`, async seed => {

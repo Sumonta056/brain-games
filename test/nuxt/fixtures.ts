@@ -17,6 +17,8 @@ export const easyBands: Band[] = [band(0, 'Easy start'), band(10, 'Easy steady')
 export const hardBands: Band[] = [band(0, 'Hard start'), band(4, 'Hard steady'), band(8, 'Hard star')]
 export const easyScience = 'Easy bands are a Brain Games guide for the easy setting.'
 export const hardScience = 'Hard bands are a Brain Games guide for the hard setting.'
+export const beastBands: Band[] = [band(0, 'Beast start'), band(2, 'Beast steady'), band(4, 'Beast star')]
+export const beastScience = 'Beast bands are a Brain Games guide for the beast setting.'
 
 export const tieredGame: TieredGame = {
   ...mathGame,
@@ -24,7 +26,8 @@ export const tieredGame: TieredGame = {
   difficulties: {
     easy: { settings: { n: 1 }, bands: easyBands, science: easyScience },
     medium: { settings: { n: 2 } },
-    hard: { settings: { n: 3 }, bands: hardBands, science: hardScience }
+    hard: { settings: { n: 3 }, bands: hardBands, science: hardScience },
+    beast: { settings: { n: 4 }, bands: beastBands, science: beastScience }
   }
 }
 

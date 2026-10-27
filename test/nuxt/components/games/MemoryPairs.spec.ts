@@ -10,9 +10,10 @@ import { resolvedGame } from '../../fixtures'
 
 const emojis = ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍒', '🥝', '🍑', '🥥', '🍍']
 const baseGame = { ...pairs, content: { emojis } } as GameDef
-const pairsGame = resolvedGame(baseGame, 'medium', { pairs: 8 })
-const easyGame = resolvedGame(baseGame, 'easy', { pairs: 6 })
-const hardGame = resolvedGame(baseGame, 'hard', { pairs: 10 })
+const pairsGame = resolvedGame(baseGame, 'medium', { pairs: 8, flipMs: 800 })
+const easyGame = resolvedGame(baseGame, 'easy', { pairs: 6, flipMs: 800 })
+const hardGame = resolvedGame(baseGame, 'hard', { pairs: 10, flipMs: 800 })
+const beastGame = resolvedGame(baseGame, 'beast', { pairs: 12, flipMs: 500 })
 
 type Wrapper = Awaited<ReturnType<typeof mountSuspended>>
 
@@ -189,15 +190,37 @@ describe('MemoryPairs', () => {
   it.each([
     [easyGame, 4],
     [pairsGame, 4],
-    [hardGame, 5]
+    [hardGame, 5],
+    [beastGame, 6]
   ] as [GameDef, number][])('lays the board out in the right number of columns', async (game, cols) => {
     const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
     expect(wrapper.get('[data-testid="board"]').attributes('data-cols')).toBe(String(cols))
   })
 
+  it.each([
+    ['beast', beastGame, 500],
+    ['medium', pairsGame, 800]
+  ] as [string, GameDef, number][])('on %s flips a mismatched pair back after exactly flipMs', async (_, game, ms) => {
+    const first = await mountSuspended(MemoryPairs, { props: { game } })
+    const { faces } = await learnDeck(first)
+    first.unmount()
+    vi.spyOn(Math, 'random').mockImplementation(seeded(42))
+    const wrapper = await mountSuspended(MemoryPairs, { props: { game } })
+    const j = faces.findIndex(f => f !== faces[0])
+    await flip(wrapper, 0)
+    await flip(wrapper, j)
+    await vi.advanceTimersByTimeAsync(ms - 1)
+    expect(cards(wrapper)[0]!.attributes('data-state')).toBe('up')
+    expect(cards(wrapper)[j]!.attributes('data-state')).toBe('up')
+    await vi.advanceTimersByTimeAsync(1)
+    expect(cards(wrapper)[0]!.attributes('data-state')).toBe('down')
+    expect(cards(wrapper)[j]!.attributes('data-state')).toBe('down')
+  })
+
   describe.each([
     ['easy', easyGame, 6],
-    ['hard', hardGame, 10]
+    ['hard', hardGame, 10],
+    ['beast', beastGame, 12]
   ] as [string, GameDef, number][])('on %s', (_, game, n) => {
     it(`deals ${2 * n} face-down cards for ${n} pairs`, async () => {
       const wrapper = await mountSuspended(MemoryPairs, { props: { game } })

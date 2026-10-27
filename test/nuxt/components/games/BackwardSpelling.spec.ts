@@ -9,11 +9,15 @@ import { resolvedGame, type Tier } from '../../fixtures'
 
 type BackwardGame = GameDef & { content: { pools: string[][] } }
 const POOLS = [['cat'], ['plant'], ['garden'], ['blanket'], ['umbrella']]
-const tiered = (game: GameDef, d: Tier, minPool: number, maxPool: number) =>
-  resolvedGame(game, d, { minPool, maxPool }) as unknown as BackwardGame
+const STANDARD_TIMING = { showMs: 1800, letterMs: 220 }
+const BEAST_TIMING = { showMs: 1000, letterMs: 150 }
+type Timing = typeof STANDARD_TIMING
+const tiered = (game: GameDef, d: Tier, minPool: number, maxPool: number, timing: Timing = STANDARD_TIMING) =>
+  resolvedGame(game, d, { minPool, maxPool, ...timing }) as unknown as BackwardGame
 const backwardGame = tiered(backward as unknown as GameDef, 'medium', 0, 4)
-const withPools = (d: Tier, minPool: number, maxPool: number) =>
-  tiered({ ...(backward as unknown as GameDef), content: { pools: POOLS } } as GameDef, d, minPool, maxPool)
+const withPools = (d: Tier, minPool: number, maxPool: number, timing: Timing = STANDARD_TIMING) =>
+  tiered({ ...(backward as unknown as GameDef), content: { pools: POOLS } } as GameDef, d, minPool, maxPool, timing)
+const beastGame = withPools('beast', 4, 4, BEAST_TIMING)
 const fixedGame = withPools('medium', 0, 4)
 
 async function mountWith(game: BackwardGame = fixedGame) {
@@ -26,7 +30,7 @@ const input = (wrapper: Mounted) => wrapper.get('input[aria-label="Word spelled 
 const shown = (wrapper: Mounted) => wrapper.get('[data-testid="word"]').text()
 const feedback = (wrapper: Mounted) => wrapper.get('[data-testid="feedback"]')
 const reversed = (w: string) => w.split('').reverse().join('')
-const showMs = (w: string) => 1800 + w.length * 220
+const showMs = (w: string, timing: Timing = STANDARD_TIMING) => timing.showMs + w.length * timing.letterMs
 
 async function advance(ms: number) {
   vi.advanceTimersByTime(ms)
@@ -38,9 +42,9 @@ async function enter(wrapper: Mounted, value: string) {
   await input(wrapper).trigger('keydown', { key: 'Enter' })
 }
 
-async function playRound(wrapper: Mounted, right: boolean) {
+async function playRound(wrapper: Mounted, right: boolean, timing: Timing = STANDARD_TIMING) {
   const word = shown(wrapper).toLowerCase()
-  await advance(showMs(word))
+  await advance(showMs(word, timing))
   await enter(wrapper, right ? reversed(word) : 'nope')
   await advance(1200)
   return word
@@ -153,6 +157,36 @@ describe('BackwardSpelling', () => {
     expect(shown(wrapper)).toBe('GARDEN')
     await advance(1)
     expect(shown(wrapper)).toBe('• • •')
+  })
+
+  it('uses only the longest pool on beast, every round', async () => {
+    const wrapper = await mountWith(beastGame)
+    const seen: string[] = []
+    for (let r = 0; r < 8; r++) seen.push(await playRound(wrapper, true, BEAST_TIMING))
+    expect(seen).toEqual(Array(8).fill('umbrella'))
+    expect(wrapper.emitted('finish')).toEqual([[8]])
+  })
+
+  it('hides the word after 1000ms plus 150ms per letter on beast', async () => {
+    const wrapper = await mountWith(beastGame)
+    expect(shown(wrapper)).toBe('UMBRELLA')
+    await advance(1000 + 150 * 'umbrella'.length - 1)
+    expect(shown(wrapper)).toBe('UMBRELLA')
+    expect(input(wrapper).attributes('disabled')).toBeDefined()
+    await advance(1)
+    expect(shown(wrapper)).toBe('• • •')
+    expect(input(wrapper).attributes('disabled')).toBeUndefined()
+    expect(feedback(wrapper).text()).toBe('Now type it backwards')
+  })
+
+  it('reads the show time from the showMs and letterMs settings', async () => {
+    const wrapper = await mountWith(withPools('medium', 1, 1, { showMs: 500, letterMs: 100 }))
+    expect(shown(wrapper)).toBe('PLANT')
+    await advance(500 + 100 * 'plant'.length - 1)
+    expect(shown(wrapper)).toBe('PLANT')
+    await advance(1)
+    expect(shown(wrapper)).toBe('• • •')
+    expect(input(wrapper).attributes('disabled')).toBeUndefined()
   })
 
   it('finishes once with the number right after 8 rounds', async () => {

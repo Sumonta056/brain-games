@@ -80,15 +80,31 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 ### 3.1 Difficulty
 
-- A game with a `difficulties` block in its JSON has three difficulties: `easy`, `medium` and `hard`. All games except reaction, breath and hand have a block. Those three have no selector, and their header still shows the fixed `level`.
-- **Selector:** the Ready screen shows a radio group (Easy, Medium, Hard) above the Start button. Arrow keys move the choice. The default is Medium. The last choice for each game is stored in `Progress.diff[id]` and is selected the next time.
+- A game with a `difficulties` block in its JSON has four difficulties: `easy`, `medium`, `hard` and `beast`. All games except reaction, breath and hand have a block. Those three have no selector, and their header still shows the fixed `level`.
+- **Selector:** the Ready screen shows a radio group (Easy, Medium, Hard, Beast) above the Start button. Arrow keys move the choice. The default is Medium. The last choice for each game is stored in `Progress.diff[id]` and is selected the next time.
 - **Resolved game:** `withDifficulty(game, d)` returns the game with that difficulty's `bands`, `science`, `settings` and `durationSec`, and with `difficulty: d`. Medium has no `bands`, `science` or `durationSec` of its own and uses the top-level ones. A difficulty without `durationSec` keeps the top-level one. The game component, the sidebar, the result screen and the header all get the resolved game. A game reads a setting with `setting(game, key)`, which throws when the key is missing.
-- **Best score per difficulty:** Medium keeps `best[id]` (compatible with design.html). Easy and Hard use `best['<id>@easy']` and `best['<id>@hard']`. The header and the result screen compare only with the best of the selected difficulty.
+- **Best score per difficulty:** Medium keeps `best[id]` (compatible with design.html). Easy, Hard and Beast use `best['<id>@easy']`, `best['<id>@hard']` and `best['<id>@beast']`. The header and the result screen compare only with the best of the selected difficulty.
 - **History:** each entry stores its difficulty in `l` (missing means medium). Recent games on the profile use the bands of that difficulty.
-- **Games tried** on the profile counts each game id once, whatever its difficulties. Brain skills on the profile and the best score on the home tile use `topBest(game, best)`: the best of the hardest difficulty played (Hard, then Medium, then Easy). The tile names that difficulty, for example `Best 12.3 s · Excellent · Hard`.
+- **Games tried** on the profile counts each game id once, whatever its difficulties. Brain skills on the profile and the best score on the home tile use `topBest(game, best)`: the best of the hardest difficulty played (Beast, then Hard, then Medium, then Easy). The tile names that difficulty, for example `Best 12.3 s · Excellent · Hard`.
 - The game header shows the selected difficulty in place of the fixed `level` for a game with difficulties.
-- A stored `diff[id]` that is not one of the three difficulties is ignored, and Medium is selected.
-- Easy and Hard bands are Brain Games guides, not research norms, and their `science` says so.
+- A stored `diff[id]` that is not one of the four difficulties is ignored, and Medium is selected.
+- Easy, Hard and Beast bands are Brain Games guides, not research norms, and their `science` says so.
+
+### 3.2 Beast
+
+Beast is a fourth difficulty, much harder than Hard. It plays like the others and is scored the same way, with its own bands and best score.
+
+| Game                             | Beast                                                                                                                                                                                       |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pairs                            | 12 pairs in 6 columns; a mismatch flips back after `flipMs` 500 (800 on the other difficulties)                                                                                             |
+| schulte                          | 6×6 grid; each wrong tap adds `penaltySec` 2 to the time (0 on the other difficulties). Tapping a number already found again costs nothing. 7×7 would make cells smaller than 44px at 360px |
+| nback                            | 4-back                                                                                                                                                                                      |
+| digits                           | start 7, `stepMs` 500                                                                                                                                                                       |
+| sequence                         | `stepMs` 300                                                                                                                                                                                |
+| odd                              | `start` 9, `deltaStep` 1.6                                                                                                                                                                  |
+| math                             | `minLevel` 3, `maxLevel` 3                                                                                                                                                                  |
+| backward                         | pools 4–4 (longest words only); shown for `showMs` 1000 + `letterMs` 150 per letter (1800 + 220 on the other difficulties)                                                                  |
+| serial7, words, category, stroop | 25s                                                                                                                                                                                         |
 
 ## 4. Game JSON contract (`app/data/games/<id>.json`)
 
@@ -127,23 +143,23 @@ Shared copy that is not about one game lives in `app/data/copy.json`: `greetings
 
 ## 5. The 15 games (behaviour)
 
-| id       | Name               | Rules                                                                                                                                                                                                  | Score                         |
-| -------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| breath   | Box breathing      | 4 rounds of in 4s / hold 4s / out 4s / hold 4s; circle scales; "Finish early"                                                                                                                          | rounds (0–4)                  |
-| pairs    | Memory pairs       | `pairs` emoji pairs (easy 6, medium 8, hard 10); 5 columns for 10 pairs, else 4; mismatch flips back 0.8s                                                                                              | moves (lower better)          |
-| odd      | Odd colour out     | n×n grid (2→7, grows every 3 levels); one tile ±lightness, delta = max(3, 22 − (`start` + level) × `deltaStep`); grid also uses `start` + level; 60s (easy start 0 step 0.4, medium 0/0.8, hard 3/1.2) | levels                        |
-| math     | Mental math        | +/− (then ×) sums; auto-advance on correct answer; level = min(`maxLevel`, `minLevel` + floor(solved / 5)), × from level 1; 60s (easy 0–0, so no ×; medium 0–3; hard 2–3)                              | solved                        |
-| serial7  | Serial sevens      | Start 100–199, subtract 7, Enter; wrong answers show the correct one and continue; restarts below 7; easy 90s, medium 60s, hard 40s                                                                    | steps                         |
-| reaction | Reaction time      | Random 1.2–3.8s wait, then green; tapping early restarts the round; 5 rounds                                                                                                                           | avg ms (lower better)         |
-| words    | Word sprint        | Random letter; real words of 3+ letters starting with it, no repeats; easy 90s, medium 60s, hard 40s (see the word list rule below)                                                                    | words                         |
-| category | Category challenge | Random category; items with no repeats; easy 90s, medium 60s, hard 40s                                                                                                                                 | items                         |
-| backward | Backward spelling  | Word shown for 1.8s + 0.22s per letter, then hidden; type it reversed; 8 rounds; pool = `minPool` + floor(round × (`maxPool` − `minPool` + 1) / 8) (easy 0–2, medium 0–4, hard 2–4)                    | out of 8                      |
-| digits   | Digit span         | Each digit shown for `stepMs` − 250 ms, one every `stepMs`; starts at `start`; +1 per success; 2 misses in a row ends (easy 3/1100, medium 3/900, hard 5/700)                                          | longest span                  |
-| sequence | Sequence memory    | 3×3 grid; pattern +1 each level; each flash lasts `stepMs` − 200 ms, one every `stepMs`; repeat it by tapping (easy 800, medium 650, hard 450)                                                         | levels                        |
-| nback    | N-back             | `n`-back (easy 1, medium 2, hard 3); 24 letters, 2.4s each, about 30% matches; Match button or Space                                                                                                   | % accuracy over trials n+1–24 |
-| stroop   | Stroop colours     | Colour word in a different ink; tap the ink; wrong = −1; easy 90s, medium 45s, hard 30s                                                                                                                | points (min 0)                |
-| schulte  | Schulte table      | `size`×`size` grid (easy 4, medium 5, hard 6) of 1–size² shuffled; tap in order; wrong taps flash                                                                                                      | seconds (lower better)        |
-| hand     | Other hand day     | 4 daily tasks (date-seeded) + a drawing pad; tick the tasks                                                                                                                                            | out of 4                      |
+| id       | Name               | Rules                                                                                                                                                                                                               | Score                         |
+| -------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| breath   | Box breathing      | 4 rounds of in 4s / hold 4s / out 4s / hold 4s; circle scales; "Finish early"                                                                                                                                       | rounds (0–4)                  |
+| pairs    | Memory pairs       | `pairs` emoji pairs (easy 6, medium 8, hard 10, beast 12); 6 columns for 12, 5 for 10, else 4; mismatch flips back after `flipMs`                                                                                   | moves (lower better)          |
+| odd      | Odd colour out     | n×n grid (2→7, grows every 3 levels); one tile ±lightness, delta = max(3, 22 − (`start` + level) × `deltaStep`); grid also uses `start` + level; 60s (easy start 0 step 0.4, medium 0/0.8, hard 3/1.2, beast 9/1.6) | levels                        |
+| math     | Mental math        | +/− (then ×) sums; auto-advance on correct answer; level = min(`maxLevel`, `minLevel` + floor(solved / 5)), × from level 1; 60s (easy 0–0, so no ×; medium 0–3; hard 2–3; beast 3–3)                                | solved                        |
+| serial7  | Serial sevens      | Start 100–199, subtract 7, Enter; wrong answers show the correct one and continue; restarts below 7; easy 90s, medium 60s, hard 40s, beast 25s                                                                      | steps                         |
+| reaction | Reaction time      | Random 1.2–3.8s wait, then green; tapping early restarts the round; 5 rounds                                                                                                                                        | avg ms (lower better)         |
+| words    | Word sprint        | Random letter; real words of 3+ letters starting with it, no repeats; easy 90s, medium 60s, hard 40s, beast 25s (see the word list rule below)                                                                      | words                         |
+| category | Category challenge | Random category; items with no repeats; easy 90s, medium 60s, hard 40s, beast 25s                                                                                                                                   | items                         |
+| backward | Backward spelling  | Word shown for `showMs` + `letterMs` per letter, then hidden; type it reversed; 8 rounds; pool = `minPool` + floor(round × (`maxPool` − `minPool` + 1) / 8) (easy 0–2, medium 0–4, hard 2–4, beast 4–4)             | out of 8                      |
+| digits   | Digit span         | Each digit shown for `stepMs` − 250 ms, one every `stepMs`; starts at `start`; +1 per success; 2 misses in a row ends (easy 3/1100, medium 3/900, hard 5/700, beast 7/500)                                          | longest span                  |
+| sequence | Sequence memory    | 3×3 grid; pattern +1 each level; each flash lasts `stepMs` − 200 ms, one every `stepMs`; repeat it by tapping (easy 800, medium 650, hard 450, beast 300)                                                           | levels                        |
+| nback    | N-back             | `n`-back (easy 1, medium 2, hard 3, beast 4); 24 letters, 2.4s each, about 30% matches; Match button or Space                                                                                                       | % accuracy over trials n+1–24 |
+| stroop   | Stroop colours     | Colour word in a different ink; tap the ink; wrong = −1; easy 90s, medium 45s, hard 30s, beast 25s                                                                                                                  | points (min 0)                |
+| schulte  | Schulte table      | `size`×`size` grid (easy 4, medium 5, hard 6, beast 6) of 1–size² shuffled; tap in order; wrong taps flash and add `penaltySec` to the time                                                                         | seconds (lower better)        |
+| hand     | Other hand day     | 4 daily tasks (date-seeded) + a drawing pad; tick the tasks                                                                                                                                                         | out of 4                      |
 
 ## 6. Visual system
 

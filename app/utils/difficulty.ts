@@ -1,6 +1,6 @@
 import type { Difficulty, GameDef } from '~~/shared/types/game'
 
-export const DIFFICULTIES = ['easy', 'medium', 'hard'] as const satisfies readonly Difficulty[]
+export const DIFFICULTIES = ['easy', 'medium', 'hard', 'beast'] as const satisfies readonly Difficulty[]
 
 export function withDifficulty(game: GameDef, difficulty: Difficulty): GameDef {
   const def = game.difficulties?.[difficulty]

@@ -149,6 +149,45 @@
         }
       ],
       "science": "Hard starts with big numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
+    },
+    "beast": {
+      "settings": {
+        "minLevel": 3,
+        "maxLevel": 3
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–2",
+          "label": "Warming up",
+          "message": "Beast throws the biggest numbers and times tables at you from the first sum. Give it a few tries."
+        },
+        {
+          "at": 3,
+          "range": "3–5",
+          "label": "Steady",
+          "message": "A solid pace on beastly sums. Nicely done."
+        },
+        {
+          "at": 6,
+          "range": "6–9",
+          "label": "Sharp",
+          "message": "Quicker than most players on the biggest numbers. Your arithmetic is strong."
+        },
+        {
+          "at": 10,
+          "range": "10–14",
+          "label": "Quick",
+          "message": "Under 4 seconds per answer on beast sums. Impressive."
+        },
+        {
+          "at": 15,
+          "range": "15+",
+          "label": "Lightning",
+          "message": "Calculator-level speed on the beast setting."
+        }
+      ],
+      "science": "Beast uses the biggest numbers and times tables from the first sum, so lower scores are normal. These bands are a Brain Games guide based on seconds per answer, not a clinical norm."
     }
   }
 }

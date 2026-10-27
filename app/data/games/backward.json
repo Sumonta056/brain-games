@@ -57,7 +57,7 @@
   "icon": "backward",
   "difficulties": {
     "easy": {
-      "settings": { "minPool": 0, "maxPool": 2 },
+      "settings": { "minPool": 0, "maxPool": 2, "showMs": 1800, "letterMs": 220 },
       "bands": [
         {
           "at": 0,
@@ -71,9 +71,9 @@
       ],
       "science": "Easy uses only the three shortest word groups (3 to 6 letters), so the bar is higher. These bands are a Brain Games guide, not a clinical norm."
     },
-    "medium": { "settings": { "minPool": 0, "maxPool": 4 } },
+    "medium": { "settings": { "minPool": 0, "maxPool": 4, "showMs": 1800, "letterMs": 220 } },
     "hard": {
-      "settings": { "minPool": 2, "maxPool": 4 },
+      "settings": { "minPool": 2, "maxPool": 4, "showMs": 1800, "letterMs": 220 },
       "bands": [
         {
           "at": 0,
@@ -86,6 +86,21 @@
         { "at": 8, "range": "8", "label": "Perfect", "message": "Flawless, even on the longest words." }
       ],
       "science": "Hard uses only the three longest word groups (6 to 8 letters), so the bar is lower. These bands are a Brain Games guide, not a clinical norm."
+    },
+    "beast": {
+      "settings": { "minPool": 4, "maxPool": 4, "showMs": 1000, "letterMs": 150 },
+      "bands": [
+        {
+          "at": 0,
+          "range": "0–1",
+          "label": "Warming up",
+          "message": "Beast words are a big stretch. Picture each word written in front of you."
+        },
+        { "at": 2, "range": "2–3", "label": "Steady", "message": "Holding 8-letter words that briefly is real work." },
+        { "at": 4, "range": "4–7", "label": "Sharp", "message": "Strong mental imagery under pressure." },
+        { "at": 8, "range": "8", "label": "Perfect", "message": "Flawless, even on the longest words at speed." }
+      ],
+      "science": "Beast uses only the longest words (8 letters) and shows them for less time, so the bar is lower still. These bands are a Brain Games guide, not a clinical norm."
     }
   },
   "content": {

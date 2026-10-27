@@ -13,7 +13,7 @@
   "lowerIsBetter": false,
   "steps": [
     "Letters appear one by one.",
-    "If a letter matches the one N steps back, tap Match. N is 1, 2 or 3.",
+    "If a letter matches the one N steps back, tap Match. N is 1, 2, 3 or 4.",
     "Otherwise do nothing. 24 letters."
   ],
   "demo": [
@@ -132,6 +132,38 @@
         }
       ],
       "science": "Hard is 3-back: tap when the letter matches the one 3 steps ago. Research reports lower scores on 3-back than on 2-back. These bands are a Brain Games guide."
+    },
+    "beast": {
+      "settings": {
+        "n": 4
+      },
+      "bands": [
+        {
+          "at": 0,
+          "range": "under 60",
+          "label": "Learning",
+          "message": "4-back is a beast. Everyone starts here."
+        },
+        {
+          "at": 60,
+          "range": "60–69",
+          "label": "Getting it",
+          "message": "You’re holding four letters in mind."
+        },
+        {
+          "at": 70,
+          "range": "70–79",
+          "label": "Strong",
+          "message": "Remarkable working memory."
+        },
+        {
+          "at": 80,
+          "range": "80+",
+          "label": "Excellent",
+          "message": "Beast tamed. Very sharp."
+        }
+      ],
+      "science": "Beast is 4-back: tap when the letter matches the one 4 steps ago. Each extra step back asks for more working memory than 3-back. These bands are a Brain Games guide."
     }
   }
 }
