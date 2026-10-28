@@ -1,5 +1,7 @@
+import { ref } from 'vue'
+import { vi } from 'vitest'
 import type { DOMWrapper } from '@vue/test-utils'
-import type { Band, Difficulty, DifficultyDef, GameDef } from '~~/shared/types/game'
+import type { Band, Difficulty, DifficultyDef, GameDef, Progress } from '~~/shared/types/game'
 import math from '~/data/games/math.json'
 import reaction from '~/data/games/reaction.json'
 import breath from '~/data/games/breath.json'
@@ -79,4 +81,119 @@ export function buttonNamed(host: ButtonHost, text: string): DOMWrapper<Element>
   const match = host.findAll('button').find(b => b.text().trim() === text)
   if (!match) throw new Error(`No button named ${text}`)
   return match
+}
+
+export function makeProgress(overrides: Partial<Progress> = {}): Progress {
+  return { name: '', av: '🦉', best: {}, hist: [], days: [], xp: 0, theme: 'auto', ...overrides }
+}
+
+export interface FakeUser {
+  uid: string
+  displayName: string | null
+  email: string | null
+  photoURL: string | null
+}
+
+export class FakeGoogleProvider {
+  addScope = vi.fn()
+  setCustomParameters = vi.fn()
+}
+
+export function createFirebaseFakes() {
+  const app = { name: 'fake-app' }
+  const auth = {
+    currentUser: null as FakeUser | null,
+    authStateReady: vi.fn(async () => {})
+  }
+  const db = { name: 'fake-db' }
+  const store = new Map<string, unknown>()
+  const docRef = (path: string) => ({ path, id: path.split('/').at(-1) })
+  const fakes = {
+    app,
+    auth,
+    db,
+    store,
+    initializeApp: vi.fn(() => app),
+    getAuth: vi.fn(() => auth),
+    initializeFirestore: vi.fn(() => db),
+    getFirestore: vi.fn(() => db),
+    persistentLocalCache: vi.fn(() => ({})),
+    signInWithPopup: vi.fn(async (_auth: unknown, _provider: unknown) => ({ user: auth.currentUser })),
+    signOut: vi.fn(async () => {
+      auth.currentUser = null
+    }),
+    doc: vi.fn((_db: unknown, ...segments: string[]) => docRef(segments.join('/'))),
+    getDoc: vi.fn(async (ref: { path: string }) => ({
+      id: ref.path.split('/').at(-1),
+      exists: () => store.has(ref.path),
+      data: () => store.get(ref.path)
+    })),
+    setDoc: vi.fn(async (ref: { path: string }, data: unknown) => {
+      store.set(ref.path, data)
+    }),
+    deleteDoc: vi.fn(async (ref: { path: string }) => {
+      store.delete(ref.path)
+    }),
+    runTransaction: vi.fn()
+  }
+  fakes.runTransaction.mockImplementation(transact(fakes))
+  return fakes
+}
+
+function transact(f: {
+  getDoc: (ref: { path: string }) => Promise<unknown>
+  setDoc: (ref: { path: string }, data: unknown) => Promise<void>
+}) {
+  return async (_db: unknown, fn: (tx: unknown) => Promise<unknown>) => {
+    const writes: [{ path: string }, unknown][] = []
+    const result = await fn({
+      get: (ref: { path: string }) => f.getDoc(ref),
+      set: (ref: { path: string }, data: unknown) => writes.push([ref, data])
+    })
+    for (const [ref, data] of writes) await f.setDoc(ref, data)
+    return result
+  }
+}
+
+export type FirebaseFakes = ReturnType<typeof createFirebaseFakes>
+
+export function resetFirebaseFakes(fb: FirebaseFakes) {
+  fb.auth.currentUser = null
+  fb.store.clear()
+  const fns = [
+    fb.auth.authStateReady,
+    fb.initializeApp,
+    fb.getAuth,
+    fb.initializeFirestore,
+    fb.getFirestore,
+    fb.persistentLocalCache,
+    fb.signInWithPopup,
+    fb.signOut,
+    fb.doc,
+    fb.getDoc,
+    fb.setDoc,
+    fb.deleteDoc,
+    fb.runTransaction
+  ]
+  fns.forEach(f => f.mockClear())
+  fb.runTransaction.mockImplementation(transact(fb))
+}
+
+export function authError(code: string) {
+  return Object.assign(new Error(code), { code, name: 'FirebaseError' })
+}
+
+export const signedInUser = { uid: 'u1', name: 'Ana Lima', email: 'ana@example.com', photo: '' }
+
+export const photoUser = { ...signedInUser, photo: 'https://example.com/ana.png' }
+
+export function cloudSyncSpies() {
+  return {
+    status: ref<'' | 'sync' | 'deleteFailed'>(''),
+    start: vi.fn(),
+    signIn: vi.fn(async () => {}),
+    save: vi.fn(async () => {}),
+    signOut: vi.fn(async () => {}),
+    deleteCloud: vi.fn(async () => {})
+  }
 }

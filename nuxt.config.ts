@@ -15,10 +15,30 @@ export default defineNuxtConfig({
     customCollections: [{ prefix: 'bg', dir: './app/assets/icons', recursive: true }]
   },
   css: ['~/assets/css/main.css'],
+  hooks: {
+    'build:manifest': manifest => {
+      const firebase = (key: string) => /node_modules\/@?firebase\//.test(key)
+      for (const [key, chunk] of Object.entries(manifest)) {
+        chunk.dynamicImports = chunk.dynamicImports?.filter(k => !firebase(k))
+        if (firebase(key)) chunk.prefetch = chunk.preload = false
+      }
+    }
+  },
   vite: { plugins: [tailwindcss()] },
   // Components are referenced by file name only (<GameTile>, not <HomeGameTile>).
   components: [{ path: '~/components', pathPrefix: false, extensions: ['vue'] }],
   typescript: { strict: true },
+  runtimeConfig: {
+    public: {
+      firebase: {
+        apiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY ?? '',
+        authDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '',
+        projectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID ?? '',
+        appId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID ?? '',
+        messagingSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? ''
+      }
+    }
+  },
   app: {
     head: {
       title: 'Brain Games | Relax and sharpen your mind',

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { clearNuxtState } from '#imports'
 import { useProgress } from '~/composables/useProgress'
+import type { Progress } from '~~/shared/types/game'
 import { mathGame, reactionGame, tieredAs } from '../fixtures'
 
 const KEY = 'bgarden'
@@ -411,5 +412,62 @@ describe('useProgress', () => {
     reset()
     expect(progress.value.xp).toBe(0)
     expect(progress.value.hist).toEqual([])
+  })
+
+  describe('updatedAt (functional-requirements §3)', () => {
+    it('sets updatedAt to now when a game is recorded', () => {
+      const { record, progress } = fresh()
+      record(mathGame, 3)
+      expect(progress.value.updatedAt).toBe(new Date('2026-05-10T12:00:00Z').getTime())
+    })
+
+    it('moves updatedAt forward on the next record', () => {
+      const { record, progress } = fresh()
+      record(mathGame, 3)
+      vi.setSystemTime(new Date('2026-05-10T12:05:00Z'))
+      record(mathGame, 4)
+      expect(progress.value.updatedAt).toBe(new Date('2026-05-10T12:05:00Z').getTime())
+    })
+
+    it('sets updatedAt to now on reset', () => {
+      localStorage.setItem(KEY, JSON.stringify({ xp: 50, updatedAt: 1 }))
+      const { reset, progress } = fresh()
+      reset()
+      expect(progress.value.updatedAt).toBe(new Date('2026-05-10T12:00:00Z').getTime())
+    })
+
+    it('persists updatedAt to the bgarden key', async () => {
+      const { record } = fresh()
+      record(mathGame, 3)
+      await nextTick()
+      expect(JSON.parse(localStorage.getItem(KEY)!).updatedAt).toBe(new Date('2026-05-10T12:00:00Z').getTime())
+    })
+
+    it('sets resetAt to now on reset', () => {
+      const { reset, progress } = fresh()
+      reset()
+      expect(progress.value.resetAt).toBe(new Date('2026-05-10T12:00:00Z').getTime())
+    })
+
+    it.each([
+      ['name', (p: Progress) => (p.name = 'Ana')],
+      ['avatar', (p: Progress) => (p.av = '🐼')],
+      ['theme', (p: Progress) => (p.theme = 'dark')],
+      ['difficulty', (p: Progress) => (p.diff = { math: 'hard' })]
+    ])('sets updatedAt to now when the %s changes', async (_, edit) => {
+      localStorage.setItem(KEY, JSON.stringify({ updatedAt: 1 }))
+      const { progress } = fresh()
+      edit(progress.value)
+      await nextTick()
+      expect(progress.value.updatedAt).toBe(new Date('2026-05-10T12:00:00Z').getTime())
+    })
+
+    it('keeps updatedAt when the whole copy is replaced with a dated copy', async () => {
+      const { progress } = fresh()
+      await nextTick()
+      progress.value = { ...progress.value, name: 'Bo', updatedAt: 42 }
+      await nextTick()
+      expect(progress.value.updatedAt).toBe(42)
+    })
   })
 })

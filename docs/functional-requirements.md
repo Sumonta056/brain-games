@@ -14,20 +14,29 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 ## 2. Pages
 
-| Route        | Page      | Purpose                                                                                       |
-| ------------ | --------- | --------------------------------------------------------------------------------------------- |
-| `/`          | Home      | Greeting, today's five, mood check, bento grid of all games                                   |
-| `/games`     | All games | Bento grid with category filter                                                               |
-| `/games/:id` | Game      | Full-height play area (left) + guide sidebar (right)                                          |
-| `/profile`   | Profile   | Avatar, name, level, stats, favourite, week, month, growth, brain skills, recent games, reset |
-| any other    | Error     | Friendly 404 with a "Back to games" button                                                    |
+| Route        | Page      | Purpose                                                                                                |
+| ------------ | --------- | ------------------------------------------------------------------------------------------------------ |
+| `/`          | Home      | Greeting, today's five, mood check, bento grid of all games                                            |
+| `/games`     | All games | Bento grid with category filter                                                                        |
+| `/games/:id` | Game      | Full-height play area (left) + guide sidebar (right)                                                   |
+| `/profile`   | Profile   | Avatar, name, level, stats, favourite, week, month, growth, brain skills, recent games, reset, account |
+| `/privacy`   | Privacy   | What Brain Games stores, why, where (Firestore, Mumbai), and how to delete it                          |
+| any other    | Error     | Friendly 404 with a "Back to games" button                                                             |
 
 ### 2.1 Navbar (identical on every page)
 
 - Left: brain logo + "Brain Games" (links home).
 - Tabs: Home, Games, Profile. The active tab is highlighted (`aria-current="page"`).
-- Right: streak (🔥 n), theme toggle (Auto → Light → Dark), and the avatar with name and level emoji (links to profile).
-- **≤640px:** tabs move to a fixed bottom tab bar (thumb reach). The top bar keeps the logo, theme and avatar. Streak and name are hidden below 760px.
+- Right: streak (🔥 n), theme toggle (Auto → Light → Dark), and the account chip. The Profile tab is the only "Profile" link in the bar.
+- Account chip: a button with `aria-expanded` that opens the account panel. It is at least 44px tall at every width.
+  - Guest: a dashed outline in the muted colour, the avatar emoji with a hollow status dot (`data-state="guest"`), and "Guest" (hidden below 760px). Hollow dot = only in this browser; filled dot = saved to the account.
+  - Signed in: the Google photo (the avatar emoji when there is no photo or the photo fails to load), the first name (hidden below 760px), and a status dot: `data-state="synced"`, or `"error"` only when the last sync failed.
+  - While the session restores: the avatar emoji, with no label.
+- Account panel:
+  - Guest: "Playing as a guest", "Your garden is saved only in this browser.", a "Sign in with Google" button (it loads Firebase on pointer or focus), an error line (`role="alert"`) when sign-in fails, and a "Profile" link.
+  - Signed in: the photo, the full name, the email, "Garden saved" or the sync error, a "Profile" link and "Sign out".
+  - Escape, a click outside, focus moving out of the menu, a route change, or a click on a panel link closes it. Escape returns focus to the chip.
+- **≤640px:** tabs move to a fixed bottom tab bar (thumb reach). The top bar keeps the logo, theme and account chip. Streak and name are hidden below 760px.
 
 ### 2.2 Home
 
@@ -72,7 +81,32 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 - Growth card: one column per date of the shown month. The value of a date is `xpDays[date]`, or the last value before it. A date before the first `xpDays` entry, or after today, has no value. The start is the last value before the month, or the first value in the month. Points grown = the last value in the month − the start. Heights scale from the start to the last value. A date whose value grew gets a dot. The pill says "+n in October". With no values in the month, the card shows "Your growth shows from your next game."
 - Brain skills, per category: the average of (bandIndex + 1) / bands.length over the games played in that category, shown as a %.
 - Recent games: the last 10, each with its band label.
-- Reset all progress, with a confirmation.
+- Reset all progress, with a confirmation. When the player is signed in, the reset also writes the blank copy to the cloud.
+- Account card (see 2.5): the guest state shows the benefits of an account and "Sign in with Google". The signed-in state shows the Google photo (when there is one), the name, the email, "Sign out" and "Delete my cloud data".
+- The guest notice (see 2.5) also shows on this page.
+
+### 2.5 Account (optional Google sign-in)
+
+- **Guest:** the player can play everything without an account. A notice on home and on the profile page says: "You are playing as a guest. Your progress is saved only in this browser. If you clear browser data or change device, it is gone. Sign in with Google to keep it safe and play on all your devices." The notice has a close button. After a close it stays hidden in this browser (localStorage key `bgarden-notice`). It is hidden when the player is signed in.
+- **Sign in:** "Sign in with Google" opens the Google popup (scopes `openid`, `email`, `profile` only). A blocked popup shows "Allow the popup and try again." The redirect flow is not used.
+- **Sync:** one operation for every cloud save. In one Firestore transaction it reads `brainGames/{uid}`, merges it with the local copy, and writes the result only when it differs from the cloud. The result also replaces the local copy. Only one sync runs at a time. Merge rules (`mergeProgress`):
+  - Reset: `resetAt` is the newer of the two. A copy whose own `resetAt` is older than that keeps only its `hist` entries with `t` after the reset (and their dates in `days`). Everything else in it is dropped.
+  - `best`: the better score per key (`lowerIsBetter` respected).
+  - `hist`: union by `t`, newest first, max 60.
+  - `days`: union, sorted, max 120.
+  - `xpDays`: union by date, the higher value per date, the 120 newest dates.
+  - `mastered`: union.
+  - `xp`, `played`: the higher value.
+  - `name`, `av`, `theme`: from the copy with the newer `updatedAt`, unless that value is empty.
+  - `diff`: per game, the copy with the newer `updatedAt` wins.
+  - `updatedAt`: the newer of the two.
+  - A missing cloud document: the local copy goes up as it is. A cloud document that is not a valid `Progress`: the local copy stays, the cloud is not overwritten, and the sync status shows an error.
+- **When a sync runs:** after sign-in, on the next visit with a session, and on the triggers in §3 when the data changed since the last sync.
+- **Owner:** localStorage key `bgarden-owner` holds the uid of the account that owns the local copy. It is set after the first sync of an account. When a different account signs in, the local copy is replaced by a blank one before the sync, so that account gets only its own cloud garden. Guest data (no owner) merges into the first account that signs in.
+- **Errors:** a failed sync (offline, quota, rules) keeps the local copy, shows "Could not reach your account. Your garden is safe in this browser and syncs later." on the account card, and tries again on the next trigger.
+- **Sign out:** sync if the data changed (wait at most 4 seconds), sign out, and keep the local copy and the owner.
+- **Delete my cloud data:** asks first, deletes `brainGames/{uid}`, then signs out. The local copy stays. When the delete fails or takes more than 4 seconds, the player stays signed in and sees "Could not delete right now. Check your connection and try again." Another device that is still signed in can upload its own copy again. Deleting the Google account is not in scope.
+- **Popup timing:** Firebase loads when the player points at or focuses "Sign in with Google", so the popup opens inside the click.
 
 ## 3. Progress and scoring rules
 
@@ -90,6 +124,8 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
   - Higher-is-better games: the score falls in the last band where `score >= at`.
   - Lower-is-better games: the score falls in the last band where `score <= at`, with `at: null` meaning no limit.
 - **Theme:** `auto` (follows the system), `light` or `dark`, stored in Progress.
+- **Updated at:** every change to the progress (a game, a reset, a new name, avatar, theme or difficulty) sets `updatedAt` to `Date.now()`. A reset also sets `resetAt` to `Date.now()`.
+- **Cloud copy:** localStorage stays the main copy. A signed-in player also has `brainGames/{uid}` in Firestore. Every change saves to localStorage at once. A sync (§2.5) runs only when a trigger fires and the data changed since the last sync (a compare of the JSON strings). The triggers: the tab is hidden (`visibilitychange`) or `pagehide`, every 5 minutes, and sign out. A sync that does not finish before the tab closes is not lost: the local copy still holds the change, and the next visit syncs it.
 
 ### 3.1 Difficulty
 
@@ -198,6 +234,6 @@ Shared copy that is not about one game lives in `app/data/copy.json`: `greetings
 ## 7. Non-functional requirements
 
 - Lighthouse a11y ≥ 95. Every control is a real `<button>`/`<a>` with a visible focus ring.
-- No network calls besides fonts. Fully client-side (`ssr: false`) until a backend exists.
+- Guests make no network calls besides fonts. Firebase loads only after a player points at or focuses the sign-in button, or when a session already exists. The build does not prefetch the Firebase files. Fully client-side (`ssr: false`): the browser talks to Firebase directly.
 - Timers and listeners are cleaned up on unmount (no ghost timers after navigating away).
 - `prefers-reduced-motion`: no confetti, animations or transitions.

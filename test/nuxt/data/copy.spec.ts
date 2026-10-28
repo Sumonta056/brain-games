@@ -16,7 +16,12 @@ const sources = import.meta.glob<string>(
     '~/components/profile/ProfileStats.vue',
     '~/components/profile/FavouriteGame.vue',
     '~/components/profile/MonthCard.vue',
-    '~/components/profile/GrowthCard.vue'
+    '~/components/profile/GrowthCard.vue',
+    '~/components/app/GuestNotice.vue',
+    '~/components/profile/AccountCard.vue',
+    '~/pages/privacy.vue',
+    '~/composables/useAuth.ts',
+    '~/components/app/AppNav.vue'
   ],
   { query: '?raw', import: 'default', eager: true }
 )
@@ -29,8 +34,9 @@ function strings(value: unknown): string[] {
 }
 
 describe('copy.json contract', () => {
-  it('has exactly the nine copy groups', () => {
+  it('has exactly the ten copy groups', () => {
     expect(Object.keys(copy).sort()).toEqual([
+      'account',
       'affirmations',
       'avatars',
       'difficulty',
@@ -152,14 +158,46 @@ describe('copy.json contract', () => {
     expect(at.at(-1)).toBe(142)
   })
 
+  it('has the account copy with its placeholder, three benefits and the privacy sections', () => {
+    const a = copy.account
+    expect(a.signedInAs).toContain('{name}')
+    expect(a.benefits).toHaveLength(3)
+    expect(a.privacy.sections.length).toBeGreaterThan(0)
+    for (const section of a.privacy.sections) {
+      expect(section.heading.trim()).not.toBe('')
+      expect(section.body.trim()).not.toBe('')
+    }
+    for (const s of strings(a)) expect(s.trim()).not.toBe('')
+  })
+
+  it('has the nav account copy for the account chip and panel', () => {
+    const n = copy.account.nav
+    expect(Object.keys(n).sort()).toEqual([
+      'chipError',
+      'chipGuest',
+      'chipLoading',
+      'chipSignedIn',
+      'guest',
+      'guestBody',
+      'guestTitle',
+      'menuLabel',
+      'profile',
+      'signInLabel',
+      'synced'
+    ])
+    expect(n.chipSignedIn).toContain('{name}')
+    expect(n.chipError).toContain('{name}')
+    for (const v of Object.values(n)) expect(v.trim()).not.toBe('')
+  })
+
   it('stays positive: no "Wrong" or "Fail" anywhere', () => {
     for (const s of strings(copy)) expect(s).not.toMatch(/wrong|fail/i)
   })
 })
 
 describe('copy is not hard-coded in components', () => {
-  it('finds all nine sources', () => {
-    expect(Object.keys(sources)).toHaveLength(9)
+  it('finds all fourteen sources', () => {
+    expect(Object.keys(sources)).toHaveLength(14)
   })
 
   it.each([
@@ -182,7 +220,18 @@ describe('copy is not hard-coded in components', () => {
     ['MonthCard.vue', 'rest day'],
     ['MonthCard.vue', 'points grown'],
     ['GrowthCard.vue', 'Growth points'],
-    ['GrowthCard.vue', 'Your growth shows']
+    ['GrowthCard.vue', 'Your growth shows'],
+    ['GuestNotice.vue', 'You are playing as a guest'],
+    ['GuestNotice.vue', 'Close the guest notice'],
+    ['AccountCard.vue', 'Sign in with Google'],
+    ['AccountCard.vue', 'Delete my cloud data'],
+    ['AccountCard.vue', 'How we use your data'],
+    ['privacy.vue', 'What we store'],
+    ['privacy.vue', 'Back to your profile'],
+    ['profile.vue', 'Clear your profile and all scores'],
+    ['useAuth.ts', 'Allow the popup and try again'],
+    ['useAuth.ts', 'Sign-in did not work'],
+    ['AppNav.vue', 'Open your profile. Signed in']
   ])('%s does not contain %s', (file, literal) => {
     const source = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`))?.[1]
     expect(source, file).toBeDefined()

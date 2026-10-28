@@ -78,4 +78,6 @@ export interface Progress {
   mastered?: string[]
   played?: number
   xpDays?: Record<string, number>
+  updatedAt?: number
+  resetAt?: number
 }

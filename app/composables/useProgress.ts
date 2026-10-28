@@ -11,6 +11,9 @@ const LEVELS = [
   ['🏞️', 'Whole garden']
 ] as const
 const blank = (): Progress => ({ name: '', av: '🦉', best: {}, hist: [], days: [], xp: 0, theme: 'auto' })
+const body = (p: Progress) => JSON.stringify({ ...p, updatedAt: undefined })
+let last: { obj: Progress; body: string; at?: number } | undefined
+const mark = (p: Progress) => (last = { obj: p, body: body(p), at: p.updatedAt })
 
 /** Single source of truth for the player's profile and scores. Persists to localStorage (same key as design.html). */
 export function useProgress() {
@@ -26,12 +29,17 @@ export function useProgress() {
   })
 
   const persist = () => {
+    const p = state.value
+    if (!p) return
+    if (last?.obj === p && p.updatedAt === last.at && body(p) !== last.body) p.updatedAt = Date.now()
+    mark(p)
     try {
       localStorage.setItem(KEY, JSON.stringify(state.value))
     } catch {
       /* storage blocked */
     }
   }
+  if (state.value && last?.obj !== state.value) mark(state.value)
   watch(state, persist, { deep: true })
 
   const streak = computed(() => {
@@ -90,10 +98,12 @@ export function useProgress() {
     const list = Array.isArray(p.mastered) ? p.mastered : []
     const firstMastery = mastered && !list.includes(masteryKey)
     if (firstMastery) p.mastered = [...list, masteryKey]
+    p.updatedAt = Date.now()
     return { prev: prev ?? null, isPB, band, mastered, firstMastery }
   }
   const reset = () => {
-    state.value = blank()
+    const now = Date.now()
+    state.value = { ...blank(), updatedAt: now, resetAt: now }
   }
 
   return { progress: state, streak, level, playedToday, record, reset }

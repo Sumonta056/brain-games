@@ -1,14 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { clearNuxtState } from '#imports'
+import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { clearNuxtState, useState } from '#imports'
 import ProfilePage from '~/pages/profile.vue'
 import { useProgress } from '~/composables/useProgress'
 import copy from '~/data/copy.json'
 import pairs from '~/data/games/pairs.json'
 import type { Band } from '~~/shared/types/game'
 import { bandIndex } from '~/utils/bands'
-import { buttonNamed, fill, iconNames, type TieredGame } from '../fixtures'
+import { buttonNamed, fill, iconNames, signedInUser, type TieredGame } from '../fixtures'
+
+const sync = await vi.hoisted(async () => (await import('../fixtures')).cloudSyncSpies())
+
+mockNuxtImport('useCloudSync', () => () => sync)
 
 const pairsGame = pairs as unknown as TieredGame
 const labelFor = (bands: Band[], s: number) => bands[bandIndex({ ...pairsGame, bands }, s)]!.label
@@ -45,7 +49,8 @@ function statSub(wrapper: Awaited<ReturnType<typeof mountProfile>>, label: strin
 describe('pages/profile', () => {
   beforeEach(() => {
     localStorage.clear()
-    clearNuxtState(['progress'])
+    clearNuxtState(['progress', 'auth-user', 'auth-error'])
+    Object.values(sync).forEach(f => (typeof f === 'function' ? f.mockClear() : undefined))
     vi.useFakeTimers({ toFake: ['Date'] })
     vi.setSystemTime(new Date('2026-05-10T12:00:00'))
   })
@@ -302,6 +307,63 @@ describe('pages/profile', () => {
       seed({ best: { 'nback@hard': 80 } })
       const wrapper = await mountProfile()
       expect(statSub(wrapper, labels.played)).toBe(tried(1))
+    })
+  })
+
+  describe('account (functional-requirements §2.4, §2.5)', () => {
+    it('shows the guest notice and the account card to a guest', async () => {
+      const wrapper = await mountProfile()
+      expect(wrapper.get('[data-testid="guest-notice"]').text()).toContain(copy.account.notice)
+      expect(wrapper.get('[data-testid="account-card"]').attributes('data-state')).toBe('guest')
+    })
+
+    it('shows the signed-in account card and no guest notice when signed in', async () => {
+      useState('auth-user').value = signedInUser
+      const wrapper = await mountProfile()
+      expect(wrapper.find('[data-testid="guest-notice"]').exists()).toBe(false)
+      expect(wrapper.get('[data-testid="account-card"]').attributes('data-state')).toBe('signed-in')
+    })
+
+    it('asks the guest reset question and does not save to the cloud', async () => {
+      seed({ xp: 50 })
+      const confirm = vi.fn(() => true)
+      vi.stubGlobal('confirm', confirm)
+      const wrapper = await mountProfile()
+      await buttonNamed(wrapper, 'Reset all progress').trigger('click')
+      expect(confirm).toHaveBeenCalledWith(copy.account.resetConfirm)
+      expect(sync.save).not.toHaveBeenCalled()
+    })
+
+    it('asks the cloud reset question when signed in and saves the blank copy after the reset', async () => {
+      seed({ xp: 50, best: { math: 12 } })
+      useState('auth-user').value = signedInUser
+      const confirm = vi.fn(() => true)
+      vi.stubGlobal('confirm', confirm)
+      let xpAtSave: number | undefined
+      sync.save.mockImplementationOnce(async () => {
+        xpAtSave = useProgress().progress.value.xp
+      })
+      const wrapper = await mountProfile()
+      await buttonNamed(wrapper, 'Reset all progress').trigger('click')
+      await flushPromises()
+      expect(confirm).toHaveBeenCalledWith(copy.account.resetConfirmCloud)
+      expect(sync.save).toHaveBeenCalledTimes(1)
+      expect(xpAtSave).toBe(0)
+      expect(useProgress().progress.value).toMatchObject({ xp: 0, best: {} })
+    })
+
+    it('keeps progress and saves nothing when the signed-in reset is cancelled', async () => {
+      seed({ xp: 50 })
+      useState('auth-user').value = signedInUser
+      vi.stubGlobal(
+        'confirm',
+        vi.fn(() => false)
+      )
+      const wrapper = await mountProfile()
+      await buttonNamed(wrapper, 'Reset all progress').trigger('click')
+      await flushPromises()
+      expect(useProgress().progress.value.xp).toBe(50)
+      expect(sync.save).not.toHaveBeenCalled()
     })
   })
 })

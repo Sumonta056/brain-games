@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /brainGames/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(
+             ['name','av','best','hist','days','xp','theme','diff','mastered','played','xpDays','updatedAt','resetAt'])
+        && request.resource.data.xp is int
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 24
+        && request.resource.data.hist is list
+        && request.resource.data.hist.size() <= 60
+        && request.resource.data.days is list
+        && request.resource.data.days.size() <= 120
+        && (!('xpDays' in request.resource.data) || request.resource.data.xpDays.size() <= 120);
+    }
+  }
+}

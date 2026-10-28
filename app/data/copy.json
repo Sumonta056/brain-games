@@ -136,5 +136,71 @@
     "dayCount": "{n} / {total}",
     "gain": "+{n}",
     "none": "–"
+  },
+  "account": {
+    "notice": "You are playing as a guest. Your progress is saved only in this browser. If you clear browser data or change device, it is gone. Sign in with Google to keep it safe and play on all your devices.",
+    "noticeClose": "Close the guest notice",
+    "title": "☁️ Your account",
+    "guestIntro": "Sign in to keep your garden safe.",
+    "benefits": [
+      "Your progress is backed up in the cloud",
+      "One garden on your phone and your laptop",
+      "Clear your browser and your garden comes back"
+    ],
+    "signIn": "Sign in with Google",
+    "signedInAs": "Signed in as {name}",
+    "synced": "Your garden is saved to your account.",
+    "signOut": "Sign out",
+    "delete": "Delete my cloud data",
+    "deleteConfirm": "Delete your garden from the cloud? The copy in this browser stays.",
+    "privacyLink": "How we use your data",
+    "errors": {
+      "popup": "Allow the popup and try again.",
+      "generic": "Sign-in did not work. Please try again.",
+      "sync": "Could not reach your account. Your garden is safe in this browser and syncs later.",
+      "deleteFailed": "Could not delete right now. Check your connection and try again."
+    },
+    "resetConfirm": "Clear your profile and all scores in this browser?",
+    "resetConfirmCloud": "Clear your profile and all scores in this browser and in your account?",
+    "privacy": {
+      "title": "Privacy",
+      "intro": "Brain Games is free to play without an account. When you play as a guest, your progress stays in this browser and we store nothing.",
+      "sections": [
+        {
+          "heading": "What we store",
+          "body": "When you sign in with Google, we store your Google user id, your name, your email and your profile picture in Firebase Authentication. We store your garden (name, avatar, scores, history, days played, growth points and settings) in Cloud Firestore."
+        },
+        {
+          "heading": "Why we store it",
+          "body": "Only to keep your progress safe and the same on every device. We do not use analytics, ads or tracking, and we never sell or share your data."
+        },
+        {
+          "heading": "Where it lives",
+          "body": "Your garden is stored in Google Cloud Firestore in Mumbai, India (asia-south1). Only you can read or change it."
+        },
+        {
+          "heading": "What Google shows us",
+          "body": "The Google popup asks only for your basic profile and email (openid, email, profile). We cannot see your Gmail, Drive or contacts."
+        },
+        {
+          "heading": "How to delete it",
+          "body": "Open your profile and choose \"Delete my cloud data\". This removes your garden from the cloud and signs you out. The copy in this browser stays until you reset it."
+        }
+      ],
+      "back": "Back to your profile"
+    },
+    "nav": {
+      "menuLabel": "Account",
+      "guest": "Guest",
+      "chipGuest": "Account: playing as a guest",
+      "chipSignedIn": "Account: {name}, garden saved",
+      "chipError": "Account: {name}, garden not synced yet",
+      "chipLoading": "Account",
+      "guestTitle": "Playing as a guest",
+      "guestBody": "Your garden is saved only in this browser.",
+      "signInLabel": "Sign in with Google",
+      "profile": "Profile",
+      "synced": "Garden saved"
+    }
   }
 }

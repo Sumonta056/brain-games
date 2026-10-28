@@ -17,15 +17,18 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "wordlists": "node scripts/build-wordlists.mjs"
+    "wordlists": "node scripts/build-wordlists.mjs",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-brain-games \"vitest run --config vitest.rules.config.ts\""
   },
   "dependencies": {
+    "firebase": "^13.1.0",
     "nuxt": "^4.5.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
+    "@firebase/rules-unit-testing": "^6.0.0",
     "@nuxt/eslint": "^1.17.0",
     "@nuxt/icon": "^2.6.0",
     "@nuxt/test-utils": "^4.3.4",
@@ -34,6 +37,7 @@
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
+    "firebase-tools": "^15.34.1",
     "happy-dom": "^21.0.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",

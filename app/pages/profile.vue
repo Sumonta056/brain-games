@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <GuestNotice />
     <section class="grid grid-cols-[320px_1fr] [align-items:start] gap-3.5 max-lg:grid-cols-[1fr]">
       <div>
         <div class="rounded-card border border-line bg-surface p-5">
@@ -38,6 +39,7 @@
           </div>
         </div>
         <BrainCard class="mt-3.5" />
+        <AccountCard class="mt-3.5" />
       </div>
       <div>
         <ProfileStats />
@@ -106,6 +108,8 @@ import type { Category } from '~~/shared/types/game'
 import copy from '~/data/copy.json'
 useHead({ title: 'Your profile | Brain Games' })
 const { progress, level, reset } = useProgress()
+const { user } = useAuth()
+const sync = useCloudSync()
 const { games, categories, byId, tintVars } = useGames()
 const week = computed(() =>
   Array.from({ length: 7 }, (_, i) => {
@@ -139,7 +143,9 @@ const recent = computed(() =>
     return g ? [{ ...x, game: g, band: g.bands[bandIndex(g, x.s)]!.label }] : []
   })
 )
-function confirmReset() {
-  if (confirm('Clear your profile and all scores in this browser?')) reset()
+async function confirmReset() {
+  if (!confirm(user.value ? copy.account.resetConfirmCloud : copy.account.resetConfirm)) return
+  reset()
+  if (user.value) await sync.save()
 }
 </script>
