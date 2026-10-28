@@ -42,23 +42,14 @@
         >
           <Icon :name="`bg:nav-${theme === 'dark' ? 'moon' : theme === 'light' ? 'sun' : 'auto'}`" size="20" />
         </button>
-        <NuxtLink
-          to="/profile"
-          class="flex cursor-pointer items-center gap-2 rounded-pill border border-line bg-surface py-1 pr-3.5 pl-1 text-[15px] font-medium text-ink no-underline max-md:min-h-11 max-md:min-w-11 max-md:p-[3px]"
-          aria-label="Open your profile"
-        >
-          <span class="grid size-8 place-items-center rounded-[50%] bg-lilac-bg text-[18px] max-md:size-[34px]">{{
-            progress.av
-          }}</span
-          ><span class="max-lg:hidden">{{ progress.name || 'Profile' }} · {{ level.emoji }}</span>
-        </NuxtLink>
+        <AccountMenu />
       </div>
     </div>
   </header>
 </template>
 <script setup lang="ts">
 const route = useRoute()
-const { progress, streak, level } = useProgress()
+const { streak } = useProgress()
 const { theme, cycle } = useTheme()
 const tabs = [
   { to: '/', label: 'Home', icon: 'home' },

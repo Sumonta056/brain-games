@@ -9,8 +9,8 @@ const vueFiles = import.meta.glob<string>('~/**/*.vue', { query: '?raw', import:
 
 const icon = (path: string) => Object.entries(iconFiles).find(([key]) => key.endsWith(`/icons/${path}.svg`))?.[1]
 
-const NAV = ['home', 'games', 'user', 'sun', 'moon', 'auto', 'back', 'flame']
-const BRAND = ['logo', 'neurons']
+const NAV = ['home', 'games', 'user', 'sun', 'moon', 'auto', 'back', 'flame', 'cloud', 'chevron']
+const BRAND = ['logo', 'neurons', 'google']
 
 describe('SVG icon files (CLAUDE.md rule 11)', () => {
   it.each(NAV)('has the nav icon nav/%s.svg drawn in currentColor', name => {

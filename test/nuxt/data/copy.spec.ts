@@ -21,6 +21,8 @@ const sources = import.meta.glob<string>(
     '~/components/profile/AccountCard.vue',
     '~/pages/privacy.vue',
     '~/composables/useAuth.ts',
+    '~/components/app/AccountMenu.vue',
+    '~/components/app/AccountPanel.vue',
     '~/components/app/AppNav.vue'
   ],
   { query: '?raw', import: 'default', eager: true }
@@ -196,8 +198,8 @@ describe('copy.json contract', () => {
 })
 
 describe('copy is not hard-coded in components', () => {
-  it('finds all fourteen sources', () => {
-    expect(Object.keys(sources)).toHaveLength(14)
+  it('finds all sixteen sources', () => {
+    expect(Object.keys(sources)).toHaveLength(16)
   })
 
   it.each([
@@ -231,6 +233,12 @@ describe('copy is not hard-coded in components', () => {
     ['profile.vue', 'Clear your profile and all scores'],
     ['useAuth.ts', 'Allow the popup and try again'],
     ['useAuth.ts', 'Sign-in did not work'],
+    ['AccountMenu.vue', 'Playing as a guest'],
+    ['AccountMenu.vue', 'Sign in with Google'],
+    ['AccountMenu.vue', 'Garden saved'],
+    ['AccountPanel.vue', 'Playing as a guest'],
+    ['AccountPanel.vue', 'Sign in with Google'],
+    ['AccountPanel.vue', 'Garden saved'],
     ['AppNav.vue', 'Open your profile. Signed in']
   ])('%s does not contain %s', (file, literal) => {
     const source = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`))?.[1]

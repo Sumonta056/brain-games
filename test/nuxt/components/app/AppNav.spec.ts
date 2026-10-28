@@ -1,9 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { clearNuxtState } from '#imports'
+import { clearNuxtState, useState } from '#imports'
 import AppNav from '~/components/app/AppNav.vue'
-import { iconNames } from '../../fixtures'
+import copy from '~/data/copy.json'
+import { iconNames, signedInUser } from '../../fixtures'
 
+const nav = copy.account.nav
 const mounted: { unmount: () => void }[] = []
 
 async function mountAt(route: string) {
@@ -21,7 +23,7 @@ const tab = (w: Awaited<ReturnType<typeof mountAt>>, label: string) => w.get(`na
 describe('AppNav', () => {
   beforeEach(() => {
     localStorage.clear()
-    clearNuxtState('progress')
+    clearNuxtState(['progress', 'auth-user', 'auth-error', 'auth-ready', 'cloud-status'])
     vi.useFakeTimers({ toFake: ['Date'] })
     vi.setSystemTime(new Date('2026-05-10T12:00:00Z'))
   })
@@ -71,7 +73,7 @@ describe('AppNav', () => {
   it('keeps every nav icon decorative', async () => {
     const w = await mountAt('/')
     const icons = w.findAllComponents({ name: 'NuxtIcon' })
-    expect(icons).toHaveLength(6)
+    expect(icons).toHaveLength(7)
     icons.forEach(i => expect(i.attributes('aria-hidden')).toBe('true'))
   })
 
@@ -113,19 +115,45 @@ describe('AppNav', () => {
     expect(JSON.parse(localStorage.getItem('bgarden')!).theme).toBe('auto')
   })
 
-  it('links the avatar to the profile with a fallback name and level emoji', async () => {
+  it('renders the account menu in the bar', async () => {
     const w = await mountAt('/')
-    const me = w.get('a[aria-label="Open your profile"]')
-    expect(me.attributes('href')).toBe('/profile')
-    expect(me.text()).toContain('🦉')
-    expect(me.text()).toContain('Profile · 🌱')
+    expect(w.find('header [data-testid="account-menu"]').exists()).toBe(true)
   })
 
-  it('shows the saved name, avatar and level', async () => {
-    save({ name: 'Ana', av: '🦊', xp: 250 })
-    const w = await mountAt('/')
-    const me = w.get('a[aria-label="Open your profile"]')
-    expect(me.text()).toContain('🦊')
-    expect(me.text()).toContain('Ana · 🪴')
+  describe('account', () => {
+    beforeEach(() => {
+      useState('auth-ready').value = true
+    })
+
+    it('has the Profile tab as the only profile link for a guest', async () => {
+      const w = await mountAt('/')
+      const links = w.findAll('a[href="/profile"]')
+      expect(links).toHaveLength(1)
+      expect(links[0]!.element.closest('nav')).not.toBeNull()
+    })
+
+    it('has the Profile tab as the only profile link when signed in', async () => {
+      useState('auth-user').value = signedInUser
+      const w = await mountAt('/')
+      const links = w.findAll('a[href="/profile"]')
+      expect(links).toHaveLength(1)
+      expect(links[0]!.element.closest('nav')).not.toBeNull()
+    })
+
+    it('puts no sign-in button in the bar for a guest while the panel is closed', async () => {
+      const w = await mountAt('/')
+      const signIns = w
+        .findAll('button')
+        .filter(b => b.attributes('aria-label') === nav.signInLabel || b.text().includes(nav.signInLabel))
+      expect(signIns).toHaveLength(0)
+    })
+
+    it('keeps the cloud badge inside the account menu when signed in', async () => {
+      useState('auth-user').value = signedInUser
+      const w = await mountAt('/')
+      const badges = w.findAll('[data-testid="cloud-badge"]')
+      expect(badges).toHaveLength(1)
+      expect(badges[0]!.element.closest('[data-testid="account-menu"]')).not.toBeNull()
+    })
   })
 })
