@@ -73,5 +73,68 @@
     "tryNext": "Try {next}",
     "emoji": "🌟",
     "topEmoji": "🏆"
+  },
+  "profile": {
+    "brainTitle": "🧠 Your brain",
+    "brainCaption": "{lit} of {total} neurons lit by {played} games",
+    "brainEmpty": "Play a game to light your first neuron",
+    "brainNext": "{n} more to the next neuron",
+    "brainDone": "Every neuron is lit ✨",
+    "brainStages": [
+      {
+        "at": 0,
+        "label": "A quiet seed"
+      },
+      {
+        "at": 10,
+        "label": "First sparks"
+      },
+      {
+        "at": 40,
+        "label": "Waking up"
+      },
+      {
+        "at": 80,
+        "label": "Busy network"
+      },
+      {
+        "at": 120,
+        "label": "Bright mind"
+      },
+      {
+        "at": 142,
+        "label": "Fully lit"
+      }
+    ],
+    "stats": {
+      "streak": "🔥 Day streak",
+      "best": "Best {n} days",
+      "played": "🎮 Games played",
+      "tried": "{n} / {total} games tried",
+      "month": "📅 This month",
+      "monthValue": "{n} days",
+      "bests": "⭐ Personal bests",
+      "mastered": "{n} levels mastered"
+    },
+    "favourite": "Favourite game",
+    "favouriteCount": "played {n} times",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "weekdays": ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+    "played": "played",
+    "rest": "rest day",
+    "daysPlayed": "days played",
+    "pointsGrown": "points grown",
+    "bestDay": "best day",
+    "growthTitle": "🌱 Growth points",
+    "growthGain": "+{n} in {month}",
+    "growthEmpty": "Your growth shows from your next game.",
+    "legendPlayed": "Played",
+    "legendRest": "Rest day",
+    "prevGlyph": "‹",
+    "nextGlyph": "›",
+    "dayCount": "{n} / {total}",
+    "gain": "+{n}",
+    "none": "–"
   }
 }

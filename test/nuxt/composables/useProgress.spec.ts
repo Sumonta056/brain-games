@@ -96,6 +96,98 @@ describe('useProgress', () => {
     })
   })
 
+  describe('record: played and growth (functional-requirements §3 On finish)', () => {
+    const history = (n: number) => Array.from({ length: n }, (_, i) => ({ id: 'math', s: i, d: '2026-05-01', t: i }))
+
+    it('counts games played past the 60 kept in history', () => {
+      const { record, progress } = fresh()
+      for (let i = 0; i < 65; i++) record(mathGame, i)
+      expect(progress.value.hist).toHaveLength(60)
+      expect(progress.value.played).toBe(65)
+    })
+
+    it('starts played from hist.length when played is missing', () => {
+      localStorage.setItem(KEY, JSON.stringify({ hist: history(3) }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.played).toBe(4)
+    })
+
+    it('adds 1 to a stored played count', () => {
+      localStorage.setItem(KEY, JSON.stringify({ played: 100, hist: history(2) }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.played).toBe(101)
+    })
+
+    it('stores the new XP under today, with no seed when no earlier day exists', () => {
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-10': 10 })
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-10': 20 })
+    })
+
+    it('seeds the XP before this game under the newest earlier day when xpDays is missing', () => {
+      localStorage.setItem(KEY, JSON.stringify({ xp: 50, days: ['2026-05-01', '2026-05-08', '2026-05-10'] }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-08': 50, '2026-05-10': 60 })
+    })
+
+    it('leaves the XP of games already played today out of the seed', () => {
+      const today = { id: 'math', s: 1, d: '2026-05-10', t: 1 }
+      localStorage.setItem(
+        KEY,
+        JSON.stringify({
+          xp: 80,
+          days: ['2026-05-08', '2026-05-10'],
+          hist: [today, { ...today, t: 2 }, { ...today, t: 3 }]
+        })
+      )
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-08': 50, '2026-05-10': 90 })
+    })
+
+    it('does not seed when the only stored day is today', () => {
+      localStorage.setItem(KEY, JSON.stringify({ xp: 50, days: ['2026-05-10'] }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-10': 60 })
+    })
+
+    it('does not seed when xpDays already exists', () => {
+      localStorage.setItem(KEY, JSON.stringify({ xp: 50, days: ['2026-05-08'], xpDays: { '2026-05-01': 20 } }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      expect(progress.value.xpDays).toEqual({ '2026-05-01': 20, '2026-05-10': 60 })
+    })
+
+    it('keeps the 120 newest dates in xpDays', () => {
+      const start = Date.UTC(2025, 11, 1)
+      const dates = Array.from({ length: 120 }, (_, i) => new Date(start + i * 864e5).toISOString().slice(0, 10))
+      const xpDays = Object.fromEntries(dates.map((d, i) => [d, i] as const).reverse())
+      localStorage.setItem(KEY, JSON.stringify({ xp: 120, xpDays }))
+      const { record, progress } = fresh()
+      record(mathGame, 1)
+      const keys = Object.keys(progress.value.xpDays!)
+      expect(keys).toHaveLength(120)
+      expect(keys).not.toContain(dates[0])
+      expect(keys).toContain(dates[1])
+      expect(progress.value.xpDays!['2026-05-10']).toBe(130)
+    })
+
+    it('persists played and xpDays to the bgarden key', async () => {
+      const { record } = fresh()
+      record(mathGame, 1)
+      await nextTick()
+      const saved = JSON.parse(localStorage.getItem(KEY)!)
+      expect(saved.played).toBe(1)
+      expect(saved.xpDays).toEqual({ '2026-05-10': 10 })
+    })
+  })
+
   describe('record with a difficulty (functional-requirements §3.1)', () => {
     it('keeps the medium best under the plain game id', () => {
       const { record, progress } = fresh()

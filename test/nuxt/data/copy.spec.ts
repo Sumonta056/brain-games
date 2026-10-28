@@ -11,7 +11,12 @@ const sources = import.meta.glob<string>(
     '~/components/home/HomeHero.vue',
     '~/components/home/MoodCheck.vue',
     '~/pages/profile.vue',
-    '~/composables/useCheer.ts'
+    '~/composables/useCheer.ts',
+    '~/components/profile/BrainCard.vue',
+    '~/components/profile/ProfileStats.vue',
+    '~/components/profile/FavouriteGame.vue',
+    '~/components/profile/MonthCard.vue',
+    '~/components/profile/GrowthCard.vue'
   ],
   { query: '?raw', import: 'default', eager: true }
 )
@@ -24,7 +29,7 @@ function strings(value: unknown): string[] {
 }
 
 describe('copy.json contract', () => {
-  it('has exactly the eight copy groups', () => {
+  it('has exactly the nine copy groups', () => {
     expect(Object.keys(copy).sort()).toEqual([
       'affirmations',
       'avatars',
@@ -33,7 +38,8 @@ describe('copy.json contract', () => {
       'levelUp',
       'loading',
       'moods',
-      'praise'
+      'praise',
+      'profile'
     ])
   })
 
@@ -121,14 +127,39 @@ describe('copy.json contract', () => {
     })
   })
 
+  it('has the profile copy with its placeholders', () => {
+    const p = copy.profile
+    expect(p.brainCaption).toContain('{lit}')
+    expect(p.brainCaption).toContain('{total}')
+    expect(p.brainCaption).toContain('{played}')
+    expect(p.brainNext).toContain('{n}')
+    expect(p.stats.best).toContain('{n}')
+    expect(p.stats.tried).toContain('{n}')
+    expect(p.stats.tried).toContain('{total}')
+    expect(p.stats.monthValue).toContain('{n}')
+    expect(p.stats.mastered).toContain('{n}')
+    expect(p.favouriteCount).toContain('{n}')
+    expect(p.growthGain).toContain('{n}')
+    expect(p.growthGain).toContain('{month}')
+    expect(p.weekdays).toHaveLength(7)
+    for (const s of strings(p)) expect(s.trim()).not.toBe('')
+  })
+
+  it('has brain stages from 0 upward, ending where every neuron is lit', () => {
+    const at = copy.profile.brainStages.map(s => s.at)
+    expect(at[0]).toBe(0)
+    at.forEach((a, i) => i && expect(a).toBeGreaterThan(at[i - 1]!))
+    expect(at.at(-1)).toBe(142)
+  })
+
   it('stays positive: no "Wrong" or "Fail" anywhere', () => {
     for (const s of strings(copy)) expect(s).not.toMatch(/wrong|fail/i)
   })
 })
 
 describe('copy is not hard-coded in components', () => {
-  it('finds all four sources', () => {
-    expect(Object.keys(sources)).toHaveLength(4)
+  it('finds all nine sources', () => {
+    expect(Object.keys(sources)).toHaveLength(9)
   })
 
   it.each([
@@ -139,7 +170,19 @@ describe('copy is not hard-coded in components', () => {
     ['profile.vue', '🦉'],
     ['profile.vue', '🍀'],
     ['useCheer.ts', 'Brain on fire'],
-    ['useCheer.ts', 'On a roll!']
+    ['useCheer.ts', 'On a roll!'],
+    ['BrainCard.vue', 'neurons lit by'],
+    ['BrainCard.vue', 'A quiet seed'],
+    ['BrainCard.vue', 'Every neuron is lit'],
+    ['ProfileStats.vue', 'Day streak'],
+    ['ProfileStats.vue', 'games tried'],
+    ['ProfileStats.vue', 'levels mastered'],
+    ['FavouriteGame.vue', 'Favourite game'],
+    ['MonthCard.vue', 'Previous month'],
+    ['MonthCard.vue', 'rest day'],
+    ['MonthCard.vue', 'points grown'],
+    ['GrowthCard.vue', 'Growth points'],
+    ['GrowthCard.vue', 'Your growth shows']
   ])('%s does not contain %s', (file, literal) => {
     const source = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`))?.[1]
     expect(source, file).toBeDefined()

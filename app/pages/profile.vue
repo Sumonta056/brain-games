@@ -37,12 +37,9 @@
         </div>
       </div>
       <div>
-        <div class="mb-3.5 grid grid-cols-[repeat(3,1fr)] gap-3 max-md:gap-2 max-sm:grid-cols-[1fr_1fr]">
-          <div v-for="s in stats" :key="s.label" class="rounded-[20px] px-4 py-3.5" :class="s.bg" data-testid="stat">
-            <b class="block font-display text-[34px] leading-none font-extrabold max-md:text-[26px]">{{ s.value }}</b
-            ><span class="text-[14px] text-muted">{{ s.label }}</span>
-          </div>
-        </div>
+        <BrainCard />
+        <ProfileStats />
+        <FavouriteGame />
         <div class="rounded-card border border-line bg-surface p-5">
           <h2 :class="h2">This week</h2>
           <div class="flex gap-2">
@@ -59,6 +56,8 @@
             </div>
           </div>
         </div>
+        <MonthCard v-model:month="month" />
+        <GrowthCard :month="month" />
         <div class="mt-3.5 rounded-card border border-line bg-surface p-5">
           <h2 :class="h2">Your brain skills</h2>
           <div
@@ -104,7 +103,7 @@
 import type { Category } from '~~/shared/types/game'
 import copy from '~/data/copy.json'
 useHead({ title: 'Your profile | Brain Games' })
-const { progress, streak, level, reset } = useProgress()
+const { progress, level, reset } = useProgress()
 const { games, categories, byId, tintVars } = useGames()
 const week = computed(() =>
   Array.from({ length: 7 }, (_, i) => {
@@ -130,12 +129,7 @@ const skills = computed(() =>
   })
 )
 const h2 = 'mx-0 mt-0 mb-3 font-display text-[21px] leading-[normal] font-bold'
-const tried = computed(() => new Set(Object.keys(progress.value.best).map(k => k.split('@')[0])).size)
-const stats = computed(() => [
-  { label: 'day streak', value: `🔥 ${streak.value}`, bg: 'bg-peach-bg' },
-  { label: 'games played', value: progress.value.hist.length, bg: 'bg-lilac-bg' },
-  { label: 'games tried', value: `${tried.value} / ${games.length}`, bg: 'bg-mint-bg' }
-])
+const month = ref(todayKey().slice(0, 7))
 const recent = computed(() =>
   progress.value.hist.slice(0, 10).flatMap(x => {
     const base = byId(x.id)

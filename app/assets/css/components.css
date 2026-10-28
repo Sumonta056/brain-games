@@ -202,6 +202,40 @@ body::before {
     transform: scale(1);
   }
 }
+@keyframes neuron-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.25;
+  }
+}
+@keyframes neuron-born {
+  0% {
+    scale: 0;
+  }
+  60% {
+    scale: 1.8;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes spark-run {
+  0% {
+    translate: 0;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    translate: 100cqw;
+    opacity: 0;
+  }
+}
 @keyframes pop {
   0% {
     opacity: 0;
@@ -406,7 +440,9 @@ canvas.pad {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }

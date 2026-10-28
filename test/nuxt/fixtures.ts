@@ -61,12 +61,16 @@ type IconHost = {
 }
 
 export function iconNames(wrapper: IconHost, within?: string): string[] {
-  const scope = within ? wrapper.element.querySelector(within) : wrapper.element
+  const scope = !within || wrapper.element.matches(within) ? wrapper.element : wrapper.element.querySelector(within)
   if (!scope) throw new Error(`No element matches ${within}`)
   return wrapper
     .findAllComponents({ name: 'NuxtIcon' })
     .filter(c => scope.contains(c.element))
     .map(c => c.props('name') as string)
+}
+
+export function fill(template: string, vars: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k]))
 }
 
 type ButtonHost = { findAll: (selector: string) => DOMWrapper<Element>[] }

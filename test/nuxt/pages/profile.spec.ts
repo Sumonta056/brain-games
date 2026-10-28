@@ -8,7 +8,7 @@ import copy from '~/data/copy.json'
 import pairs from '~/data/games/pairs.json'
 import type { Band } from '~~/shared/types/game'
 import { bandIndex } from '~/utils/bands'
-import { buttonNamed, iconNames, type TieredGame } from '../fixtures'
+import { buttonNamed, fill, iconNames, type TieredGame } from '../fixtures'
 
 const pairsGame = pairs as unknown as TieredGame
 const labelFor = (bands: Band[], s: number) => bands[bandIndex({ ...pairsGame, bands }, s)]!.label
@@ -25,12 +25,21 @@ async function mountProfile() {
   return wrapper
 }
 
+const labels = copy.profile.stats
+const tried = (n: number) => fill(labels.tried, { n, total: 15 })
+
+function statTile(wrapper: Awaited<ReturnType<typeof mountProfile>>, label: string) {
+  const tile = wrapper.findAll('[data-testid="stat"]').find(s => s.text().includes(label))
+  if (!tile) throw new Error(`No stat labelled ${label}`)
+  return tile
+}
+
 function stat(wrapper: Awaited<ReturnType<typeof mountProfile>>, label: string) {
-  return wrapper
-    .findAll('[data-testid="stat"]')
-    .find(s => s.text().includes(label))!
-    .get('b')
-    .text()
+  return statTile(wrapper, label).get('b').text()
+}
+
+function statSub(wrapper: Awaited<ReturnType<typeof mountProfile>>, label: string) {
+  return statTile(wrapper, label).get('[data-testid="stat-sub"]').text()
 }
 
 describe('pages/profile', () => {
@@ -50,9 +59,9 @@ describe('pages/profile', () => {
     const wrapper = await mountProfile()
     expect(wrapper.get('[data-testid="avatar"]').text()).toBe('🦉')
     expect(wrapper.get('[data-testid="plant"] b').text()).toBe('Seed')
-    expect(stat(wrapper, 'day streak')).toBe('🔥 0')
-    expect(stat(wrapper, 'games played')).toBe('0')
-    expect(stat(wrapper, 'games tried')).toBe('0 / 15')
+    expect(stat(wrapper, labels.streak)).toBe('0')
+    expect(stat(wrapper, labels.played)).toBe('0')
+    expect(statSub(wrapper, labels.played)).toBe(tried(0))
     expect(wrapper.text()).toContain('No games yet. Your first one plants the seed 🌱')
     expect(wrapper.findAll('[data-testid="skill"] small').every(s => s.text() === 'not yet')).toBe(true)
   })
@@ -71,9 +80,9 @@ describe('pages/profile', () => {
     const wrapper = await mountProfile()
     expect(wrapper.get('[data-testid="plant"] b').text()).toBe('Sprout')
     expect(wrapper.text()).toContain('130 growth points')
-    expect(stat(wrapper, 'day streak')).toBe('🔥 2')
-    expect(stat(wrapper, 'games played')).toBe('3')
-    expect(stat(wrapper, 'games tried')).toBe('2 / 15')
+    expect(stat(wrapper, labels.streak)).toBe('2')
+    expect(stat(wrapper, labels.played)).toBe('3')
+    expect(statSub(wrapper, labels.played)).toBe(tried(2))
     expect(wrapper.findAll('[data-testid="week-day"]').map(d => d.attributes('data-state') === 'on')).toEqual([
       false,
       false,
@@ -151,7 +160,7 @@ describe('pages/profile', () => {
     await buttonNamed(wrapper, 'Reset all progress').trigger('click')
     expect(confirm).toHaveBeenCalledWith('Clear your profile and all scores in this browser?')
     expect(useProgress().progress.value).toMatchObject({ xp: 0, best: {}, hist: [] })
-    expect(stat(wrapper, 'games played')).toBe('0')
+    expect(stat(wrapper, labels.played)).toBe('0')
   })
 
   it('keeps progress when reset is cancelled', async () => {
@@ -163,7 +172,89 @@ describe('pages/profile', () => {
     const wrapper = await mountProfile()
     await buttonNamed(wrapper, 'Reset all progress').trigger('click')
     expect(useProgress().progress.value.xp).toBe(50)
-    expect(stat(wrapper, 'games tried')).toBe('1 / 15')
+    expect(statSub(wrapper, labels.played)).toBe(tried(1))
+  })
+
+  describe('profile cards (functional-requirements §2.4)', () => {
+    const rich = {
+      xp: 100,
+      played: 90,
+      best: { math: 12 },
+      days: ['2026-04-20', '2026-05-09', '2026-05-10'],
+      xpDays: { '2026-04-01': 10, '2026-04-20': 40, '2026-05-09': 80, '2026-05-10': 100 },
+      hist: [
+        { id: 'math', s: 12, d: '2026-05-10', t: 3 },
+        { id: 'math', s: 10, d: '2026-05-09', t: 2 },
+        { id: 'reaction', s: 240, d: '2026-04-20', t: 1 }
+      ]
+    }
+
+    it('replaces the old three stat tiles with the four new ones', async () => {
+      const wrapper = await mountProfile()
+      const tiles = wrapper.findAll('[data-testid="stat"]')
+      expect(tiles).toHaveLength(4)
+      expect(
+        tiles.map(t => [labels.streak, labels.played, labels.month, labels.bests].findIndex(l => t.text().includes(l)))
+      ).toEqual([0, 1, 2, 3])
+    })
+
+    it('shows the brain, stats, favourite, week, month and growth cards in that order', async () => {
+      seed(rich)
+      const wrapper = await mountProfile()
+      const order = [
+        '[data-testid="brain"]',
+        '[data-testid="stat"]',
+        '[data-testid="favourite"]',
+        '[data-testid="week-day"]',
+        '[data-testid="month-title"]',
+        '[data-testid="growth"]',
+        '[data-testid="skill"]',
+        '[data-testid="history"]'
+      ].map(sel => wrapper.get(sel).element)
+      order.slice(1).forEach((el, i) => {
+        expect(order[i]!.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING, `${i}`).toBeTruthy()
+      })
+    })
+
+    it('reads games played from played when it is stored', async () => {
+      seed(rich)
+      const wrapper = await mountProfile()
+      expect(stat(wrapper, labels.played)).toBe('90')
+      expect(wrapper.get('[data-testid="brain-caption"]').text()).toBe(
+        fill(copy.profile.brainCaption, { lit: 46, total: 72, played: 90 })
+      )
+    })
+
+    it('starts the month and growth cards on the current month', async () => {
+      seed(rich)
+      const wrapper = await mountProfile()
+      expect(wrapper.get('[data-testid="month-title"]').text()).toBe('May 2026')
+      expect(wrapper.get('[data-testid="growth-gain"]').text()).toBe(
+        fill(copy.profile.growthGain, { n: 60, month: 'May' })
+      )
+      expect(wrapper.findAll('[data-testid="growth-col"]')).toHaveLength(31)
+    })
+
+    it('moves the month and growth cards together with the month buttons', async () => {
+      seed(rich)
+      const wrapper = await mountProfile()
+      await wrapper.get(`button[aria-label="${copy.profile.prevMonth}"]`).trigger('click')
+      expect(wrapper.get('[data-testid="month-title"]').text()).toBe('April 2026')
+      expect(wrapper.get('[data-testid="growth-gain"]').text()).toBe(
+        fill(copy.profile.growthGain, { n: 30, month: 'April' })
+      )
+      expect(wrapper.findAll('[data-testid="growth-col"]')).toHaveLength(30)
+      expect(wrapper.findAll('[data-testid="day"]')).toHaveLength(30)
+      await wrapper.get(`button[aria-label="${copy.profile.nextMonth}"]`).trigger('click')
+      expect(wrapper.get('[data-testid="month-title"]').text()).toBe('May 2026')
+      expect(wrapper.findAll('[data-testid="growth-col"]')).toHaveLength(31)
+    })
+
+    it('hides the favourite card for a new player', async () => {
+      const wrapper = await mountProfile()
+      expect(wrapper.find('[data-testid="favourite"]').exists()).toBe(false)
+      expect(wrapper.find('[data-testid="brain"]').exists()).toBe(true)
+    })
   })
 
   describe('difficulty (functional-requirements §3.1)', () => {
@@ -192,13 +283,13 @@ describe('pages/profile', () => {
     it('counts each game id once in games tried, whatever its difficulties', async () => {
       seed({ best: { pairs: 20, 'pairs@hard': 30, 'pairs@easy': 12, 'schulte@easy': 10 } })
       const wrapper = await mountProfile()
-      expect(stat(wrapper, 'games tried')).toBe('2 / 15')
+      expect(statSub(wrapper, labels.played)).toBe(tried(2))
     })
 
     it('counts a game played only on hard as tried', async () => {
       seed({ best: { 'nback@hard': 80 } })
       const wrapper = await mountProfile()
-      expect(stat(wrapper, 'games tried')).toBe('1 / 15')
+      expect(statSub(wrapper, labels.played)).toBe(tried(1))
     })
   })
 })

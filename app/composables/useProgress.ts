@@ -64,11 +64,26 @@ export function useProgress() {
     const isPB = prev == null || (game.lowerIsBetter ? score < prev : score > prev)
     if (isPB) p.best[key] = score
     const l = game.difficulty && game.difficulty !== 'medium' ? game.difficulty : undefined
+    p.played = (p.played ?? p.hist.length) + 1
+    if (!p.xpDays) {
+      const last = p.days
+        .filter(d => d < todayKey())
+        .sort()
+        .at(-1)
+      const playedToday = p.hist.filter(h => h.d === todayKey()).length
+      p.xpDays = last ? { [last]: p.xp - 10 * playedToday } : {}
+    }
     p.hist.unshift({ id: game.id, s: score, d: todayKey(), t: Date.now(), ...(l && { l }) })
     p.hist = p.hist.slice(0, 60)
     if (!p.days.includes(todayKey())) p.days.push(todayKey())
     p.days = p.days.slice(-120)
     p.xp += 10 + (isPB && prev != null ? 5 : 0)
+    p.xpDays[todayKey()] = p.xp
+    p.xpDays = Object.fromEntries(
+      Object.entries(p.xpDays)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .slice(-120)
+    )
     const band = bandIndex(game, score)
     const mastered = isMastery(game, band)
     const masteryKey = `${game.id}@${game.difficulty}`

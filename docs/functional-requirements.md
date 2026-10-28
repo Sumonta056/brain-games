@@ -14,13 +14,13 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 ## 2. Pages
 
-| Route        | Page      | Purpose                                                              |
-| ------------ | --------- | -------------------------------------------------------------------- |
-| `/`          | Home      | Greeting, today's five, mood check, bento grid of all games          |
-| `/games`     | All games | Bento grid with category filter                                      |
-| `/games/:id` | Game      | Full-height play area (left) + guide sidebar (right)                 |
-| `/profile`   | Profile   | Avatar, name, level, streak, week, brain skills, recent games, reset |
-| any other    | Error     | Friendly 404 with a "Back to games" button                           |
+| Route        | Page      | Purpose                                                                                       |
+| ------------ | --------- | --------------------------------------------------------------------------------------------- |
+| `/`          | Home      | Greeting, today's five, mood check, bento grid of all games                                   |
+| `/games`     | All games | Bento grid with category filter                                                               |
+| `/games/:id` | Game      | Full-height play area (left) + guide sidebar (right)                                          |
+| `/profile`   | Profile   | Avatar, name, level, stats, favourite, week, month, growth, brain skills, recent games, reset |
+| any other    | Error     | Friendly 404 with a "Back to games" button                                                    |
 
 ### 2.1 Navbar (identical on every page)
 
@@ -58,8 +58,18 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
 
 - Avatar picker (10 emoji) and a name input (max 24 characters).
 - Level plant: XP / 120 per level, with 7 levels (Seed → Whole garden) and a progress bar.
-- Stats: day streak, games played, games tried (x / 15).
+- Your brain card, at the top of the right column: a brain-shaped network of 72 neurons and their links, from `app/data/brain.json` (neurons are ordered from the centre outward). Lit neurons = 0 when games played is 0, otherwise min(72, 1 + floor(played / 2)). A link is lit when both of its neurons are lit. Lit neurons pulse, sparks run along every third lit link, and the newest lit neuron pops in once when the card appears (`data-state="new"`). With `prefers-reduced-motion: reduce` nothing moves. The card shows "n of 72 neurons lit by p games" (or "Play a game to light your first neuron"), a stage pill from `copy.json` `profile.brainStages` (the last stage whose `at` ≤ games played), a meter of lit / 72, and "n more to the next neuron" (or "Every neuron is lit ✨"). The network is decoration (`aria-hidden`); the caption carries the meaning.
+- Stats, 4 tiles (2 columns at 560px or less), each with a label, a big value and a sub-line:
+  - Day streak: the streak, with "Best n days": the longest run of consecutive dates in `days` (never less than the streak).
+  - Games played: `played` (or `hist.length` when `played` is missing), with "x / 15 games tried".
+  - This month: the number of dates in `days` in the current month, as "n days", with a meter of n / days in the month.
+  - Personal bests: the number of keys in `best`, with "n levels mastered" (the length of `mastered`).
+- Favourite game: the game id that occurs most in `hist` (a tie goes to the one played most recently), with its icon, name and "played n times" (the count is hidden at 560px or less). Hidden when `hist` is empty.
 - This week: 7 day boxes, filled if played that day.
+- Month card: the month title ("October 2026"), and ‹ › buttons (`aria-label` "Previous month" / "Next month"). Next is disabled on the current month. Previous is disabled on the month of the oldest date in `days` (the current month when `days` is empty). When the focused button becomes disabled, focus moves to the other button.
+  - Calendar: Monday first, one cell per date. A date in `days` is filled (`data-state="on"`), today has a ring, and dates after today are dashed (`data-state="future"`). Each cell has an `aria-label` with the full date and "played" or "rest day". A legend under the grid shows the "Played" and "Rest day" swatches.
+  - Summary: "x / y days played" (y is the number of dates up to today in the current month, all dates in a past month), "+n points grown" and "best day" (the date with the biggest gain, or "–").
+- Growth card: one column per date of the shown month. The value of a date is `xpDays[date]`, or the last value before it. A date before the first `xpDays` entry, or after today, has no value. The start is the last value before the month, or the first value in the month. Points grown = the last value in the month − the start. Heights scale from the start to the last value. A date whose value grew gets a dot. The pill says "+n in October". With no values in the month, the card shows "Your growth shows from your next game."
 - Brain skills, per category: the average of (bandIndex + 1) / bands.length over the games played in that category, shown as a %.
 - Recent games: the last 10, each with its band label.
 - Reset all progress, with a confirmation.
@@ -72,6 +82,9 @@ Reference implementation: `docs/design.html` (single file, all 15 games working)
   - History: the entry is added to the start of `hist`, which keeps a maximum of 60 entries.
   - Days: today's date (`YYYY-MM-DD`) is added to `days`, which keeps a maximum of 120 entries.
   - XP: +10 for every game, plus +5 when a previous best is beaten.
+  - Played: `played` goes up by 1. When it is missing, it starts from `hist.length` before this game.
+  - Growth: `xpDays[today]` is set to the new `xp`. `xpDays` keeps the 120 newest dates. When `xpDays` is missing, the XP before this game, less 10 for each `hist` entry dated today, is first stored under the newest date in `days` before today (if there is one), so the growth chart has a start.
+- **Dates:** every date key (`days`, `hist[].d`, `xpDays`, the calendar) is a UTC date from `todayKey()`, the same as design.html.
 - **Streak:** consecutive days with at least one game, counting back from today (or from yesterday if nothing has been played yet today).
 - **Band lookup:** `bands` are ordered from lowest to highest performance, and the score falls in the last band whose `at` it reaches:
   - Higher-is-better games: the score falls in the last band where `score >= at`.

@@ -76,4 +76,6 @@ export interface Progress {
   theme: 'auto' | 'light' | 'dark'
   diff?: Record<string, Difficulty>
   mastered?: string[]
+  played?: number
+  xpDays?: Record<string, number>
 }
