@@ -232,7 +232,7 @@ body::before {
     opacity: 1;
   }
   100% {
-    translate: 100cqw;
+    translate: 100%;
     opacity: 0;
   }
 }

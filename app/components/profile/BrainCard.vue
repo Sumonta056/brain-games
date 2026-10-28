@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3.5 rounded-card border border-line bg-surface p-5" data-testid="brain">
+  <div class="rounded-card border border-line bg-surface p-5" data-testid="brain">
     <div class="flex flex-wrap items-start justify-between gap-3">
       <div>
         <h2 class="m-0 font-display text-[21px] leading-[1.2] font-bold">{{ p.brainTitle }}</h2>
@@ -23,7 +23,7 @@
         class="absolute h-[1.5px] origin-[0_50%] rounded-[2px] bg-line data-[state=lit]:bg-accent-2/55"
         :class="
           l.spark &&
-          '[container-type:inline-size] after:absolute after:top-[-2.5px] after:left-0 after:size-1.5 after:[animation:spark-run_var(--d)_linear_var(--dl)_infinite] after:rounded-[50%] after:bg-accent after:shadow-[0_0_8px_2px_var(--accent)] after:content-[\'\']'
+          'after:absolute after:top-[-2.5px] after:left-0 after:h-1.5 after:w-full after:[animation:spark-run_var(--d)_linear_var(--dl)_infinite] after:[filter:drop-shadow(0_0_4px_var(--accent))] after:content-[\'\'] after:[background:radial-gradient(circle_at_3px_50%,var(--accent)_0_3px,transparent_3.5px)]'
         "
         :style="l.style"
         :data-state="l.lit ? 'lit' : undefined"

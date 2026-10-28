@@ -1,43 +1,45 @@
 <template>
   <div class="page">
     <section class="grid grid-cols-[320px_1fr] [align-items:start] gap-3.5 max-lg:grid-cols-[1fr]">
-      <div class="rounded-card border border-line bg-surface p-5">
-        <div
-          class="mx-auto grid size-[104px] place-items-center rounded-[50%] bg-lilac-bg text-[58px]"
-          data-testid="avatar"
-        >
-          {{ progress.av }}
-        </div>
-        <div class="mx-0 my-3 flex flex-wrap justify-center gap-1.5" data-testid="avatars">
-          <button
-            v-for="a in copy.avatars"
-            :key="a"
-            class="size-[42px] cursor-pointer rounded-[12px] border border-line bg-raise text-[21px] aria-pressed:border-accent aria-pressed:bg-rose-bg"
-            :aria-pressed="a === progress.av"
-            :aria-label="`Choose ${a}`"
-            @click="progress.av = a"
+      <div>
+        <div class="rounded-card border border-line bg-surface p-5">
+          <div
+            class="mx-auto grid size-[104px] place-items-center rounded-[50%] bg-lilac-bg text-[58px]"
+            data-testid="avatar"
           >
-            {{ a }}
-          </button>
-        </div>
-        <input
-          v-model.trim="progress.name"
-          class="w-full rounded-icon border-2 border-line bg-raise p-1.5 text-center font-display text-[22px] leading-[normal] font-bold"
-          placeholder="Your name"
-          aria-label="Your name"
-          maxlength="24"
-        />
-        <div class="mt-4 rounded-btn bg-mint-bg p-3.5 text-center text-mint-fg" data-testid="plant">
-          <div class="text-[44px]">{{ level.emoji }}</div>
-          <b class="block font-display text-[20px] leading-[normal] font-extrabold text-ink">{{ level.name }}</b>
-          <small>{{ progress.xp }} growth points · +10 every game</small>
-          <div class="mt-2 h-2.5 overflow-hidden rounded-pill bg-surface">
-            <i class="block h-full bg-mint-fg" :style="{ width: level.pct + '%' }" />
+            {{ progress.av }}
+          </div>
+          <div class="mx-0 my-3 flex flex-wrap justify-center gap-1.5" data-testid="avatars">
+            <button
+              v-for="a in copy.avatars"
+              :key="a"
+              class="size-[42px] cursor-pointer rounded-[12px] border border-line bg-raise text-[21px] aria-pressed:border-accent aria-pressed:bg-rose-bg"
+              :aria-pressed="a === progress.av"
+              :aria-label="`Choose ${a}`"
+              @click="progress.av = a"
+            >
+              {{ a }}
+            </button>
+          </div>
+          <input
+            v-model.trim="progress.name"
+            class="w-full rounded-icon border-2 border-line bg-raise p-1.5 text-center font-display text-[22px] leading-[normal] font-bold"
+            placeholder="Your name"
+            aria-label="Your name"
+            maxlength="24"
+          />
+          <div class="mt-4 rounded-btn bg-mint-bg p-3.5 text-center text-mint-fg" data-testid="plant">
+            <div class="text-[44px]">{{ level.emoji }}</div>
+            <b class="block font-display text-[20px] leading-[normal] font-extrabold text-ink">{{ level.name }}</b>
+            <small>{{ progress.xp }} growth points · +10 every game</small>
+            <div class="mt-2 h-2.5 overflow-hidden rounded-pill bg-surface">
+              <i class="block h-full bg-mint-fg" :style="{ width: level.pct + '%' }" />
+            </div>
           </div>
         </div>
+        <BrainCard class="mt-3.5" />
       </div>
       <div>
-        <BrainCard />
         <ProfileStats />
         <FavouriteGame />
         <div class="rounded-card border border-line bg-surface p-5">

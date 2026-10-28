@@ -198,6 +198,18 @@ describe('pages/profile', () => {
       ).toEqual([0, 1, 2, 3])
     })
 
+    it('puts the brain card in the left column, under the level plant', async () => {
+      seed(rich)
+      const wrapper = await mountProfile()
+      const plant = wrapper.get('[data-testid="plant"]').element
+      const brain = wrapper.get('[data-testid="brain"]').element
+      const stat = wrapper.get('[data-testid="stat"]').element
+      const column = (el: Element) => el.closest('section > *')
+      expect(column(brain)).toBe(column(plant))
+      expect(column(brain)).not.toBe(column(stat))
+      expect(plant.compareDocumentPosition(brain) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    })
+
     it('shows the brain, stats, favourite, week, month and growth cards in that order', async () => {
       seed(rich)
       const wrapper = await mountProfile()
